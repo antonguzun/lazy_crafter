@@ -1,12 +1,15 @@
 use chrono::{DateTime, Utc};
+use lazy_crafter::entities::db::LocalDB;
 use rdev::{listen, simulate, EventType, Key};
 use std::collections::HashSet;
 use std::sync::mpsc::channel;
 use std::thread;
 use std::time::{Duration, SystemTime};
 extern crate x11_clipboard;
+use eframe::egui;
+use egui::Sense;
+use egui_extras::{Size, TableBuilder};
 use lazy_crafter::storage::files::local_db::FileRepo;
-
 use x11_clipboard::Clipboard;
 
 fn hash_event_type(event_type: EventType) -> String {
@@ -59,45 +62,171 @@ fn run_craft() {
     println!("{}", val);
 }
 
+// fn main() {
+//     let db = FileRepo::new().unwrap();
+//     println!("db initialized");
+//     println!(
+//         "{:?}",
+//         db.translations.get("+1_max_charged_attack_stages").unwrap()
+//     );
+
+//     let (schan, rchan) = channel();
+//     let _listener = thread::spawn(move || {
+//         listen(move |event| {
+//             schan
+//                 .send(event)
+//                 .unwrap_or_else(|e| println!("Could not send event {:?}", e));
+//         })
+//         .expect("Could not listen");
+//     });
+
+//     let keypress_bandwidth = Duration::from_millis(1000);
+//     let mut events = Vec::new();
+//     let target_events = create_target_hash_set();
+//     println!("target_events {:?}", target_events);
+//     let mut last_combo = SystemTime::now() - Duration::from_secs(500);
+
+//     for event in rchan.iter() {
+//         events.push(event);
+//         events.retain(|e| e.time > SystemTime::now() - keypress_bandwidth);
+//         let current_events =
+//             HashSet::from_iter(events.iter().map(|e| hash_event_type(e.event_type)));
+//         if target_events.is_subset(&current_events)
+//             && last_combo < SystemTime::now() - keypress_bandwidth
+//         {
+//             let t: DateTime<Utc> = last_combo.clone().into();
+//             println!("You pressed combo! prev combo at {}", t.to_rfc3339());
+//             last_combo = SystemTime::now();
+//             events.clear();
+//             run_craft();
+//             let delay = Duration::from_millis(100);
+//             thread::sleep(delay);
+//         }
+//     }
+// }
+
 fn main() {
+    let native_options = eframe::NativeOptions::default();
     let db = FileRepo::new().unwrap();
-    println!("db initialized");
-    println!(
-        "{:?}",
-        db.translations.get("+1_max_charged_attack_stages").unwrap()
+    eframe::run_native(
+        "Lazy Crafter",
+        native_options,
+        Box::new(|cc| Box::new(MyEguiApp::new(cc, db))),
     );
+}
 
-    let (schan, rchan) = channel();
-    let _listener = thread::spawn(move || {
-        listen(move |event| {
-            schan
-                .send(event)
-                .unwrap_or_else(|e| println!("Could not send event {:?}", e));
-        })
-        .expect("Could not listen");
-    });
+struct MyEguiApp {
+    name: String,
+    selected: Vec<String>,
+    db: LocalDB,
+}
 
-    let keypress_bandwidth = Duration::from_millis(1000);
-    let mut events = Vec::new();
-    let target_events = create_target_hash_set();
-    println!("target_events {:?}", target_events);
-    let mut last_combo = SystemTime::now() - Duration::from_secs(500);
-
-    for event in rchan.iter() {
-        events.push(event);
-        events.retain(|e| e.time > SystemTime::now() - keypress_bandwidth);
-        let current_events =
-            HashSet::from_iter(events.iter().map(|e| hash_event_type(e.event_type)));
-        if target_events.is_subset(&current_events)
-            && last_combo < SystemTime::now() - keypress_bandwidth
-        {
-            let t: DateTime<Utc> = last_combo.clone().into();
-            println!("You pressed combo! prev combo at {}", t.to_rfc3339());
-            last_combo = SystemTime::now();
-            events.clear();
-            run_craft();
-            let delay = Duration::from_millis(100);
-            thread::sleep(delay);
+impl MyEguiApp {
+    fn new(cc: &eframe::CreationContext<'_>, db: LocalDB) -> Self {
+        // Customize egui here with cc.egui_ctx.set_fonts and cc.egui_ctx.set_visuals.
+        // Restore app state using cc.storage (requires the "persistence" feature).
+        // Use the cc.gl (a glow::Context) to create graphics shaders and buffers that you can use
+        // for e.g. egui::PaintCallback.
+        Self {
+            name: "".to_string(),
+            selected: vec![],
+            db,
         }
+    }
+}
+
+fn get_list(filter: &str, db: &LocalDB) -> std::vec::Vec<String> {
+    let mut v = vec![];
+    for i in db.translations.keys().into_iter() {
+        if i.contains(filter) {
+            v.push(i.to_string());
+        }
+    }
+    v
+}
+
+impl eframe::App for MyEguiApp {
+    fn update(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
+        egui::SidePanel::left("selected_mods_panel").show(ctx, |ui| {
+            let text_height2 = egui::TextStyle::Body.resolve(ui.style()).size;
+            ui.heading("Selected");
+            let mut selected_table = TableBuilder::new(ui)
+                .striped(true)
+                .cell_layout(egui::Layout::left_to_right(egui::Align::Center))
+                .column(Size::initial(70.0).at_least(70.0))
+                .column(Size::remainder().at_least(300.0))
+                .resizable(false);
+
+            selected_table
+                .header(30.0, |mut header| {
+                    header.col(|ui| {
+                        ui.heading("weight");
+                    });
+                    header.col(|ui| {
+                        ui.heading("modification");
+                    });
+                })
+                .body(|mut body| {
+                    body.rows(text_height2, self.selected.len(), |row_index, mut row| {
+                        row.col(|ui| {
+                            ui.label((100).to_string());
+                        });
+                        let label = egui::Label::new(&self.selected[row_index])
+                            .wrap(false)
+                            .sense(Sense::click());
+                        row.col(|ui| {
+                            if ui.add(label).clicked() {
+                                // &self.selected.retain(|x| x == &self.selected[row_index].clone());
+                            };
+                        });
+                    });
+                });
+            if ui.button("clean selected").clicked() {
+                self.selected.clear();
+            }
+        });
+
+        egui::CentralPanel::default().show(ctx, |ui| {
+            ui.heading("Mods");
+            ui.horizontal(|ui| {
+                ui.label("filter: ");
+                ui.text_edit_singleline(&mut self.name);
+            });
+
+            let table_data = get_list(&self.name, &self.db);
+
+            let text_height = egui::TextStyle::Body.resolve(ui.style()).size;
+            let mut table = TableBuilder::new(ui)
+                .striped(true)
+                .cell_layout(egui::Layout::left_to_right(egui::Align::Center))
+                .column(Size::initial(30.0).at_least(50.0))
+                .column(Size::remainder().at_least(300.0))
+                .resizable(false);
+
+            table
+                .header(30.0, |mut header| {
+                    header.col(|ui| {
+                        ui.heading("#");
+                    });
+                    header.col(|ui| {
+                        ui.heading("modification");
+                    });
+                })
+                .body(|mut body| {
+                    body.rows(text_height, table_data.len(), |row_index, mut row| {
+                        row.col(|ui| {
+                            ui.label((row_index + 1).to_string());
+                        });
+                        let label = egui::Label::new(&table_data[row_index])
+                            .wrap(false)
+                            .sense(Sense::click());
+                        row.col(|ui| {
+                            if ui.add(label).clicked() {
+                                self.selected.push(table_data[row_index].clone());
+                            };
+                        });
+                    });
+                });
+        });
     }
 }
