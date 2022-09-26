@@ -1,10 +1,12 @@
 use chrono::{DateTime, Utc};
-use rdev::{listen, simulate, Event, EventType, Key};
+use rdev::{listen, simulate, EventType, Key};
 use std::collections::HashSet;
 use std::sync::mpsc::channel;
-use std::time::{Duration, SystemTime, UNIX_EPOCH};
-use std::{hash, thread};
+use std::thread;
+use std::time::{Duration, SystemTime};
 extern crate x11_clipboard;
+use lazy_crafter::storage::files::local_db::FileRepo;
+
 use x11_clipboard::Clipboard;
 
 fn hash_event_type(event_type: EventType) -> String {
@@ -26,7 +28,7 @@ fn send(event_type: &EventType) {
     let delay = Duration::from_millis(20);
     match simulate(event_type) {
         Ok(()) => (),
-        Err(SimulateError) => {
+        Err(_) => {
             println!("We could not send {:?}", event_type);
         }
     }
@@ -58,7 +60,13 @@ fn run_craft() {
 }
 
 fn main() {
-    // spawn new thread because listen blocks
+    let db = FileRepo::new().unwrap();
+    println!("db initialized");
+    println!(
+        "{:?}",
+        db.translations.get("+1_max_charged_attack_stages").unwrap()
+    );
+
     let (schan, rchan) = channel();
     let _listener = thread::spawn(move || {
         listen(move |event| {
