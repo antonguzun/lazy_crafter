@@ -15,7 +15,7 @@ pub struct ModItem {
 pub struct ModsQuery {
     pub string_query: String,
     pub item_level: u64,
-    pub item_class: ItemClass,
+    pub item_class: String,
 }
 
 #[derive(Debug, EnumIter, Copy, Clone)]
@@ -33,6 +33,9 @@ impl ItemClass {
     }
 }
 
+
 pub trait CraftRepo {
     fn find_mods(&self, search: &ModsQuery) -> Vec<&ModItem>;
+    fn get_item_classes(&self) -> Vec<String>;
 }
+

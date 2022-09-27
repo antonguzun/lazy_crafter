@@ -1,6 +1,6 @@
 use chrono::{DateTime, Utc};
 use eframe::egui::epaint::ahash::HashMap;
-use lazy_crafter::entities::craft_repo::{ModsQuery, ModItem, CraftRepo};
+use lazy_crafter::entities::craft_repo::{CraftRepo, ModItem, ModsQuery};
 use rdev::{listen, simulate, EventType, Key};
 use std::collections::HashSet;
 use std::sync::mpsc::channel;
@@ -10,10 +10,10 @@ extern crate x11_clipboard;
 use eframe::egui;
 use egui::Sense;
 use egui_extras::{Size, TableBuilder};
-use lazy_crafter::storage::files::local_db::FileRepo;
-use x11_clipboard::Clipboard;
-use lazy_crafter::usecases::craft_searcher;
 use lazy_crafter::entities::craft_repo::ItemClass;
+use lazy_crafter::storage::files::local_db::FileRepo;
+use lazy_crafter::usecases::craft_searcher;
+use x11_clipboard::Clipboard;
 
 fn hash_event_type(event_type: EventType) -> String {
     format!("{:?}", &event_type)
@@ -108,7 +108,6 @@ fn run_craft() {
 //     }
 // }
 
-
 fn main() {
     let native_options = eframe::NativeOptions::default();
     eframe::run_native(
@@ -121,30 +120,26 @@ fn main() {
 struct MyEguiApp {
     name: String,
     selected: Vec<ModItem>,
-    selected_item_tag_as_filter: ItemClass,
+    selected_item_tag_as_filter: String,
     selected_item_level_as_filter: u64,
     craft_repo: FileRepo,
 }
 
 impl MyEguiApp {
     fn new(cc: &eframe::CreationContext<'_>) -> Self {
-        // Customize egui here with cc.egui_ctx.set_fonts and cc.egui_ctx.set_visuals.
-        // Restore app state using cc.storage (requires the "persistence" feature).
-        // Use the cc.gl (a glow::Context) to create graphics shaders and buffers that you can use
-        // for e.g. egui::PaintCallback.
         Self {
             name: "".to_string(),
             selected: vec![],
-            selected_item_tag_as_filter: ItemClass::Helmet,
+            selected_item_tag_as_filter: "Helmet".to_string(),
             selected_item_level_as_filter: 100,
             craft_repo: FileRepo::new().unwrap(),
         }
     }
 }
 
-
 impl eframe::App for MyEguiApp {
     fn update(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
+        let item_classes = craft_searcher::get_item_classes(&self.craft_repo);
         egui::SidePanel::left("selected_mods_panel").show(ctx, |ui| {
             let text_height2 = egui::TextStyle::Body.resolve(ui.style()).size;
             ui.heading("Selected");
@@ -189,16 +184,15 @@ impl eframe::App for MyEguiApp {
             ui.horizontal(|ui| {
                 ui.label("filter: ");
                 ui.text_edit_singleline(&mut self.name);
-                // ui.text_edit_singleline(&mut self.selected_item_level_as_filter);
-                use strum::IntoEnumIterator;
 
-                egui::ComboBox::from_label( "Select one!").selected_text(format!("{:?}", self.selected_item_tag_as_filter.as_str()))
+                egui::ComboBox::from_label("Select one!")
+                    .selected_text(format!("{:?}", self.selected_item_tag_as_filter))
                     .show_ui(ui, |ui| {
-                        ItemClass::iter().for_each(|i| {
+                        item_classes.iter().for_each(|i| {
                             ui.selectable_value(
-                                &mut self.selected_item_tag_as_filter.as_str(),
-                                i.as_str(),
-                                i.as_str(),
+                                &mut self.selected_item_tag_as_filter,
+                                i.to_string(),
+                                i.to_string(),
                             );
                         });
                     });
@@ -206,7 +200,7 @@ impl eframe::App for MyEguiApp {
 
             let query = ModsQuery {
                 string_query: self.name.clone(),
-                item_class: self.selected_item_tag_as_filter,
+                item_class: self.selected_item_tag_as_filter.clone(),
                 item_level: self.selected_item_level_as_filter,
             };
             let mod_items = craft_searcher::find_mods(&self.craft_repo, &query);
