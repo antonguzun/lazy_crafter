@@ -1,4 +1,5 @@
 use chrono::{DateTime, Utc};
+use eframe::egui::epaint::ahash::HashMap;
 use lazy_crafter::entities::db::LocalDB;
 use rdev::{listen, simulate, EventType, Key};
 use std::collections::HashSet;
@@ -105,6 +106,13 @@ fn run_craft() {
 //     }
 // }
 
+struct SubDb {
+    item_level: u64,
+    weight: u32,
+    // max: i32,
+    // min: i32,
+}
+
 fn main() {
     let native_options = eframe::NativeOptions::default();
     let db = FileRepo::new().unwrap();
@@ -118,6 +126,8 @@ fn main() {
 struct MyEguiApp {
     name: String,
     selected: Vec<String>,
+    selected_item_tag_as_filter: String,
+    selected_item_level_as_filter: u32,
     db: LocalDB,
 }
 
@@ -130,19 +140,40 @@ impl MyEguiApp {
         Self {
             name: "".to_string(),
             selected: vec![],
+            selected_item_tag_as_filter: "helmet".to_string(),
+            selected_item_level_as_filter: 100,
             db,
         }
     }
 }
 
-fn get_list(filter: &str, db: &LocalDB) -> std::vec::Vec<String> {
-    let mut v = vec![];
-    for i in db.translations.keys().into_iter() {
-        if i.contains(filter) {
-            v.push(i.to_string());
+fn get_list(filter: &str, db: &LocalDB, item_type: &str) -> std::vec::Vec<String> {
+    let filter = filter.trim().to_lowercase();
+    let filters: Vec<&str> = filter.split(' ').collect();
+    let mut v1: Vec<String> = vec![];
+    let mut v2: Vec<String> = vec![];
+    for (k, m) in db.search_map.get(item_type).unwrap().iter() {
+        let verbose_str = match db.translations.get(k) {
+            Some(t) => t.English[0].get_representation_string(),
+            None => k.to_string(),
+        };
+        if verbose_str.to_lowercase().contains(&filter) {
+            v1.push(verbose_str);
+        } else if filters.iter().all(|f| verbose_str.to_lowercase().contains(&*f)) {
+            v2.push(verbose_str);
         }
+
     }
-    v
+    // for (i, st) in db.translations.iter() {
+    //     let val = st.English[0].get_representation_string();
+    //     if val.to_lowercase().contains(&filter) {
+    //         v1.push(val);
+    //     } else if filters.iter().all(|f| val.to_lowercase().contains(&*f)) {
+    //         v2.push(val);
+    //     }
+    // }
+    v1.extend(v2);
+    v1
 }
 
 impl eframe::App for MyEguiApp {
@@ -191,9 +222,21 @@ impl eframe::App for MyEguiApp {
             ui.horizontal(|ui| {
                 ui.label("filter: ");
                 ui.text_edit_singleline(&mut self.name);
+                // ui.text_edit_singleline(&mut self.selected_item_level_as_filter);
+
+                egui::ComboBox::from_label( "Select one!").selected_text(format!("{:?}", self.selected_item_tag_as_filter))
+                    .show_ui(ui, |ui| {
+                        self.db.item_tags.iter().for_each(|tag| {
+                            ui.selectable_value(
+                                &mut self.selected_item_tag_as_filter,
+                                tag.clone(),
+                                tag.clone(),
+                            );
+                        });
+                    });
             });
 
-            let table_data = get_list(&self.name, &self.db);
+            let table_data = get_list(&self.name, &self.db, &self.selected_item_tag_as_filter);
 
             let text_height = egui::TextStyle::Body.resolve(ui.style()).size;
             let mut table = TableBuilder::new(ui)
@@ -230,3 +273,19 @@ impl eframe::App for MyEguiApp {
         });
     }
 }
+
+// Rarity: Magic
+// Crafted Item
+// Iron Hat
+// --------
+// Quality: +20% (augmented)
+// Armour: 10
+// --------
+// Requirements:
+// Str: 9
+// --------
+// Item Level: 83
+// --------
+// +17 to maximum Life
+// 19% increased Rarity of Items found
+// --------
