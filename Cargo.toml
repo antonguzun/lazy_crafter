@@ -12,9 +12,9 @@ derivative = "2.2.0"
 chrono = "0.4.19"
 serde_json = "1.0.85"
 serde = { version = "1.0", features = ["derive"] }
-
+strum = "0.24.1"
+strum_macros = "0.24.3"
 
 egui = "0.19.0"
 eframe = "0.19.0"
 egui_extras = "0.19.0"
-substring = "1.4.5"

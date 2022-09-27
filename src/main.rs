@@ -1,6 +1,6 @@
 use chrono::{DateTime, Utc};
 use eframe::egui::epaint::ahash::HashMap;
-use lazy_crafter::entities::db::LocalDB;
+use lazy_crafter::entities::craft_repo::{ModsQuery, ModItem, CraftRepo};
 use rdev::{listen, simulate, EventType, Key};
 use std::collections::HashSet;
 use std::sync::mpsc::channel;
@@ -12,6 +12,8 @@ use egui::Sense;
 use egui_extras::{Size, TableBuilder};
 use lazy_crafter::storage::files::local_db::FileRepo;
 use x11_clipboard::Clipboard;
+use lazy_crafter::usecases::craft_searcher;
+use lazy_crafter::entities::craft_repo::ItemClass;
 
 fn hash_event_type(event_type: EventType) -> String {
     format!("{:?}", &event_type)
@@ -106,33 +108,26 @@ fn run_craft() {
 //     }
 // }
 
-struct SubDb {
-    item_level: u64,
-    weight: u32,
-    // max: i32,
-    // min: i32,
-}
 
 fn main() {
     let native_options = eframe::NativeOptions::default();
-    let db = FileRepo::new().unwrap();
     eframe::run_native(
         "Lazy Crafter",
         native_options,
-        Box::new(|cc| Box::new(MyEguiApp::new(cc, db))),
+        Box::new(|cc| Box::new(MyEguiApp::new(cc))),
     );
 }
 
 struct MyEguiApp {
     name: String,
-    selected: Vec<String>,
-    selected_item_tag_as_filter: String,
-    selected_item_level_as_filter: u32,
-    db: LocalDB,
+    selected: Vec<ModItem>,
+    selected_item_tag_as_filter: ItemClass,
+    selected_item_level_as_filter: u64,
+    craft_repo: FileRepo,
 }
 
 impl MyEguiApp {
-    fn new(cc: &eframe::CreationContext<'_>, db: LocalDB) -> Self {
+    fn new(cc: &eframe::CreationContext<'_>) -> Self {
         // Customize egui here with cc.egui_ctx.set_fonts and cc.egui_ctx.set_visuals.
         // Restore app state using cc.storage (requires the "persistence" feature).
         // Use the cc.gl (a glow::Context) to create graphics shaders and buffers that you can use
@@ -140,41 +135,13 @@ impl MyEguiApp {
         Self {
             name: "".to_string(),
             selected: vec![],
-            selected_item_tag_as_filter: "helmet".to_string(),
+            selected_item_tag_as_filter: ItemClass::Helmet,
             selected_item_level_as_filter: 100,
-            db,
+            craft_repo: FileRepo::new().unwrap(),
         }
     }
 }
 
-fn get_list(filter: &str, db: &LocalDB, item_type: &str) -> std::vec::Vec<String> {
-    let filter = filter.trim().to_lowercase();
-    let filters: Vec<&str> = filter.split(' ').collect();
-    let mut v1: Vec<String> = vec![];
-    let mut v2: Vec<String> = vec![];
-    for (k, m) in db.search_map.get(item_type).unwrap().iter() {
-        let verbose_str = match db.translations.get(k) {
-            Some(t) => t.English[0].get_representation_string(),
-            None => k.to_string(),
-        };
-        if verbose_str.to_lowercase().contains(&filter) {
-            v1.push(verbose_str);
-        } else if filters.iter().all(|f| verbose_str.to_lowercase().contains(&*f)) {
-            v2.push(verbose_str);
-        }
-
-    }
-    // for (i, st) in db.translations.iter() {
-    //     let val = st.English[0].get_representation_string();
-    //     if val.to_lowercase().contains(&filter) {
-    //         v1.push(val);
-    //     } else if filters.iter().all(|f| val.to_lowercase().contains(&*f)) {
-    //         v2.push(val);
-    //     }
-    // }
-    v1.extend(v2);
-    v1
-}
 
 impl eframe::App for MyEguiApp {
     fn update(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
@@ -202,7 +169,7 @@ impl eframe::App for MyEguiApp {
                         row.col(|ui| {
                             ui.label((100).to_string());
                         });
-                        let label = egui::Label::new(&self.selected[row_index])
+                        let label = egui::Label::new(&self.selected[row_index].representation)
                             .wrap(false)
                             .sense(Sense::click());
                         row.col(|ui| {
@@ -223,20 +190,26 @@ impl eframe::App for MyEguiApp {
                 ui.label("filter: ");
                 ui.text_edit_singleline(&mut self.name);
                 // ui.text_edit_singleline(&mut self.selected_item_level_as_filter);
+                use strum::IntoEnumIterator;
 
-                egui::ComboBox::from_label( "Select one!").selected_text(format!("{:?}", self.selected_item_tag_as_filter))
+                egui::ComboBox::from_label( "Select one!").selected_text(format!("{:?}", self.selected_item_tag_as_filter.as_str()))
                     .show_ui(ui, |ui| {
-                        self.db.item_tags.iter().for_each(|tag| {
+                        ItemClass::iter().for_each(|i| {
                             ui.selectable_value(
-                                &mut self.selected_item_tag_as_filter,
-                                tag.clone(),
-                                tag.clone(),
+                                &mut self.selected_item_tag_as_filter.as_str(),
+                                i.as_str(),
+                                i.as_str(),
                             );
                         });
                     });
             });
 
-            let table_data = get_list(&self.name, &self.db, &self.selected_item_tag_as_filter);
+            let query = ModsQuery {
+                string_query: self.name.clone(),
+                item_class: self.selected_item_tag_as_filter,
+                item_level: self.selected_item_level_as_filter,
+            };
+            let mod_items = craft_searcher::find_mods(&self.craft_repo, &query);
 
             let text_height = egui::TextStyle::Body.resolve(ui.style()).size;
             let mut table = TableBuilder::new(ui)
@@ -256,16 +229,16 @@ impl eframe::App for MyEguiApp {
                     });
                 })
                 .body(|mut body| {
-                    body.rows(text_height, table_data.len(), |row_index, mut row| {
+                    body.rows(text_height, mod_items.len(), |row_index, mut row| {
                         row.col(|ui| {
                             ui.label((row_index + 1).to_string());
                         });
-                        let label = egui::Label::new(&table_data[row_index])
+                        let label = egui::Label::new(&mod_items[row_index].representation)
                             .wrap(false)
                             .sense(Sense::click());
                         row.col(|ui| {
                             if ui.add(label).clicked() {
-                                self.selected.push(table_data[row_index].clone());
+                                self.selected.push(mod_items[row_index].clone());
                             };
                         });
                     });

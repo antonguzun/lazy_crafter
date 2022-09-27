@@ -1,8 +1,5 @@
-use crate::entities::{
-    db::{LocalDB, ModItem},
-    mods::Mod,
-    translations::StatTranslation,
-};
+use crate::entities::craft_repo::{CraftRepo, ItemClass, ModItem, ModsQuery};
+use crate::storage::files::{mods::Mod, translations::StatTranslation};
 use eframe::glow::HasContext;
 use std::collections::{HashMap, HashSet};
 use std::fs::File;
@@ -27,12 +24,35 @@ fn json_to_hashmap(path: &str) -> HashMap<String, Mod> {
     serde_json::from_str(&contents).unwrap()
 }
 
-pub struct FileRepo {}
+pub struct ItemBase {
+    pub name: String,
+    pub item_class: String,
+    pub tags: Vec<String>,
+}
+
+pub struct Mod {
+    pub name: String,
+    pub item_class: String,
+    pub tags: Vec<String>,
+    pub stats: Vec<Stat>,
+}
+pub struct LocalDB {
+    pub translations: HashMap<String, StatTranslation>,
+    pub mods: HashMap<String, Mod>,
+    pub item_tags: HashSet<String>,
+    pub search_map: HashMap<String, HashMap<String, ModItem>>,
+    // pub item_base_by_name: HashMap<String, ItemBase>,
+    // pub item_classes: HashSet<String>,
+}
+
+pub struct FileRepo {
+    db: LocalDB,
+}
 
 impl FileRepo {
-    pub fn new() -> Result<LocalDB, String> {
+    pub fn new() -> Result<FileRepo, String> {
         let translations: Vec<StatTranslation> = load_from_json("data/stat_translations.min.json");
-        let translations = translations
+        let translations: HashMap<String, StatTranslation> = translations
             .into_iter()
             .map(|t| (t.ids[0].clone(), t))
             .collect();
@@ -55,6 +75,11 @@ impl FileRepo {
                                 ModItem {
                                     item_level: v.required_level,
                                     weight: sw.weight,
+                                    representation: match translations.get(k) {
+                                        Some(v) => v.English[0].get_representation_string(),
+                                        None => stat.id.clone(),
+                                    },
+                                    mod_key: k.clone(),
                                     // max: sw.max,
                                     // min: sw.min,
                                 },
@@ -66,11 +91,33 @@ impl FileRepo {
         }
         search_map.insert("helmet".to_string(), helmet_mods);
 
-        Ok(LocalDB {
-            translations,
-            mods,
-            item_tags,
-            search_map,
+        Ok(Self {
+            db: LocalDB {
+                translations,
+                mods,
+                item_tags,
+                search_map,
+            },
         })
+    }
+}
+
+impl CraftRepo for FileRepo {
+    fn find_mods(&self, search: &ModsQuery) -> std::vec::Vec<&ModItem> {
+        let filter = search.string_query.trim().to_lowercase();
+        let filters: Vec<&str> = filter.split(' ').collect();
+        let mut v1: Vec<&ModItem> = vec![];
+        let mut v2: Vec<&ModItem> = vec![];
+        let sub_db = self.db.search_map.get(search.item_class.as_str()).unwrap();
+        for (k, m) in sub_db.iter() {
+            let verbose_str = m.representation.to_lowercase();
+            if verbose_str.contains(&filter) {
+                v1.push(&m);
+            } else if filters.iter().all(|f| verbose_str.contains(&*f)) {
+                v2.push(&m);
+            }
+        }
+        v1.extend(v2);
+        v1
     }
 }
