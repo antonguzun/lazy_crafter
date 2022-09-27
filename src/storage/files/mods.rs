@@ -19,6 +19,8 @@ pub struct ItemBase {
     pub name: String,
     pub item_class: String,
     pub tags: Vec<String>,
+    pub domain: String,
+    pub release_state: String,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
