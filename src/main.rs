@@ -10,7 +10,6 @@ extern crate x11_clipboard;
 use eframe::egui;
 use egui::Sense;
 use egui_extras::{Size, TableBuilder};
-use lazy_crafter::entities::craft_repo::ItemClass;
 use lazy_crafter::storage::files::local_db::FileRepo;
 use lazy_crafter::usecases::craft_searcher;
 use x11_clipboard::Clipboard;
@@ -140,6 +139,7 @@ impl MyEguiApp {
 impl eframe::App for MyEguiApp {
     fn update(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
         let item_classes = craft_searcher::get_item_classes(&self.craft_repo);
+
         egui::SidePanel::left("selected_mods_panel").show(ctx, |ui| {
             let text_height2 = egui::TextStyle::Body.resolve(ui.style()).size;
             ui.heading("Selected");

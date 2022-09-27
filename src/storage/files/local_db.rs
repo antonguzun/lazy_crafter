@@ -1,4 +1,4 @@
-use crate::entities::craft_repo::{CraftRepo, ItemClass, ModItem, ModsQuery};
+use crate::entities::craft_repo::{CraftRepo, ModItem, ModsQuery};
 use crate::storage::files::{
     mods::{ItemBase, Mod, SpawnWeight, Stat},
     translations::StatTranslation,
@@ -54,7 +54,6 @@ impl FileRepo {
         let base_items_by_name: HashMap<String, ItemBase> =
             t.iter().map(|(k, v)| (v.name.clone(), v.clone())).collect();
         let item_classes = HashSet::from_iter(t.iter().map(|(k, v)| v.item_class.clone()));
-        print!("{:?}", item_classes);
         Ok(Self {
             db: LocalDB {
                 translations,
