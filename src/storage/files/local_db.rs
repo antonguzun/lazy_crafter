@@ -46,10 +46,13 @@ pub struct FileRepo {
 impl FileRepo {
     pub fn new() -> Result<FileRepo, String> {
         let translations: Vec<StatTranslation> = load_from_json("data/stat_translations.min.json");
-        let translations_by_stat_id: HashMap<String, StatTranslation> = translations
-            .into_iter()
-            .map(|t| (t.ids[0].clone(), t))
-            .collect();
+        let mut translations_by_stat_id: HashMap<String, StatTranslation> = HashMap::new();
+        for t in translations {
+            for id in &t.ids {
+                translations_by_stat_id.insert(id.clone(), t.clone());
+            }
+        }
+
         let mods: HashMap<String, Mod> = json_to_hashmap("data/mods.min.json");
         let raw_base_items: HashMap<String, ItemBase> = json_to_hashmap("data/base_items.min.json");
         let base_items_by_name: HashMap<String, ItemBase> = raw_base_items
@@ -136,9 +139,9 @@ impl CraftRepo for FileRepo {
             }
             let representations =
                 m.stats.iter().map(
-                    |s| match self.db.translations_by_stat_id.get(&m.stats[0].id) {
-                        Some(t) => t.get_eng_representation_string(&m.stats[0]),
-                        None => m.stats[0].id.clone(),
+                    |s| match self.db.translations_by_stat_id.get(&s.id) {
+                        Some(t) => t.get_eng_representation_string(&s),
+                        None => s.id.clone(),
                     },
                 );
             let mut representation = String::new();

@@ -45,7 +45,8 @@ impl StatTranslation {
                 return repr;
             }
         }
-        unreachable!("No english representation found for stat {:?}", stat);
+        println!("No english representation found for stat {:?}", stat);
+        "".to_string()
     }
 }
 
