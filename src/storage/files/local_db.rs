@@ -62,14 +62,19 @@ impl FileRepo {
         let all_tags: HashSet<String> = HashSet::from_iter(
             raw_base_items
                 .values()
-                .filter(|b| b.domain == "item" || b.release_state == "released")
+                .filter(|b| b.domain == "item" && b.release_state == "released")
                 .flat_map(|b| b.tags.clone()),
         );
         let mut mod_id_by_tags: HashMap<String, Vec<String>> = HashMap::new();
         mods.iter().for_each(|(mod_id, m)| {
             m.spawn_weights.iter().for_each(|sw| {
                 if all_tags.contains(&sw.tag) && sw.weight > 0 {
-                    mod_id_by_tags.insert(sw.tag.to_string(), vec![mod_id.clone()]);
+                    match mod_id_by_tags.get_mut(&sw.tag) {
+                        Some(v) => v.push(mod_id.clone()),
+                        None => {
+                            mod_id_by_tags.insert(sw.tag.clone(), vec![mod_id.clone()]);
+                        }
+                    }
                 }
             })
         });
@@ -88,31 +93,80 @@ impl FileRepo {
 }
 
 impl CraftRepo for FileRepo {
-    fn find_mods(&self, search: &ModsQuery) -> std::vec::Vec<&ModItem> {
-        let mut tags: std::vec::Vec<String> = vec![];
-        for i in self.db.base_items_by_name.values() {
-            if i.item_class == search.item_class {
-                tags = i.tags.clone();
-                break;
+    fn find_mods(&self, search: &ModsQuery) -> std::vec::Vec<ModItem> {
+        // find mods
+        //     includes:
+        //         tags by selected item class
+        //         domain by selected item class
+        //         generation_type: "prefix" or "suffix"
+        //     excludes:
+        //         groups by selected mods
+        //     order by mod_key filtered by contains
+        let item = self
+            .db
+            .base_items_by_name
+            .values()
+            .find(|i| i.item_class == search.item_class)
+            .unwrap();
+        println!("tags for {}: {:?}", search.item_class, item.tags);
+        let mut mod_ids: HashSet<String> = HashSet::new();
+        for t in &item.tags {
+            let ms = self.db.mod_id_by_tags.get(t);
+            if ms.is_some() {
+                mod_ids.extend(ms.unwrap().clone());
             }
         }
-        println!("tags for {}: {:?}", search.item_class, tags);
-        // let filter = self.db..trim().to_lowercase();
-        // let filters: Vec<&str> = filter.split(' ').collect();
-        // let mut v1: Vec<&Mod> = vec![];
-        // let mut v2: Vec<&Mod> = vec![];
-        // let sub_db = self.db.search_map.get(search.item_class.as_str()).unwrap();
-        // for (k, m) in sub_db.iter() {
-        //     let verbose_str = m.representation.to_lowercase();
-        //     if verbose_str.contains(&filter) {
-        //         v1.push(&m);
-        //     } else if filters.iter().all(|f| verbose_str.contains(&*f)) {
-        //         v2.push(&m);
-        //     }
-        // }
-        // v1.extend(v2);
-        // v1
-        vec![]
+        let selected_groups: HashSet<std::string::String> = HashSet::from_iter(
+            search
+                .selected_mods
+                .iter()
+                .map(|m| self.db.mods.get(&m.mod_key).unwrap())
+                .flat_map(|m| m.groups.clone()),
+        );
+        let target_gen_types = ["suffix", "prefix"];
+        let mut res = vec![];
+        for m_id in mod_ids {
+            let m = self.db.mods.get(&m_id).unwrap();
+            if m.stats.is_empty()
+                || m.domain != item.domain
+                || !target_gen_types.contains(&m.generation_type.as_str())
+                || m.groups.iter().any(|g| selected_groups.contains(g))
+            {
+                continue;
+            }
+            let mod_item = ModItem {
+                required_level: m.required_level,
+                weight: m
+                    .spawn_weights
+                    .iter()
+                    .filter(|sw| sw.weight > 0 && item.tags.contains(&sw.tag))
+                    .next()
+                    .unwrap()
+                    .weight,
+                representation: match self.db.translations_by_stat_id.get(&m.stats[0].id) {
+                    Some(t) => t.get_eng_representation_string(&m.stats[0]),
+                    None => m.stats[0].id.clone(),
+                },
+                mod_key: m_id.clone(),
+            };
+            res.push(mod_item);
+        }
+        res.sort_by(|a, b| a.mod_key.to_lowercase().cmp(&b.mod_key.to_lowercase()));
+
+        let filter = search.string_query.trim().to_lowercase();
+        let filters: Vec<&str> = filter.split(' ').collect();
+        let mut v1 = vec![];
+        let mut v2 = vec![];
+        for m in res.iter() {
+            let verbose_str = m.representation.to_lowercase();
+            if verbose_str.contains(&filter) {
+                v1.push(m.clone());
+            } else if filters.iter().all(|f| verbose_str.contains(&*f)) {
+                v2.push(m.clone());
+            }
+        }
+        v1.extend(v2);
+        v1
     }
 
     fn get_item_classes(&self) -> Vec<String> {

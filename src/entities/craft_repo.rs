@@ -12,9 +12,10 @@ pub struct ModsQuery {
     pub string_query: String,
     pub item_level: u64,
     pub item_class: String,
+    pub selected_mods: Vec<ModItem>,
 }
 
 pub trait CraftRepo {
-    fn find_mods(&self, search: &ModsQuery) -> Vec<&ModItem>;
+    fn find_mods(&self, search: &ModsQuery) -> Vec<ModItem>;
     fn get_item_classes(&self) -> Vec<String>;
 }

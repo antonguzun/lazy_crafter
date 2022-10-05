@@ -32,4 +32,5 @@ pub struct Mod {
     pub required_level: u64,
     pub spawn_weights: Vec<SpawnWeight>,
     pub stats: Vec<Stat>,
+    pub groups: Vec<String>,
 }
