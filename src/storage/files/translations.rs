@@ -9,32 +9,47 @@ pub struct StatTranslation {
 }
 impl StatTranslation {
     pub fn get_eng_representation_string(&self, stat: &Stat) -> std::string::String {
+        let stat_max = stat.max.unwrap();
+        let stat_min = stat.min.unwrap();
+        let mut translation_id_position = 100;
+        for i in 0..self.ids.len() {
+            if self.ids[i] == stat.id {
+                translation_id_position = i;
+                break;
+            }
+        }
+        if translation_id_position == 100 {
+            panic!("Could not find translation for stat with id {}", stat.id);
+        }
+
         for i in self.English.iter() {
             let mut repr = i.string.clone();
-            let stat_max = stat.max.unwrap();
-            let stat_min = stat.min.unwrap();
-
             let mut cond_passed = true;
-            for c in i.condition.iter() {
-                if c.negated == Some(true) {
-                    return repr;
-                }
-                match c.min {
-                    Some(min) => {
-                        if stat_min < min {
-                            cond_passed = false;
-                        }
+            
+            let condition = i.condition[translation_id_position].clone();
+            let format = i.format[translation_id_position].clone();
+
+            if condition.negated == Some(true) {
+                return repr;
+            }
+            if format == "ignore" {
+                continue;
+            }
+            match condition.min {
+                Some(min) => {
+                    if stat_min < min {
+                        cond_passed = false;
                     }
-                    None => (),
                 }
-                match c.max {
-                    Some(max) => {
-                        if stat_max > max {
-                            cond_passed = false;
-                        }
+                None => (),
+            }
+            match condition.max {
+                Some(max) => {
+                    if stat_max > max {
+                        cond_passed = false;
                     }
-                    None => (),
                 }
+                None => (),
             }
             if cond_passed {
                 let to_str = match stat_max == stat_min {
