@@ -1,18 +1,11 @@
-use chrono::{DateTime, Utc};
-use eframe::egui::epaint::ahash::HashMap;
-use lazy_crafter::entities::craft_repo::{CraftRepo, ModItem, ModsQuery};
-use rdev::{listen, simulate, EventType, Key};
-use std::collections::HashSet;
-use std::sync::mpsc::channel;
-use std::thread;
-use std::time::{Duration, SystemTime};
+use lazy_crafter::entities::craft_repo::{ModItem, ModsQuery};
+
 extern crate x11_clipboard;
 use eframe::egui;
 use egui::Sense;
 use egui_extras::{Size, TableBuilder};
 use lazy_crafter::storage::files::local_db::FileRepo;
 use lazy_crafter::usecases::craft_searcher;
-use x11_clipboard::Clipboard;
 
 fn main() {
     let native_options = eframe::NativeOptions::default();
@@ -32,7 +25,7 @@ struct MyEguiApp {
 }
 
 impl MyEguiApp {
-    fn new(cc: &eframe::CreationContext<'_>) -> Self {
+    fn new(_cc: &eframe::CreationContext<'_>) -> Self {
         Self {
             name: "".to_string(),
             selected: vec![],
@@ -44,13 +37,13 @@ impl MyEguiApp {
 }
 
 impl eframe::App for MyEguiApp {
-    fn update(&mut self, ctx: &egui::Context, frame: &mut eframe::Frame) {
+    fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         let item_classes = craft_searcher::get_item_classes(&self.craft_repo);
 
         egui::SidePanel::left("selected_mods_panel").show(ctx, |ui| {
             let text_height = egui::TextStyle::Body.resolve(ui.style()).size;
             ui.heading("Selected");
-            let mut selected_table = TableBuilder::new(ui)
+            let selected_table = TableBuilder::new(ui)
                 .striped(true)
                 .cell_layout(egui::Layout::left_to_right(egui::Align::Center))
                 .column(Size::initial(70.0).at_least(70.0))
@@ -66,7 +59,7 @@ impl eframe::App for MyEguiApp {
                         ui.heading("modification");
                     });
                 })
-                .body(|mut body| {
+                .body(|body| {
                     body.rows(text_height, self.selected.len(), |row_index, mut row| {
                         row.col(|ui| {
                             ui.label((&self.selected[row_index].weight).to_string());
@@ -114,7 +107,7 @@ impl eframe::App for MyEguiApp {
             let mod_items = craft_searcher::find_mods(&self.craft_repo, &query);
 
             let text_height = egui::TextStyle::Body.resolve(ui.style()).size;
-            let mut table = TableBuilder::new(ui)
+            let table = TableBuilder::new(ui)
                 .striped(true)
                 .cell_layout(egui::Layout::left_to_right(egui::Align::Center))
                 .column(Size::initial(30.0).at_least(50.0))
@@ -134,7 +127,7 @@ impl eframe::App for MyEguiApp {
                         ui.heading("modification");
                     });
                 })
-                .body(|mut body| {
+                .body(|body| {
                     body.rows(text_height, mod_items.len(), |row_index, mut row| {
                         row.col(|ui| {
                             ui.label((row_index + 1).to_string());

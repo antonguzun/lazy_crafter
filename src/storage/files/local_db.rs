@@ -1,9 +1,9 @@
 use crate::entities::craft_repo::{CraftRepo, ModItem, ModsQuery};
 use crate::storage::files::{
-    mods::{ItemBase, Mod, SpawnWeight, Stat},
+    mods::{ItemBase, Mod},
     translations::StatTranslation,
 };
-use eframe::glow::HasContext;
+
 use std::collections::{HashMap, HashSet};
 use std::fs::File;
 use std::io::Read;
@@ -54,10 +54,10 @@ impl FileRepo {
         let raw_base_items: HashMap<String, ItemBase> = json_to_hashmap("data/base_items.min.json");
         let base_items_by_name: HashMap<String, ItemBase> = raw_base_items
             .iter()
-            .map(|(k, v)| (v.name.clone(), v.clone()))
+            .map(|(_k, v)| (v.name.clone(), v.clone()))
             .collect();
         let item_classes =
-            HashSet::from_iter(raw_base_items.iter().map(|(k, v)| v.item_class.clone()));
+            HashSet::from_iter(raw_base_items.iter().map(|(_k, v)| v.item_class.clone()));
 
         let all_tags: HashSet<String> = HashSet::from_iter(
             raw_base_items
@@ -93,15 +93,15 @@ impl FileRepo {
 }
 
 impl CraftRepo for FileRepo {
+    /// find_mods
+    ///     includes:
+    ///         tags by selected item class
+    ///         domain by selected item class
+    ///         generation_type: "prefix" or "suffix"
+    ///     excludes:
+    ///         groups by selected mods
+    ///     order by mod_key filtered by contains
     fn find_mods(&self, search: &ModsQuery) -> std::vec::Vec<ModItem> {
-        // find mods
-        //     includes:
-        //         tags by selected item class
-        //         domain by selected item class
-        //         generation_type: "prefix" or "suffix"
-        //     excludes:
-        //         groups by selected mods
-        //     order by mod_key filtered by contains
         let item = self
             .db
             .base_items_by_name

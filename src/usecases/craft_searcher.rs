@@ -1,9 +1,6 @@
 use crate::entities::craft_repo::{CraftRepo, ModItem, ModsQuery};
 
-pub fn find_mods(
-    repo: &impl CraftRepo,
-    query: &ModsQuery,
-) -> std::vec::Vec<ModItem> {
+pub fn find_mods(repo: &impl CraftRepo, query: &ModsQuery) -> std::vec::Vec<ModItem> {
     repo.find_mods(query)
 }
 
