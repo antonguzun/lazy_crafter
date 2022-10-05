@@ -134,6 +134,18 @@ impl CraftRepo for FileRepo {
             {
                 continue;
             }
+            let representations =
+                m.stats.iter().map(
+                    |s| match self.db.translations_by_stat_id.get(&m.stats[0].id) {
+                        Some(t) => t.get_eng_representation_string(&m.stats[0]),
+                        None => m.stats[0].id.clone(),
+                    },
+                );
+            let mut representation = String::new();
+            for r in representations {
+                representation.push_str(&r);
+                representation.push_str("\n");
+            }
             let mod_item = ModItem {
                 required_level: m.required_level,
                 weight: m
@@ -143,10 +155,7 @@ impl CraftRepo for FileRepo {
                     .next()
                     .unwrap()
                     .weight,
-                representation: match self.db.translations_by_stat_id.get(&m.stats[0].id) {
-                    Some(t) => t.get_eng_representation_string(&m.stats[0]),
-                    None => m.stats[0].id.clone(),
-                },
+                representation: representation,
                 mod_key: m_id.clone(),
             };
             res.push(mod_item);

@@ -36,6 +36,12 @@ impl EguiApp {
     }
 }
 
+fn calculate_row_height(row: &ModItem, one_row_height: f32) -> f32 {
+    let cnt_of_rows = &row.representation.chars().filter(|&c| c == '\n').count();
+    let cnt_of_rows = u16::try_from(cnt_of_rows.clone()).ok().unwrap_or(10);
+    cnt_of_rows as f32 * one_row_height
+}
+
 impl eframe::App for EguiApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         let item_classes = craft_searcher::get_item_classes(&self.craft_repo);
@@ -59,20 +65,23 @@ impl eframe::App for EguiApp {
                         ui.heading("modification");
                     });
                 })
-                .body(|body| {
-                    body.rows(text_height, self.selected.len(), |row_index, mut row| {
-                        row.col(|ui| {
-                            ui.label((&self.selected[row_index].weight).to_string());
+                .body(|mut body| {
+                    for row_index in 0..self.selected.len() {
+                        let row_height = calculate_row_height(&self.selected[row_index], 18.0);
+                        body.row(row_height, |mut row| {
+                            row.col(|ui| {
+                                ui.label((&self.selected[row_index].weight).to_string());
+                            });
+                            let label = egui::Label::new(&self.selected[row_index].representation)
+                                .wrap(false)
+                                .sense(Sense::click());
+                            row.col(|ui| {
+                                if ui.add(label).clicked() {
+                                    // &self.selected.retain(|x| x == &self.selected[row_index].clone());
+                                };
+                            });
                         });
-                        let label = egui::Label::new(&self.selected[row_index].representation)
-                            .wrap(false)
-                            .sense(Sense::click());
-                        row.col(|ui| {
-                            if ui.add(label).clicked() {
-                                // &self.selected.retain(|x| x == &self.selected[row_index].clone());
-                            };
-                        });
-                    });
+                    }
                 });
             if ui.button("clean selected").clicked() {
                 self.selected.clear();
@@ -127,24 +136,27 @@ impl eframe::App for EguiApp {
                         ui.heading("modification");
                     });
                 })
-                .body(|body| {
-                    body.rows(text_height, mod_items.len(), |row_index, mut row| {
-                        row.col(|ui| {
-                            ui.label((row_index + 1).to_string());
+                .body(|mut body| {
+                    for row_index in 0..mod_items.len() {
+                        let row_height = calculate_row_height(&mod_items[row_index], 18.0);
+                        body.row(row_height, |mut row| {
+                            row.col(|ui| {
+                                ui.label((row_index + 1).to_string());
+                            });
+                            row.col(|ui| {
+                                ui.label(&mod_items[row_index].weight.to_string());
+                            });
+                            let label = egui::Label::new(&mod_items[row_index].representation)
+                                .wrap(false)
+                                .sense(Sense::click());
+                            row.col(|ui| {
+                                if ui.add(label).clicked() {
+                                    self.selected.push(mod_items[row_index].clone());
+                                    println!("selected mods: {:?}", &self.selected);
+                                };
+                            });
                         });
-                        row.col(|ui| {
-                            ui.label(&mod_items[row_index].weight.to_string());
-                        });
-                        let label = egui::Label::new(&mod_items[row_index].representation)
-                            .wrap(false)
-                            .sense(Sense::click());
-                        row.col(|ui| {
-                            if ui.add(label).clicked() {
-                                self.selected.push(mod_items[row_index].clone());
-                                println!("selected mods: {:?}", &self.selected);
-                            };
-                        });
-                    });
+                    }
                 });
         });
     }
