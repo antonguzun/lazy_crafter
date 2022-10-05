@@ -12,11 +12,11 @@ fn main() {
     eframe::run_native(
         "Lazy Crafter",
         native_options,
-        Box::new(|cc| Box::new(MyEguiApp::new(cc))),
+        Box::new(|cc| Box::new(EguiApp::new(cc))),
     );
 }
 
-struct MyEguiApp {
+struct EguiApp {
     name: String,
     selected: Vec<ModItem>,
     selected_item_tag_as_filter: String,
@@ -24,7 +24,7 @@ struct MyEguiApp {
     craft_repo: FileRepo,
 }
 
-impl MyEguiApp {
+impl EguiApp {
     fn new(_cc: &eframe::CreationContext<'_>) -> Self {
         Self {
             name: "".to_string(),
@@ -36,7 +36,7 @@ impl MyEguiApp {
     }
 }
 
-impl eframe::App for MyEguiApp {
+impl eframe::App for EguiApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         let item_classes = craft_searcher::get_item_classes(&self.craft_repo);
 
