@@ -1,8 +1,6 @@
-use lazy_crafter::entities::craft_repo::{Data, ModItem, ModsQuery, UiStates};
+use lazy_crafter::entities::craft_repo::{Data, ModsQuery, UiStates};
 extern crate x11_clipboard;
-use eframe::egui;
-use egui::Sense;
-use egui_extras::{Size, TableBuilder};
+
 use lazy_crafter::storage::files::local_db::FileRepo;
 use lazy_crafter::ui::EguiApp;
 use lazy_crafter::usecases::craft_searcher;
@@ -38,7 +36,7 @@ fn main() {
             };
 
             let mod_items = craft_searcher::find_mods(&craft_repo, &query);
-            let mut mods_table = &mut data_clone.lock().unwrap().mods_table;
+            let mods_table = &mut data_clone.lock().unwrap().mods_table;
             mods_table.clear();
             mods_table.extend(mod_items);
         }

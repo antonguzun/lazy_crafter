@@ -1,4 +1,3 @@
-use crate::storage::files::mods::Stat;
 use serde::{Deserialize, Serialize};
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize, Eq, Hash)]

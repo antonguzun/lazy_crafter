@@ -187,7 +187,7 @@ impl FileRepo {
         for (t, g) in kk {
             let r = match self.get_stats_representation(t, g) {
                 Ok(s) => s,
-                Ok(skip_repr) => {
+                Ok(s) if s == skip_repr => {
                     continue;
                 }
                 Err(_) => return Err(()),

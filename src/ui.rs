@@ -1,4 +1,4 @@
-use crate::entities::craft_repo::{Data, ModItem, ModsQuery, UiStates};
+use crate::entities::craft_repo::{Data, ModItem, UiStates};
 
 extern crate x11_clipboard;
 use crate::storage::files::local_db::FileRepo;
@@ -7,7 +7,6 @@ use eframe::egui;
 use egui::Sense;
 use egui_extras::{Size, TableBuilder};
 use std::sync::{mpsc, Arc, Mutex};
-use std::thread;
 
 pub struct EguiApp {
     ui_states: Arc<Mutex<UiStates>>,
@@ -97,7 +96,7 @@ impl eframe::App for EguiApp {
                     self.event_tx.send("filter changed".to_string());
                 };
 
-                let base_combobox = egui::ComboBox::from_label("Select one!")
+                egui::ComboBox::from_label("Select one!")
                     .selected_text(format!(
                         "{:?}",
                         &mut self.ui_states.lock().unwrap().selected_item_tag_as_filter
