@@ -186,10 +186,10 @@ impl FileRepo {
         let mut reprs = Vec::new();
         for (t, g) in kk {
             let r = match self.get_stats_representation(t, g) {
-                Ok(s) => s,
                 Ok(s) if s == skip_repr => {
                     continue;
                 }
+                Ok(s) => s,
                 Err(_) => return Err(()),
             };
             if &r == "" {

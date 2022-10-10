@@ -1,4 +1,4 @@
-use crate::entities::craft_repo::{Data, ModItem, UiStates};
+use crate::entities::craft_repo::{Data, ModItem, UiEvents, UiStates};
 
 extern crate x11_clipboard;
 use crate::storage::files::local_db::FileRepo;
@@ -8,11 +8,12 @@ use egui::Sense;
 use egui_extras::{Size, TableBuilder};
 use std::sync::{mpsc, Arc, Mutex};
 
+
 pub struct EguiApp {
     ui_states: Arc<Mutex<UiStates>>,
     craft_repo: FileRepo,
     data: Arc<Mutex<Data>>,
-    event_tx: mpsc::Sender<String>,
+    event_tx: mpsc::Sender<UiEvents>,
 }
 
 impl EguiApp {
@@ -20,7 +21,7 @@ impl EguiApp {
         _cc: &eframe::CreationContext<'_>,
         ui_states: Arc<Mutex<UiStates>>,
         data: Arc<Mutex<Data>>,
-        event_tx: mpsc::Sender<String>,
+        event_tx: mpsc::Sender<UiEvents>,
     ) -> Self {
         Self {
             ui_states,
@@ -81,7 +82,7 @@ impl eframe::App for EguiApp {
             if ui.button("clean selected").clicked() {
                 let selected = &mut self.ui_states.lock().unwrap().selected;
                 selected.clear();
-                self.event_tx.send("selected changed".to_string());
+                self.event_tx.send(UiEvents::CleanSelectedMods).unwrap();
             }
         });
 
@@ -93,7 +94,7 @@ impl eframe::App for EguiApp {
                     .text_edit_singleline(&mut self.ui_states.lock().unwrap().filter_string)
                     .changed()
                 {
-                    self.event_tx.send("filter changed".to_string());
+                    self.event_tx.send(UiEvents::ChangeModFilter).unwrap();
                 };
 
                 egui::ComboBox::from_label("Select one!")
@@ -111,7 +112,7 @@ impl eframe::App for EguiApp {
                                 )
                                 .changed()
                             {
-                                self.event_tx.send("selected changed".to_string());
+                                self.event_tx.send(UiEvents::AddToSelectedMods).unwrap();
                             };
                         });
                     });
@@ -157,7 +158,7 @@ impl eframe::App for EguiApp {
                                     let selected = &mut self.ui_states.lock().unwrap().selected;
                                     selected.push(mod_items[row_index].clone());
                                     println!("selected mods: {:?}", &selected);
-                                    self.event_tx.send("selected changed".to_string());
+                                    self.event_tx.send(UiEvents::AddToSelectedMods).unwrap();
                                 };
                             });
                         });

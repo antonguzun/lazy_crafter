@@ -1,4 +1,4 @@
-use lazy_crafter::entities::craft_repo::{Data, ModsQuery, UiStates};
+use lazy_crafter::entities::craft_repo::{Data, ModsQuery, UiEvents, UiStates};
 extern crate x11_clipboard;
 
 use lazy_crafter::storage::files::local_db::FileRepo;
@@ -8,7 +8,7 @@ use std::sync::{mpsc, Arc, Mutex};
 use std::thread;
 
 fn main() {
-    let (sender, rx) = mpsc::channel();
+    let (sender, rx): (mpsc::Sender<UiEvents>, mpsc::Receiver<UiEvents>) = mpsc::channel();
 
     let data = Arc::new(Mutex::new(Data {
         mods_table: Vec::new(),
@@ -24,9 +24,9 @@ fn main() {
     let craft_repo = FileRepo::new().unwrap();
 
     thread::spawn(move || loop {
-        for received in &rx {
+        for _received in &rx {
             let d = ui_states_clone.lock().unwrap();
-            println!("Got: {}, ui_state is {:?}", received, d);
+            println!("Got event, ui_state is {:?}", d);
 
             let query = ModsQuery {
                 string_query: d.filter_string.clone(),
@@ -41,7 +41,7 @@ fn main() {
             mods_table.extend(mod_items);
         }
     });
-    sender.send("started".to_string());
+    sender.send(UiEvents::Started).unwrap();
 
     let native_options = eframe::NativeOptions::default();
     eframe::run_native(

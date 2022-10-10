@@ -29,3 +29,12 @@ pub struct UiStates {
     pub selected_item_tag_as_filter: String,
     pub selected_item_level_as_filter: u64,
 }
+
+
+pub enum UiEvents {
+    Started,
+    ChangeModFilter,
+    ChangeItemBase,
+    AddToSelectedMods,
+    CleanSelectedMods,
+}
