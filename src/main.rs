@@ -66,10 +66,6 @@ struct UiStates {
 
 struct EguiApp {
     ui_states: Arc<Mutex<UiStates>>,
-    name: String,
-    selected: Vec<ModItem>,
-    selected_item_tag_as_filter: String,
-    selected_item_level_as_filter: u64,
     craft_repo: FileRepo,
     data: Arc<Mutex<Data>>,
     event_tx: mpsc::Sender<String>,
@@ -84,10 +80,6 @@ impl EguiApp {
     ) -> Self {
         Self {
             ui_states,
-            name: "".to_string(),
-            selected: vec![],
-            selected_item_tag_as_filter: "Helmet".to_string(),
-            selected_item_level_as_filter: 100,
             craft_repo: FileRepo::new().unwrap(),
             data,
             event_tx,
@@ -160,28 +152,27 @@ impl eframe::App for EguiApp {
                     self.event_tx.send("filter changed".to_string());
                 };
 
-                egui::ComboBox::from_label("Select one!")
+                let base_combobox = egui::ComboBox::from_label("Select one!")
                     .selected_text(format!(
                         "{:?}",
                         &mut self.ui_states.lock().unwrap().selected_item_tag_as_filter
                     ))
                     .show_ui(ui, |ui| {
                         item_classes.iter().for_each(|i| {
-                            ui.selectable_value(
-                                &mut self.ui_states.lock().unwrap().selected_item_tag_as_filter,
-                                i.to_string(),
-                                i.to_string(),
-                            );
+                            if ui
+                                .selectable_value(
+                                    &mut self.ui_states.lock().unwrap().selected_item_tag_as_filter,
+                                    i.to_string(),
+                                    i.to_string(),
+                                )
+                                .changed()
+                            {
+                                self.event_tx.send("selected changed".to_string());
+                            };
                         });
                     });
             });
 
-            let query = ModsQuery {
-                string_query: self.name.clone(),
-                item_class: self.selected_item_tag_as_filter.clone(),
-                item_level: self.selected_item_level_as_filter,
-                selected_mods: self.selected.clone(),
-            };
             let mod_items = self.data.lock().unwrap().mods_table.clone();
 
             let table = TableBuilder::new(ui)
