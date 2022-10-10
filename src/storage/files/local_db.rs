@@ -60,8 +60,12 @@ impl FileRepo {
             .iter()
             .map(|(_k, v)| (v.name.clone(), v.clone()))
             .collect();
-        let item_classes =
-            HashSet::from_iter(raw_base_items.iter().map(|(_k, v)| v.item_class.clone()));
+        let item_classes = HashSet::from_iter(
+            raw_base_items
+                .iter()
+                .filter(|(_k, v)| v.domain == "item")
+                .map(|(_k, v)| v.item_class.clone()),
+        );
 
         let all_tags: HashSet<String> = HashSet::from_iter(
             raw_base_items
@@ -97,11 +101,7 @@ impl FileRepo {
 }
 
 impl FileRepo {
-    fn get_stats_representation(
-        &self,
-        t: StatTranslation,
-        stats: Vec<Stat>,
-    ) -> std::string::String {
+    fn get_stats_representation(&self, t: StatTranslation, stats: Vec<Stat>) -> Result<String, ()> {
         let mut stats_positions_by_id: HashMap<String, usize> = HashMap::default();
 
         for (pos, t_id) in t.ids.iter().enumerate() {
@@ -120,7 +120,7 @@ impl FileRepo {
                 let stat_min = s.min.unwrap();
                 let condition = &i.condition[stat_position.clone()];
                 if condition.negated == Some(true) {
-                    return i.string.clone();
+                    return Ok(i.string.clone());
                 }
                 match condition.min {
                     Some(min) => {
@@ -158,21 +158,21 @@ impl FileRepo {
                     let from = String::from_iter(v);
                     repr = repr.replace(&from, &to_str);
                 }
-                return repr;
+                return Ok(repr);
             }
         }
-        // println!(
-        //     "No english representation found for stats {:?}",
-        //     stats.iter().map(|s| s.id).collect()
-        // );
-        "".to_string()
+        println!("No english representation found for stats {:?}", stats);
+        Err(())
     }
 
-    fn get_mods_representation(&self, m: &Mod) -> std::string::String {
+    fn get_mods_representation(&self, m: &Mod) -> Result<std::string::String, ()> {
         type Group = Vec<Stat>;
         let mut kk: HashMap<StatTranslation, Group> = HashMap::default();
         for s in m.stats.iter() {
-            let t = self.db.translations_by_stat_id.get(&s.id).unwrap().clone();
+            let t = match self.db.translations_by_stat_id.get(&s.id) {
+                Some(t) => t.clone(),
+                None => return Err(()),
+            };
             let g = kk.get(&t);
             if g.is_some() {
                 let mut gg = g.unwrap().clone();
@@ -182,18 +182,26 @@ impl FileRepo {
                 kk.insert(t, vec![s.clone()]);
             }
         }
+        let skip_repr = String::from("");
         let mut reprs = Vec::new();
         for (t, g) in kk {
-            let r = self.get_stats_representation(t, g);
+            let r = match self.get_stats_representation(t, g) {
+                Ok(s) => s,
+                Ok(skip_repr) => {
+                    continue;
+                }
+                Err(_) => return Err(()),
+            };
             if &r == "" {
                 continue;
             }
             reprs.push(r.to_string());
         }
         reprs.sort();
-        reprs.join("\n").to_string()
+        Ok(reprs.join("\n").to_string())
     }
 }
+
 impl CraftRepo for FileRepo {
     /// find_mods
     ///     includes:
@@ -245,7 +253,9 @@ impl CraftRepo for FileRepo {
                     .next()
                     .unwrap()
                     .weight,
-                representation: self.get_mods_representation(m),
+                representation: self
+                    .get_mods_representation(m)
+                    .unwrap_or_else(|_| format!("representation_err: {}", &m_id)),
                 mod_key: m_id.clone(),
             };
             res.push(mod_item);
