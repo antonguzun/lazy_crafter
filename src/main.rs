@@ -6,32 +6,91 @@ use egui::Sense;
 use egui_extras::{Size, TableBuilder};
 use lazy_crafter::storage::files::local_db::FileRepo;
 use lazy_crafter::usecases::craft_searcher;
+use std::sync::{mpsc, Arc, Mutex};
+use std::thread;
 
 fn main() {
+    let (tx, rx) = mpsc::channel();
+
+    let data = Arc::new(Mutex::new(Data {
+        mods_table: Vec::new(),
+    }));
+    let ui_states = Arc::new(Mutex::new(UiStates {
+        filter_string: "".to_string(),
+        selected: vec![],
+        selected_item_tag_as_filter: "Helmet".to_string(),
+        selected_item_level_as_filter: 100,
+    }));
+    let ui_states_clone = ui_states.clone();
+    let data_clone = data.clone();
+    let craft_repo = FileRepo::new().unwrap();
+    thread::spawn(move || loop {
+        for received in &rx {
+            let d = ui_states_clone.lock().unwrap();
+            println!("Got: {}, ui_state is {:?}", received, d);
+
+            let query = ModsQuery {
+                string_query: d.filter_string.clone(),
+                item_class: d.selected_item_tag_as_filter.clone(),
+                item_level: d.selected_item_level_as_filter,
+                selected_mods: d.selected.clone(),
+            };
+
+            let mod_items = craft_searcher::find_mods(&craft_repo, &query);
+            let mut mods_table = &mut data_clone.lock().unwrap().mods_table;
+            mods_table.clear();
+            mods_table.extend(mod_items);
+        }
+    });
+    tx.send("started".to_string());
+
     let native_options = eframe::NativeOptions::default();
     eframe::run_native(
         "Lazy Crafter",
         native_options,
-        Box::new(|cc| Box::new(EguiApp::new(cc))),
+        Box::new(|cc| Box::new(EguiApp::new(cc, ui_states, data, tx))),
     );
 }
 
+struct Data {
+    mods_table: Vec<ModItem>,
+}
+
+#[derive(Debug)]
+struct UiStates {
+    filter_string: String,
+    selected: Vec<ModItem>,
+    selected_item_tag_as_filter: String,
+    selected_item_level_as_filter: u64,
+}
+
 struct EguiApp {
+    ui_states: Arc<Mutex<UiStates>>,
     name: String,
     selected: Vec<ModItem>,
     selected_item_tag_as_filter: String,
     selected_item_level_as_filter: u64,
     craft_repo: FileRepo,
+    data: Arc<Mutex<Data>>,
+    event_tx: mpsc::Sender<String>,
 }
 
 impl EguiApp {
-    fn new(_cc: &eframe::CreationContext<'_>) -> Self {
+    fn new(
+        _cc: &eframe::CreationContext<'_>,
+        ui_states: Arc<Mutex<UiStates>>,
+        data: Arc<Mutex<Data>>,
+        event_tx: mpsc::Sender<String>,
+    ) -> Self {
         Self {
+            ui_states,
             name: "".to_string(),
             selected: vec![],
             selected_item_tag_as_filter: "Helmet".to_string(),
             selected_item_level_as_filter: 100,
             craft_repo: FileRepo::new().unwrap(),
+            data,
+            event_tx,
         }
     }
 }
@@ -65,13 +124,14 @@ impl eframe::App for EguiApp {
                     });
                 })
                 .body(|mut body| {
-                    for row_index in 0..self.selected.len() {
-                        let row_height = calculate_row_height(&self.selected[row_index], 18.0);
+                    let selected = self.ui_states.lock().unwrap().selected.clone();
+                    for row_index in 0..selected.len() {
+                        let row_height = calculate_row_height(&selected[row_index], 18.0);
                         body.row(row_height, |mut row| {
                             row.col(|ui| {
-                                ui.label((&self.selected[row_index].weight).to_string());
+                                ui.label((&selected[row_index].weight).to_string());
                             });
-                            let label = egui::Label::new(&self.selected[row_index].representation)
+                            let label = egui::Label::new(&selected[row_index].representation)
                                 .wrap(false)
                                 .sense(Sense::click());
                             row.col(|ui| {
@@ -83,7 +143,9 @@ impl eframe::App for EguiApp {
                     }
                 });
             if ui.button("clean selected").clicked() {
-                self.selected.clear();
+                let selected = &mut self.ui_states.lock().unwrap().selected;
+                selected.clear();
+                self.event_tx.send("selected changed".to_string());
             }
         });
 
@@ -91,14 +153,22 @@ impl eframe::App for EguiApp {
             ui.heading("Mods");
             ui.horizontal(|ui| {
                 ui.label("filter: ");
-                ui.text_edit_singleline(&mut self.name);
+                if ui
+                    .text_edit_singleline(&mut self.ui_states.lock().unwrap().filter_string)
+                    .changed()
+                {
+                    self.event_tx.send("filter changed".to_string());
+                };
 
                 egui::ComboBox::from_label("Select one!")
-                    .selected_text(format!("{:?}", self.selected_item_tag_as_filter))
+                    .selected_text(format!(
+                        "{:?}",
+                        &mut self.ui_states.lock().unwrap().selected_item_tag_as_filter
+                    ))
                     .show_ui(ui, |ui| {
                         item_classes.iter().for_each(|i| {
                             ui.selectable_value(
-                                &mut self.selected_item_tag_as_filter,
+                                &mut self.ui_states.lock().unwrap().selected_item_tag_as_filter,
                                 i.to_string(),
                                 i.to_string(),
                             );
@@ -112,7 +182,7 @@ impl eframe::App for EguiApp {
                 item_level: self.selected_item_level_as_filter,
                 selected_mods: self.selected.clone(),
             };
-            let mod_items = craft_searcher::find_mods(&self.craft_repo, &query);
+            let mod_items = self.data.lock().unwrap().mods_table.clone();
 
             let table = TableBuilder::new(ui)
                 .striped(true)
@@ -149,8 +219,10 @@ impl eframe::App for EguiApp {
                                 .sense(Sense::click());
                             row.col(|ui| {
                                 if ui.add(label).clicked() {
-                                    self.selected.push(mod_items[row_index].clone());
-                                    println!("selected mods: {:?}", &self.selected);
+                                    let selected = &mut self.ui_states.lock().unwrap().selected;
+                                    selected.push(mod_items[row_index].clone());
+                                    println!("selected mods: {:?}", &selected);
+                                    self.event_tx.send("selected changed".to_string());
                                 };
                             });
                         });
