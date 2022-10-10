@@ -17,3 +17,15 @@ pub trait CraftRepo {
     fn find_mods(&self, search: &ModsQuery) -> Vec<ModItem>;
     fn get_item_classes(&self) -> Vec<String>;
 }
+
+pub struct Data {
+    pub mods_table: Vec<ModItem>,
+}
+
+#[derive(Debug)]
+pub struct UiStates {
+    pub filter_string: String,
+    pub selected: Vec<ModItem>,
+    pub selected_item_tag_as_filter: String,
+    pub selected_item_level_as_filter: u64,
+}
