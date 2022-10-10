@@ -1,6 +1,7 @@
 use crate::entities::craft_repo::{CraftRepo, ModItem, ModsQuery};
+use crate::storage::files::translations::LanguageInstance;
 use crate::storage::files::{
-    mods::{ItemBase, Mod},
+    mods::{ItemBase, Mod, Stat},
     translations::StatTranslation,
 };
 
@@ -95,6 +96,106 @@ impl FileRepo {
     }
 }
 
+impl FileRepo {
+    fn get_stats_representation(
+        &self,
+        t: StatTranslation,
+        stats: Vec<Stat>,
+    ) -> std::string::String {
+        let translation: LanguageInstance;
+        let mut stats_positions_by_id: HashMap<String, usize> = HashMap::default();
+
+        for (pos, t_id) in t.ids.iter().enumerate() {
+            for s in &stats {
+                let id = t_id.clone();
+                if s.id == id {
+                    stats_positions_by_id.insert(id, pos);
+                }
+            }
+        }
+        let string_template: String;
+        for i in t.English.iter() {
+            let mut cond_passed = true;
+            for s in &stats {
+                let stat_position = stats_positions_by_id.get(&s.id).unwrap();
+                let stat_max = s.max.unwrap();
+                let stat_min = s.min.unwrap();
+                let condition = &i.condition[stat_position.clone()];
+                if condition.negated == Some(true) {
+                    return i.string.clone();
+                }
+                match condition.min {
+                    Some(min) => {
+                        if stat_min < min {
+                            cond_passed = false;
+                        }
+                    }
+                    None => (),
+                }
+                match condition.max {
+                    Some(max) => {
+                        if stat_max > max {
+                            cond_passed = false;
+                        }
+                    }
+                    None => (),
+                }
+            }
+            if cond_passed {
+                let mut repr = i.string.clone();
+                for (i, s) in stats.iter().enumerate() {
+                    let stat_position = stats_positions_by_id.get(&s.id).unwrap();
+                    let stat_max = s.max.unwrap();
+                    let stat_min = s.min.unwrap();
+
+                    let to_str = match stat_max == stat_min {
+                        true => format!("{}", stat_max),
+                        false => format!("({}-{})", stat_min, stat_max),
+                    };
+                    let from = match stat_position {
+                        0 => "{0}",
+                        1 => "{1}",
+                        2 => "{2}",
+                        3 => "{3}",
+                        4 => "{4}",
+                        _ => "{5}",
+                    };
+                    // let from = format!("\{{}}", &i.to_string());
+                    repr = repr.replace(from, &to_str);
+                }
+                return repr;
+            }
+        }
+        // println!(
+        //     "No english representation found for stats {:?}",
+        //     stats.iter().map(|s| s.id).collect()
+        // );
+        "".to_string()
+    }
+
+    fn get_mods_representation(&self, m: &Mod) -> std::string::String {
+        type Group = Vec<Stat>;
+        let mut kk: HashMap<StatTranslation, Group> = HashMap::default();
+        for s in m.stats.iter() {
+            let t = self.db.translations_by_stat_id.get(&s.id).unwrap().clone();
+            let mut g = kk.get(&t);
+            if g.is_some() {
+                let mut gg = g.unwrap().clone();
+                gg.push(s.clone());
+                kk.insert(t, gg);
+            } else {
+                kk.insert(t, vec![s.clone()]);
+            }
+        }
+        let mut reprs = Vec::new();
+        for (t, g) in kk {
+            let r = self.get_stats_representation(t, g);
+            reprs.push(r.to_string());
+        }
+        reprs.sort();
+        reprs.join("\n").to_string()
+    }
+}
 impl CraftRepo for FileRepo {
     /// find_mods
     ///     includes:
@@ -137,18 +238,6 @@ impl CraftRepo for FileRepo {
             {
                 continue;
             }
-            let representations =
-                m.stats.iter().map(
-                    |s| match self.db.translations_by_stat_id.get(&s.id) {
-                        Some(t) => t.get_eng_representation_string(&s),
-                        None => s.id.clone(),
-                    },
-                );
-            let mut representation = String::new();
-            for r in representations {
-                representation.push_str(&r);
-                representation.push_str("\n");
-            }
             let mod_item = ModItem {
                 required_level: m.required_level,
                 weight: m
@@ -158,7 +247,7 @@ impl CraftRepo for FileRepo {
                     .next()
                     .unwrap()
                     .weight,
-                representation: representation,
+                representation: self.get_mods_representation(m),
                 mod_key: m_id.clone(),
             };
             res.push(mod_item);
