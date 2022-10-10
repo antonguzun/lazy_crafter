@@ -102,7 +102,6 @@ impl FileRepo {
         t: StatTranslation,
         stats: Vec<Stat>,
     ) -> std::string::String {
-        let translation: LanguageInstance;
         let mut stats_positions_by_id: HashMap<String, usize> = HashMap::default();
 
         for (pos, t_id) in t.ids.iter().enumerate() {
@@ -113,7 +112,6 @@ impl FileRepo {
                 }
             }
         }
-        let string_template: String;
         for i in t.English.iter() {
             let mut cond_passed = true;
             for s in &stats {
@@ -143,7 +141,7 @@ impl FileRepo {
             }
             if cond_passed {
                 let mut repr = i.string.clone();
-                for (i, s) in stats.iter().enumerate() {
+                for s in stats {
                     let stat_position = stats_positions_by_id.get(&s.id).unwrap();
                     let stat_max = s.max.unwrap();
                     let stat_min = s.min.unwrap();
@@ -178,7 +176,7 @@ impl FileRepo {
         let mut kk: HashMap<StatTranslation, Group> = HashMap::default();
         for s in m.stats.iter() {
             let t = self.db.translations_by_stat_id.get(&s.id).unwrap().clone();
-            let mut g = kk.get(&t);
+            let g = kk.get(&t);
             if g.is_some() {
                 let mut gg = g.unwrap().clone();
                 gg.push(s.clone());

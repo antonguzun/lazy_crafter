@@ -47,7 +47,6 @@ impl eframe::App for EguiApp {
         let item_classes = craft_searcher::get_item_classes(&self.craft_repo);
 
         egui::SidePanel::left("selected_mods_panel").show(ctx, |ui| {
-            let text_height = egui::TextStyle::Body.resolve(ui.style()).size;
             ui.heading("Selected");
             let selected_table = TableBuilder::new(ui)
                 .striped(true)
@@ -115,7 +114,6 @@ impl eframe::App for EguiApp {
             };
             let mod_items = craft_searcher::find_mods(&self.craft_repo, &query);
 
-            let text_height = egui::TextStyle::Body.resolve(ui.style()).size;
             let table = TableBuilder::new(ui)
                 .striped(true)
                 .cell_layout(egui::Layout::left_to_right(egui::Align::Center))

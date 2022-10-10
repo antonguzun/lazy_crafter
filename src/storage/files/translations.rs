@@ -1,9 +1,5 @@
-use std::collections::HashMap;
-
 use crate::storage::files::mods::Stat;
 use serde::{Deserialize, Serialize};
-
-use super::mods::Mod;
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize, Eq, Hash)]
 pub struct StatTranslation {
