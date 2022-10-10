@@ -142,7 +142,7 @@ impl FileRepo {
             if cond_passed {
                 let mut repr = i.string.clone();
                 for s in stats {
-                    let stat_position = stats_positions_by_id.get(&s.id).unwrap();
+                    let stat_position = stats_positions_by_id.get(&s.id).unwrap().clone();
                     let stat_max = s.max.unwrap();
                     let stat_min = s.min.unwrap();
 
@@ -150,16 +150,13 @@ impl FileRepo {
                         true => format!("{}", stat_max),
                         false => format!("({}-{})", stat_min, stat_max),
                     };
-                    let from = match stat_position {
-                        0 => "{0}",
-                        1 => "{1}",
-                        2 => "{2}",
-                        3 => "{3}",
-                        4 => "{4}",
-                        _ => "{5}",
-                    };
-                    // let from = format!("\{{}}", &i.to_string());
-                    repr = repr.replace(from, &to_str);
+                    let v = [
+                        '{',
+                        std::char::from_digit(stat_position.try_into().unwrap(), 10).unwrap(),
+                        '}',
+                    ];
+                    let from = String::from_iter(v);
+                    repr = repr.replace(&from, &to_str);
                 }
                 return repr;
             }
@@ -188,6 +185,9 @@ impl FileRepo {
         let mut reprs = Vec::new();
         for (t, g) in kk {
             let r = self.get_stats_representation(t, g);
+            if &r == "" {
+                continue;
+            }
             reprs.push(r.to_string());
         }
         reprs.sort();
