@@ -6,16 +6,23 @@ pub struct ModItem {
     pub mod_key: String,
 }
 
+#[derive(Debug, Clone)]
+pub struct ItemBase {
+    pub required_level: u64,
+    pub name: String,
+}
+
 pub struct ModsQuery {
     pub string_query: String,
     pub item_level: u64,
-    pub item_class: String,
+    pub item_base: String,
     pub selected_mods: Vec<ModItem>,
 }
 
 pub trait CraftRepo {
     fn find_mods(&self, search: &ModsQuery) -> Vec<ModItem>;
     fn get_item_classes(&self) -> Vec<String>;
+    fn get_item_bases(&self, item_class: &str) -> Vec<ItemBase>;
 }
 
 pub struct Data {
@@ -25,11 +32,13 @@ pub struct Data {
 #[derive(Debug)]
 pub struct UiStates {
     pub filter_string: String,
+    pub item_string: String,
+    pub item_level: String,
     pub selected: Vec<ModItem>,
-    pub selected_item_tag_as_filter: String,
+    pub selected_item_class_as_filter: String,
+    pub selected_item_base_as_filter: String,
     pub selected_item_level_as_filter: u64,
 }
-
 
 pub enum UiEvents {
     Started,

@@ -15,8 +15,11 @@ fn main() {
     }));
     let ui_states = Arc::new(Mutex::new(UiStates {
         filter_string: "".to_string(),
+        item_string: "".to_string(),
+        item_level: "100".to_string(),
         selected: vec![],
-        selected_item_tag_as_filter: "Helmet".to_string(),
+        selected_item_class_as_filter: "Helmet".to_string(),
+        selected_item_base_as_filter: "Iron Hat".to_string(),
         selected_item_level_as_filter: 100,
     }));
     let ui_states_clone = ui_states.clone();
@@ -30,7 +33,7 @@ fn main() {
 
             let query = ModsQuery {
                 string_query: d.filter_string.clone(),
-                item_class: d.selected_item_tag_as_filter.clone(),
+                item_base: d.selected_item_base_as_filter.clone(),
                 item_level: d.selected_item_level_as_filter,
                 selected_mods: d.selected.clone(),
             };
@@ -43,7 +46,11 @@ fn main() {
     });
     sender.send(UiEvents::Started).unwrap();
 
-    let native_options = eframe::NativeOptions::default();
+    let mut native_options = eframe::NativeOptions::default();
+    native_options.initial_window_size = Some(egui::Vec2 {
+        x: 1300.0,
+        y: 600.0,
+    });
     eframe::run_native(
         "Lazy Crafter",
         native_options,

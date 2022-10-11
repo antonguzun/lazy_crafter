@@ -1,13 +1,13 @@
 use crate::entities::craft_repo::{Data, ModItem, UiEvents, UiStates};
 
 extern crate x11_clipboard;
+use crate::input_schemas::parse_item_level;
 use crate::storage::files::local_db::FileRepo;
 use crate::usecases::craft_searcher;
 use eframe::egui;
 use egui::Sense;
 use egui_extras::{Size, TableBuilder};
 use std::sync::{mpsc, Arc, Mutex};
-
 
 pub struct EguiApp {
     ui_states: Arc<Mutex<UiStates>>,
@@ -41,9 +41,91 @@ fn calculate_row_height(row: &ModItem, one_row_height: f32) -> f32 {
 impl eframe::App for EguiApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         let item_classes = craft_searcher::get_item_classes(&self.craft_repo);
+        let item_class = &self
+            .ui_states
+            .lock()
+            .unwrap()
+            .selected_item_class_as_filter
+            .clone();
+        let item_bases = craft_searcher::get_item_bases(&self.craft_repo, &item_class);
+        // println!("bases: {:?}", item_bases);
 
-        egui::SidePanel::left("selected_mods_panel").show(ctx, |ui| {
+        egui::SidePanel::left("input_panel").show(ctx, |ui| {
+            ui.heading("Input");
+            ui.set_min_width(200.0);
+
+            egui::ComboBox::from_label("item class")
+                .selected_text(format!(
+                    "{:?}",
+                    &mut self.ui_states.lock().unwrap().selected_item_class_as_filter
+                ))
+                .show_ui(ui, |ui| {
+                    item_classes.iter().for_each(|i| {
+                        if ui
+                            .selectable_value(
+                                &mut self.ui_states.lock().unwrap().selected_item_class_as_filter,
+                                i.to_string(),
+                                i.to_string(),
+                            )
+                            .changed()
+                        {
+                            let selected = &mut self.ui_states.lock().unwrap().selected;
+                            selected.clear();
+                            self.event_tx.send(UiEvents::AddToSelectedMods).unwrap();
+                        };
+                    });
+                });
+            egui::ComboBox::from_label("item base")
+                .selected_text(format!(
+                    "{:?}",
+                    &mut self.ui_states.lock().unwrap().selected_item_base_as_filter
+                ))
+                .show_ui(ui, |ui| {
+                    item_bases.iter().for_each(|i| {
+                        if ui
+                            .selectable_value(
+                                &mut self.ui_states.lock().unwrap().selected_item_base_as_filter,
+                                i.name.to_string(),
+                                format!("{} {}", i.name.to_string(), i.required_level.to_string()),
+                            )
+                            .changed()
+                        {
+                            let state = &mut self.ui_states.lock().unwrap();
+                            state.selected.clear();
+                            state.selected_item_level_as_filter = i.required_level;
+                            state.item_level = i.required_level.to_string();
+                            self.event_tx.send(UiEvents::AddToSelectedMods).unwrap();
+                        };
+                    });
+                });
+
+            ui.label("item lvl");
+            if ui
+                .text_edit_singleline(&mut self.ui_states.lock().unwrap().item_level)
+                .changed()
+            {
+                let state = &mut self.ui_states.lock().unwrap();
+                match parse_item_level(&state.item_level) {
+                    Ok(level) => {
+                        // let state = &mut self.ui_states.lock().unwrap();
+                        state.selected_item_level_as_filter = level as u64;
+                        self.event_tx.send(UiEvents::ChangeModFilter).unwrap();
+                    }
+                    Err(_) => (),
+                }
+            };
+
+            ui.label("or paste item");
+            if ui
+                .code_editor(&mut self.ui_states.lock().unwrap().item_string)
+                .changed()
+            {
+                // self.event_tx.send(UiEvents::ChangeModFilter).unwrap();
+            };
+        });
+        egui::SidePanel::right("selected_mods_panel").show(ctx, |ui| {
             ui.heading("Selected");
+            ui.set_min_width(450.0);
             let selected_table = TableBuilder::new(ui)
                 .striped(true)
                 .cell_layout(egui::Layout::left_to_right(egui::Align::Center))
@@ -88,6 +170,7 @@ impl eframe::App for EguiApp {
 
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.heading("Mods");
+            ui.set_min_width(450.0);
             ui.horizontal(|ui| {
                 ui.label("filter: ");
                 if ui
@@ -96,26 +179,6 @@ impl eframe::App for EguiApp {
                 {
                     self.event_tx.send(UiEvents::ChangeModFilter).unwrap();
                 };
-
-                egui::ComboBox::from_label("Select one!")
-                    .selected_text(format!(
-                        "{:?}",
-                        &mut self.ui_states.lock().unwrap().selected_item_tag_as_filter
-                    ))
-                    .show_ui(ui, |ui| {
-                        item_classes.iter().for_each(|i| {
-                            if ui
-                                .selectable_value(
-                                    &mut self.ui_states.lock().unwrap().selected_item_tag_as_filter,
-                                    i.to_string(),
-                                    i.to_string(),
-                                )
-                                .changed()
-                            {
-                                self.event_tx.send(UiEvents::AddToSelectedMods).unwrap();
-                            };
-                        });
-                    });
             });
 
             let mod_items = self.data.lock().unwrap().mods_table.clone();
@@ -125,7 +188,7 @@ impl eframe::App for EguiApp {
                 .cell_layout(egui::Layout::left_to_right(egui::Align::Center))
                 .column(Size::initial(30.0).at_least(50.0))
                 .column(Size::initial(30.0).at_least(50.0))
-                .column(Size::remainder().at_least(300.0))
+                .column(Size::remainder().at_least(450.0))
                 .resizable(false);
 
             table

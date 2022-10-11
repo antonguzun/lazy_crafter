@@ -14,12 +14,18 @@ pub struct Stat {
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
-pub struct ItemBase {
+pub struct Requirements {
+    pub level: u64,
+}
+
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct ItemBaseRich {
     pub name: String,
     pub item_class: String,
     pub tags: Vec<String>,
     pub domain: String,
     pub release_state: String,
+    pub requirements: Option<Requirements>,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]

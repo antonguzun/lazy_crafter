@@ -1,7 +1,7 @@
-use crate::entities::craft_repo::{CraftRepo, ModItem, ModsQuery};
+use crate::entities::craft_repo::{CraftRepo, ItemBase, ModItem, ModsQuery};
 
 use crate::storage::files::{
-    mods::{ItemBase, Mod, Stat},
+    mods::{ItemBaseRich, Mod, Stat},
     translations::StatTranslation,
 };
 
@@ -35,7 +35,7 @@ pub struct LocalDB {
     pub translations_by_stat_id: HashMap<String, StatTranslation>,
     pub mods: HashMap<String, Mod>,
     // pub item_tags_by_item_class: HashMap<String, HashSet<String>>,
-    pub base_items_by_name: HashMap<String, ItemBase>,
+    pub base_items_by_name: HashMap<String, ItemBaseRich>,
     pub item_classes: HashSet<String>,
     pub mod_id_by_tags: HashMap<String, Vec<String>>,
 }
@@ -55,8 +55,9 @@ impl FileRepo {
         }
 
         let mods: HashMap<String, Mod> = json_to_hashmap("data/mods.min.json");
-        let raw_base_items: HashMap<String, ItemBase> = json_to_hashmap("data/base_items.min.json");
-        let base_items_by_name: HashMap<String, ItemBase> = raw_base_items
+        let raw_base_items: HashMap<String, ItemBaseRich> =
+            json_to_hashmap("data/base_items.min.json");
+        let base_items_by_name: HashMap<String, ItemBaseRich> = raw_base_items
             .iter()
             .map(|(_k, v)| (v.name.clone(), v.clone()))
             .collect();
@@ -216,9 +217,9 @@ impl CraftRepo for FileRepo {
             .db
             .base_items_by_name
             .values()
-            .find(|i| i.item_class == search.item_class)
+            .find(|i| i.name == search.item_base)
             .unwrap();
-        println!("tags for {}: {:?}", search.item_class, item.tags);
+        println!("tags for {}: {:?}", search.item_base, item.tags);
         let mut mod_ids: HashSet<String> = HashSet::new();
         for t in &item.tags {
             let ms = self.db.mod_id_by_tags.get(t);
@@ -280,5 +281,21 @@ impl CraftRepo for FileRepo {
 
     fn get_item_classes(&self) -> Vec<String> {
         self.db.item_classes.iter().map(|s| s.clone()).collect()
+    }
+
+    fn get_item_bases(&self, item_class: &str) -> Vec<ItemBase> {
+        self.db
+            .base_items_by_name
+            .iter()
+            // .filter(|(_, bi)| bi.item_class == item_class && bi.domain == "item")
+            .filter(|(_, bi)| bi.domain == "item" && bi.item_class == item_class.to_string())
+            .map(|(s, bi)| ItemBase {
+                name: s.to_string(),
+                required_level: match bi.requirements {
+                    Some(ref r) => r.level,
+                    None => 100,
+                },
+            })
+            .collect()
     }
 }
