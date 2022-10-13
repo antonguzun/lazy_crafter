@@ -1,4 +1,5 @@
 use crate::entities::craft_repo::{ModItem, UiEvents};
+use egui::widget_text::RichText;
 use egui::{Sense, Ui};
 use egui_extras::{Size, TableBuilder};
 use log::debug;
@@ -22,8 +23,8 @@ pub fn show_table_of_filtered_mods(
         .striped(true)
         .cell_layout(egui::Layout::left_to_right(egui::Align::Center))
         .column(Size::initial(30.0).at_least(50.0))
-        .column(Size::initial(30.0).at_least(50.0))
-        .column(Size::remainder().at_least(450.0))
+        .column(Size::initial(70.0).at_least(70.0))
+        .column(Size::remainder().at_least(300.0))
         .resizable(false);
 
     table
@@ -32,10 +33,10 @@ pub fn show_table_of_filtered_mods(
                 ui.heading("#");
             });
             header.col(|ui| {
-                ui.heading("weight");
+                ui.heading(RichText::new("weight").size(20.0));
             });
             header.col(|ui| {
-                ui.heading("modification");
+                ui.heading(RichText::new("modification").size(20.0));
             });
         })
         .body(|mut body| {
@@ -74,10 +75,10 @@ pub fn show_table_of_selected(ui: &mut Ui, rows: Vec<ModItem>) {
     selected_table
         .header(30.0, |mut header| {
             header.col(|ui| {
-                ui.heading("weight");
+                ui.heading(RichText::new("weight").size(20.0));
             });
             header.col(|ui| {
-                ui.heading("modification");
+                ui.heading(RichText::new("modification").size(20.0));
             });
         })
         .body(|mut body| {

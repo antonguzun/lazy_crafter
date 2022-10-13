@@ -2,9 +2,7 @@ use crate::entities::craft_repo::{Data, UiEvents, UiStates};
 
 use crate::input_schemas::parse_item_level;
 use crate::ui::{buttons, comboboxes, inputs, tables};
-use crate::usecases::craft_searcher;
 use eframe::egui;
-
 use std::sync::{mpsc, Arc, Mutex};
 
 const APP_NAME: &str = "Lazy Crafter";
@@ -17,7 +15,7 @@ pub fn run_ui_in_main_thread(
     sender.send(UiEvents::Started).unwrap();
     let mut native_options = eframe::NativeOptions::default();
     native_options.initial_window_size = Some(egui::Vec2 {
-        x: 1300.0,
+        x: 1100.0,
         y: 600.0,
     });
     eframe::run_native(
@@ -50,44 +48,39 @@ impl EguiApp {
 
 impl eframe::App for EguiApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        let item_classes = self.data.lock().unwrap().item_classes.clone();
-        let item_class = &self
-            .ui_states
-            .lock()
-            .unwrap()
-            .selected_item_class_as_filter
-            .clone();
-        let item_bases = self.data.lock().unwrap().item_bases.clone();
-
         egui::SidePanel::left("input_panel").show(ctx, |ui| {
             ui.heading("Input");
             ui.set_min_width(200.0);
 
+            let item_classes = self.data.lock().unwrap().item_classes.clone();
             comboboxes::show_combobox_with_classes(
                 ui,
                 item_classes,
                 &self.ui_states,
                 &self.event_tx,
             );
+            let item_bases = self.data.lock().unwrap().item_bases.clone();
             comboboxes::show_combobox_with_bases(ui, item_bases, &self.ui_states, &self.event_tx);
             // show_level_input(ui, item_bases, &self.ui_states, &self.event_tx);
             // show_item_input(ui, item_bases, &self.ui_states, &self.event_tx);
-
-            ui.label("item lvl");
-            if ui
-                .text_edit_singleline(&mut self.ui_states.lock().unwrap().item_level)
-                .changed()
-            {
-                let state = &mut self.ui_states.lock().unwrap();
-                match parse_item_level(&state.item_level) {
-                    Ok(level) => {
-                        // let state = &mut self.ui_states.lock().unwrap();
-                        state.selected_item_level_as_filter = level as u64;
-                        self.event_tx.send(UiEvents::ChangeModFilter).unwrap();
+            ui.horizontal(|ui| {
+                ui.set_max_width(150.0);
+                if ui
+                    .text_edit_singleline(&mut self.ui_states.lock().unwrap().item_level)
+                    .changed()
+                {
+                    let state = &mut self.ui_states.lock().unwrap();
+                    match parse_item_level(&state.item_level) {
+                        Ok(level) => {
+                            // let state = &mut self.ui_states.lock().unwrap();
+                            state.selected_item_level_as_filter = level as u64;
+                            self.event_tx.send(UiEvents::ChangeModFilter).unwrap();
+                        }
+                        Err(_) => (),
                     }
-                    Err(_) => (),
-                }
-            };
+                };
+                ui.label("item lvl");
+            });
 
             ui.label("or paste item");
             if ui
@@ -99,7 +92,6 @@ impl eframe::App for EguiApp {
         });
         egui::SidePanel::right("selected_mods_panel").show(ctx, |ui| {
             ui.heading("Selected");
-            // ui.set_min_width(450.0);
             let selected_mods = self.ui_states.lock().unwrap().selected.clone();
             tables::show_table_of_selected(ui, selected_mods);
             let selected_mods = &mut self.ui_states.lock().unwrap().selected;
@@ -108,7 +100,6 @@ impl eframe::App for EguiApp {
 
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.heading("Mods");
-            // ui.set_min_width(450.0);
             ui.horizontal(|ui| {
                 let filter_string = &mut self.ui_states.lock().unwrap().filter_string;
                 ui.label("filter: ");
