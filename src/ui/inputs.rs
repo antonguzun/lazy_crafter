@@ -1,6 +1,5 @@
-use crate::entities::craft_repo::{ModItem, UiEvents};
-use egui::{Sense, Ui};
-use egui_extras::{Size, TableBuilder};
+use crate::entities::craft_repo::UiEvents;
+use egui::Ui;
 use std::sync::mpsc;
 
 pub fn show_mods_filter_input(

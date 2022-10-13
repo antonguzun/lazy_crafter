@@ -117,7 +117,7 @@ impl eframe::App for EguiApp {
         egui::SidePanel::right("selected_mods_panel").show(ctx, |ui| {
             ui.heading("Selected");
             ui.set_min_width(450.0);
-            let selected_mods = self.ui_states.lock().unwrap().selected.clone();
+            let _selected_mods = self.ui_states.lock().unwrap().selected.clone();
             tables::show_table_of_selected(ui, self.ui_states.lock().unwrap().selected.clone());
             let selected_mods = &mut self.ui_states.lock().unwrap().selected;
             buttons::show_cleaning_selected_mods_button(ui, selected_mods, &self.event_tx);
