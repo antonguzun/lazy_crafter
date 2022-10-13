@@ -1,6 +1,5 @@
-use crate::entities::craft_repo::{ModItem, UiEvents, UiStates};
-use egui::{Sense, Ui};
-use egui_extras::{Size, TableBuilder};
+use crate::entities::craft_repo::{UiEvents, UiStates};
+use egui::Ui;
 use std::sync::mpsc;
 use std::sync::{Arc, Mutex};
 

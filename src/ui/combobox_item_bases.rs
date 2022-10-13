@@ -1,7 +1,5 @@
-use crate::entities::craft_repo::{ModItem, UiEvents, UiStates, ItemBase};
-use crate::ui::common::calculate_row_height;
-use egui::{Sense, Ui};
-use egui_extras::{Size, TableBuilder};
+use crate::entities::craft_repo::{ItemBase, UiEvents, UiStates};
+use egui::Ui;
 use std::sync::mpsc;
 use std::sync::{Arc, Mutex};
 
