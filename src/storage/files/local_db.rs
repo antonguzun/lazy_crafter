@@ -1,9 +1,11 @@
 use crate::entities::craft_repo::{CraftRepo, ItemBase, ModItem, ModsQuery};
 use crate::storage::files::schemas::{ItemBaseRich, Mod, Stat, StatTranslation};
-
+use log::{debug, error};
 use std::collections::{HashMap, HashSet};
 use std::fs::File;
 use std::io::Read;
+
+const LOG_TARGET: &str = "file_db";
 
 fn load_from_json<T>(path: &str) -> Vec<T>
 where
@@ -83,7 +85,7 @@ impl FileRepo {
                 }
             })
         });
-        print!("tags: {:?}", mod_id_by_tags.keys());
+        debug!(target: LOG_TARGET, "tags: {:?}", mod_id_by_tags.keys());
         Ok(Self {
             db: LocalDB {
                 translations_by_stat_id,
@@ -158,7 +160,10 @@ impl FileRepo {
                 return Ok(repr);
             }
         }
-        println!("No english representation found for stats {:?}", stats);
+        error!(
+            target: LOG_TARGET,
+            "No english representation found for stats {:?}", stats
+        );
         Err(())
     }
 
@@ -267,7 +272,10 @@ impl CraftRepo for FileRepo {
             .values()
             .find(|i| i.name == search.item_base)
             .unwrap();
-        println!("tags for {}: {:?}", search.item_base, item.tags);
+        debug!(
+            target: LOG_TARGET,
+            "tags for {}: {:?}", search.item_base, item.tags
+        );
         let mut mod_ids: HashSet<String> = HashSet::new();
         for t in &item.tags {
             let ms = self.db.mod_id_by_tags.get(t);

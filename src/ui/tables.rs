@@ -1,6 +1,7 @@
 use crate::entities::craft_repo::{ModItem, UiEvents};
 use egui::{Sense, Ui};
 use egui_extras::{Size, TableBuilder};
+use log::debug;
 use std::sync::mpsc;
 
 fn calculate_row_height(row: &ModItem, one_row_height: f32) -> f32 {
@@ -8,6 +9,8 @@ fn calculate_row_height(row: &ModItem, one_row_height: f32) -> f32 {
     let cnt_of_rows = u16::try_from(cnt_of_rows.clone()).ok().unwrap_or(10);
     (cnt_of_rows + 1) as f32 * one_row_height
 }
+
+const LOG_TARGET: &str = "ui";
 
 pub fn show_table_of_filtered_mods(
     ui: &mut Ui,
@@ -51,8 +54,8 @@ pub fn show_table_of_filtered_mods(
                     row.col(|ui| {
                         if ui.add(label).clicked() {
                             selected.push(rows[row_index].clone());
-                            println!("selected mods: {:?}", &selected);
                             events_sender.send(UiEvents::AddToSelectedMods).unwrap();
+                            debug!(target: LOG_TARGET, "sent selected event");
                         };
                     });
                 });

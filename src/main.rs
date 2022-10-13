@@ -1,4 +1,5 @@
 use lazy_crafter::entities::craft_repo::{Data, ModsQuery, UiEvents, UiStates};
+use log::{debug, error, info, log_enabled, Level};
 extern crate x11_clipboard;
 
 use lazy_crafter::storage::files::local_db::FileRepo;
@@ -17,7 +18,7 @@ fn run_db_in_background(
     thread::spawn(move || loop {
         for _received in &receiver {
             let d = ui_states.lock().unwrap();
-            println!("Got event, ui_state is {:?}", d);
+            info!(target: "db thread", "Got event, ui_state is {:?}", d);
 
             let query = ModsQuery {
                 string_query: d.filter_string.clone(),
@@ -32,12 +33,14 @@ fn run_db_in_background(
             mods_table.extend(mod_items);
         }
     });
+    info!("db started");
 }
 
 fn main() {
     // ui works in main tread
     // db loader works in another thread and wait events from main tread
-
+    env_logger::init();
+    info!("Start app");
     let (tx, rx): (mpsc::Sender<UiEvents>, mpsc::Receiver<UiEvents>) = mpsc::channel();
 
     let data = Arc::new(Mutex::new(Data::default()));
@@ -45,4 +48,5 @@ fn main() {
 
     run_db_in_background(rx, Arc::clone(&ui_states), Arc::clone(&data));
     ui_app::run_ui_in_main_thread(tx, ui_states, data);
+    info!("ui started");
 }
