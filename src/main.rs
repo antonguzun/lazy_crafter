@@ -12,13 +12,11 @@ fn run_db_in_background(
     ui_states: Arc<Mutex<UiStates>>,
     data: Arc<Mutex<Data>>,
 ) {
-    let ui_states_clone = ui_states.clone();
-    let data_clone = data.clone();
     let craft_repo = FileRepo::new().unwrap();
 
     thread::spawn(move || loop {
         for _received in &receiver {
-            let d = ui_states_clone.lock().unwrap();
+            let d = ui_states.lock().unwrap();
             println!("Got event, ui_state is {:?}", d);
 
             let query = ModsQuery {
@@ -29,7 +27,7 @@ fn run_db_in_background(
             };
 
             let mod_items = craft_searcher::find_mods(&craft_repo, &query);
-            let mods_table = &mut data_clone.lock().unwrap().mods_table;
+            let mods_table = &mut data.lock().unwrap().mods_table;
             mods_table.clear();
             mods_table.extend(mod_items);
         }
@@ -45,6 +43,6 @@ fn main() {
     let data = Arc::new(Mutex::new(Data::default()));
     let ui_states = Arc::new(Mutex::new(UiStates::default()));
 
-    run_db_in_background(rx, ui_states.clone(), data.clone());
-    ui_app::run_ui_in_main_tread(tx, ui_states, data);
+    run_db_in_background(rx, Arc::clone(&ui_states), Arc::clone(&data));
+    ui_app::run_ui_in_main_thread(tx, ui_states, data);
 }

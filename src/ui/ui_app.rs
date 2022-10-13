@@ -10,7 +10,7 @@ use std::sync::{mpsc, Arc, Mutex};
 
 const APP_NAME: &str = "Lazy Crafter";
 
-pub fn run_ui_in_main_tread(
+pub fn run_ui_in_main_thread(
     sender: mpsc::Sender<UiEvents>,
     ui_states: Arc<Mutex<UiStates>>,
     data: Arc<Mutex<Data>>,
@@ -28,7 +28,7 @@ pub fn run_ui_in_main_tread(
     );
 }
 
-pub struct EguiApp {
+struct EguiApp {
     ui_states: Arc<Mutex<UiStates>>,
     craft_repo: FileRepo,
     data: Arc<Mutex<Data>>,
@@ -36,7 +36,7 @@ pub struct EguiApp {
 }
 
 impl EguiApp {
-    pub fn new(
+    fn new(
         _cc: &eframe::CreationContext<'_>,
         ui_states: Arc<Mutex<UiStates>>,
         data: Arc<Mutex<Data>>,
@@ -124,19 +124,3 @@ impl eframe::App for EguiApp {
         });
     }
 }
-
-// Rarity: Magic
-// Crafted Item
-// Iron Hat
-// --------
-// Quality: +20% (augmented)
-// Armour: 10
-// --------
-// Requirements:
-// Str: 9
-// --------
-// Item Level: 83
-// --------
-// +17 to maximum Life
-// 19% increased Rarity of Items found
-// --------

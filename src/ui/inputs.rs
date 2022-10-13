@@ -14,3 +14,19 @@ pub fn show_mods_filter_input(
 
 // show_level_input(ui, item_bases, &self.ui_states, &self.event_tx);
 // show_item_input(ui, item_bases, &self.ui_states, &self.event_tx);
+
+// Rarity: Magic
+// Crafted Item
+// Iron Hat
+// --------
+// Quality: +20% (augmented)
+// Armour: 10
+// --------
+// Requirements:
+// Str: 9
+// --------
+// Item Level: 83
+// --------
+// +17 to maximum Life
+// 19% increased Rarity of Items found
+// --------
