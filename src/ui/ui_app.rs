@@ -1,11 +1,8 @@
-use crate::entities::craft_repo::{Data, ModItem, UiEvents, UiStates};
+use crate::entities::craft_repo::{Data, UiEvents, UiStates};
 
 use crate::input_schemas::parse_item_level;
 use crate::storage::files::local_db::FileRepo;
-use crate::ui::combobox_item_bases::show_combobox_with_bases;
-use crate::ui::combobox_item_classes::show_combobox_with_classes;
-use crate::ui::table_of_filtered_mods::show_table_of_filtered_mods;
-use crate::ui::table_of_selected::show_table_of_selected;
+use crate::ui::{buttons, comboboxes, inputs, tables};
 use crate::usecases::craft_searcher;
 use eframe::egui;
 
@@ -64,14 +61,20 @@ impl eframe::App for EguiApp {
             .selected_item_class_as_filter
             .clone();
         let item_bases = craft_searcher::get_item_bases(&self.craft_repo, &item_class);
-        // println!("bases: {:?}", item_bases);
 
         egui::SidePanel::left("input_panel").show(ctx, |ui| {
             ui.heading("Input");
             ui.set_min_width(200.0);
 
-            show_combobox_with_classes(ui, item_classes, &self.ui_states, &self.event_tx);
-            show_combobox_with_bases(ui, item_bases, &self.ui_states, &self.event_tx);
+            comboboxes::show_combobox_with_classes(
+                ui,
+                item_classes,
+                &self.ui_states,
+                &self.event_tx,
+            );
+            comboboxes::show_combobox_with_bases(ui, item_bases, &self.ui_states, &self.event_tx);
+            // show_level_input(ui, item_bases, &self.ui_states, &self.event_tx);
+            // show_item_input(ui, item_bases, &self.ui_states, &self.event_tx);
 
             ui.label("item lvl");
             if ui
@@ -102,30 +105,22 @@ impl eframe::App for EguiApp {
             ui.heading("Mods");
             ui.set_min_width(450.0);
             ui.horizontal(|ui| {
+                let filter_string = &mut self.ui_states.lock().unwrap().filter_string;
                 ui.label("filter: ");
-                if ui
-                    .text_edit_singleline(&mut self.ui_states.lock().unwrap().filter_string)
-                    .changed()
-                {
-                    self.event_tx.send(UiEvents::ChangeModFilter).unwrap();
-                };
+                inputs::show_mods_filter_input(ui, filter_string, &self.event_tx);
             });
             let mod_items = self.data.lock().unwrap().mods_table.clone();
-            let selected = &mut self.ui_states.lock().unwrap().selected;
-            show_table_of_filtered_mods(ui, mod_items, selected, &self.event_tx);
+            let selected_mods = &mut self.ui_states.lock().unwrap().selected;
+            tables::show_table_of_filtered_mods(ui, mod_items, selected_mods, &self.event_tx);
         });
 
         egui::SidePanel::right("selected_mods_panel").show(ctx, |ui| {
             ui.heading("Selected");
             ui.set_min_width(450.0);
-            let selected = self.ui_states.lock().unwrap().selected.clone();
-            show_table_of_selected(ui, selected);
-
-            if ui.button("clean selected").clicked() {
-                let selected = &mut self.ui_states.lock().unwrap().selected;
-                selected.clear();
-                self.event_tx.send(UiEvents::CleanSelectedMods).unwrap();
-            }
+            let selected_mods = self.ui_states.lock().unwrap().selected.clone();
+            tables::show_table_of_selected(ui, self.ui_states.lock().unwrap().selected.clone());
+            let selected_mods = &mut self.ui_states.lock().unwrap().selected;
+            buttons::show_cleaning_selected_mods_button(ui, selected_mods, &self.event_tx);
         });
     }
 }
