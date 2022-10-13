@@ -1,7 +1,6 @@
 use crate::entities::craft_repo::{Data, UiEvents, UiStates};
 
 use crate::input_schemas::parse_item_level;
-use crate::storage::files::local_db::FileRepo;
 use crate::ui::{buttons, comboboxes, inputs, tables};
 use crate::usecases::craft_searcher;
 use eframe::egui;
@@ -30,7 +29,6 @@ pub fn run_ui_in_main_thread(
 
 struct EguiApp {
     ui_states: Arc<Mutex<UiStates>>,
-    craft_repo: FileRepo,
     data: Arc<Mutex<Data>>,
     event_tx: mpsc::Sender<UiEvents>,
 }
@@ -44,7 +42,6 @@ impl EguiApp {
     ) -> Self {
         Self {
             ui_states,
-            craft_repo: FileRepo::new().unwrap(),
             data,
             event_tx,
         }
@@ -53,14 +50,14 @@ impl EguiApp {
 
 impl eframe::App for EguiApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        let item_classes = craft_searcher::get_item_classes(&self.craft_repo);
+        let item_classes = self.data.lock().unwrap().item_classes.clone();
         let item_class = &self
             .ui_states
             .lock()
             .unwrap()
             .selected_item_class_as_filter
             .clone();
-        let item_bases = craft_searcher::get_item_bases(&self.craft_repo, &item_class);
+        let item_bases = self.data.lock().unwrap().item_bases.clone();
 
         egui::SidePanel::left("input_panel").show(ctx, |ui| {
             ui.heading("Input");

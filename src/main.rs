@@ -1,5 +1,5 @@
 use lazy_crafter::entities::craft_repo::{Data, ModsQuery, UiEvents, UiStates};
-use log::{debug, error, info, log_enabled, Level};
+use log::{debug, info};
 extern crate x11_clipboard;
 
 use lazy_crafter::storage::files::local_db::FileRepo;
@@ -16,21 +16,32 @@ fn run_db_in_background(
     let craft_repo = FileRepo::new().unwrap();
 
     thread::spawn(move || loop {
-        for _received in &receiver {
-            let d = ui_states.lock().unwrap();
-            info!(target: "db thread", "Got event, ui_state is {:?}", d);
+        for event in &receiver {
+            if event == UiEvents::Started {
+                let item_classes = craft_searcher::get_item_classes(&craft_repo);
+                let data = &mut data.lock().unwrap();
+                data.item_classes = item_classes;
+                debug!(target: "db thread", "Loaded item classes by stat event");
+            }
+            let ui_state = ui_states.lock().unwrap();
+            info!(target: "db thread", "Got event, ui_state is {:?}", ui_state);
+
+            let item_class = &ui_state.selected_item_class_as_filter;
+            let item_bases = craft_searcher::get_item_bases(&craft_repo, item_class);
 
             let query = ModsQuery {
-                string_query: d.filter_string.clone(),
-                item_base: d.selected_item_base_as_filter.clone(),
-                item_level: d.selected_item_level_as_filter,
-                selected_mods: d.selected.clone(),
+                string_query: ui_state.filter_string.clone(),
+                item_base: ui_state.selected_item_base_as_filter.clone(),
+                item_level: ui_state.selected_item_level_as_filter,
+                selected_mods: ui_state.selected.clone(),
             };
-
+            drop(ui_state);
             let mod_items = craft_searcher::find_mods(&craft_repo, &query);
-            let mods_table = &mut data.lock().unwrap().mods_table;
-            mods_table.clear();
-            mods_table.extend(mod_items);
+
+            let data = &mut data.lock().unwrap();
+            data.item_bases = item_bases;
+            data.mods_table = mod_items;
+            debug!(target: "db thread", "Loaded item bases and filtered mods");
         }
     });
     info!("db started");
@@ -47,6 +58,6 @@ fn main() {
     let ui_states = Arc::new(Mutex::new(UiStates::default()));
 
     run_db_in_background(rx, Arc::clone(&ui_states), Arc::clone(&data));
+    info!("start ui");
     ui_app::run_ui_in_main_thread(tx, ui_states, data);
-    info!("ui started");
 }

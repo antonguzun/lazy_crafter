@@ -27,11 +27,15 @@ pub trait CraftRepo {
 
 pub struct Data {
     pub mods_table: Vec<ModItem>,
+    pub item_classes: Vec<String>,
+    pub item_bases: Vec<ItemBase>,
 }
 impl Default for Data {
     fn default() -> Self {
         Self {
             mods_table: Vec::new(),
+            item_classes: Vec::new(),
+            item_bases: Vec::new(),
         }
     }
 }
@@ -61,6 +65,8 @@ impl Default for UiStates {
         }
     }
 }
+
+#[derive(PartialEq)]
 pub enum UiEvents {
     Started,
     ChangeModFilter,
