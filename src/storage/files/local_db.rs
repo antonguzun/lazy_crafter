@@ -1,9 +1,5 @@
 use crate::entities::craft_repo::{CraftRepo, ItemBase, ModItem, ModsQuery};
-
-use crate::storage::files::{
-    mods::{ItemBaseRich, Mod, Stat},
-    translations::StatTranslation,
-};
+use crate::storage::files::schemas::{ItemBaseRich, Mod, Stat, StatTranslation};
 
 use std::collections::{HashMap, HashSet};
 use std::fs::File;
@@ -201,6 +197,58 @@ impl FileRepo {
         reprs.sort();
         Ok(reprs.join("\n").to_string())
     }
+
+    fn create_mod_items(
+        &self,
+        mod_ids: &HashSet<String>,
+        item: &ItemBaseRich,
+        selected_groups: HashSet<std::string::String>,
+    ) -> Vec<ModItem> {
+        let target_gen_types = ["suffix", "prefix"];
+        let mut res = vec![];
+        for m_id in mod_ids {
+            let m = self.db.mods.get(m_id).unwrap();
+            if m.stats.is_empty()
+                || m.domain != item.domain
+                || !target_gen_types.contains(&m.generation_type.as_str())
+                || m.groups.iter().any(|g| selected_groups.contains(g))
+            {
+                continue;
+            }
+            let mod_item = ModItem {
+                required_level: m.required_level,
+                weight: m
+                    .spawn_weights
+                    .iter()
+                    .filter(|sw| sw.weight > 0 && item.tags.contains(&sw.tag))
+                    .next()
+                    .unwrap()
+                    .weight,
+                representation: self
+                    .get_mods_representation(m)
+                    .unwrap_or_else(|_| format!("representation_err: {}", m_id)),
+                mod_key: m_id.clone(),
+            };
+            res.push(mod_item);
+        }
+        res
+    }
+}
+
+fn filter_mods(mods: &mut Vec<ModItem>, query_string: String) -> Vec<ModItem> {
+    let filter = query_string.trim().to_lowercase();
+    let filters: Vec<&str> = filter.split(' ').collect();
+    let (mut v1, mut v2) = (vec![], vec![]);
+    for m in mods.iter() {
+        let verbose_str = m.representation.to_lowercase();
+        if verbose_str.contains(&filter) {
+            v1.push(m.clone());
+        } else if filters.iter().all(|f| verbose_str.contains(&*f)) {
+            v2.push(m.clone());
+        }
+    }
+    v1.extend(v2);
+    v1
 }
 
 impl CraftRepo for FileRepo {
@@ -234,49 +282,10 @@ impl CraftRepo for FileRepo {
                 .map(|m| self.db.mods.get(&m.mod_key).unwrap())
                 .flat_map(|m| m.groups.clone()),
         );
-        let target_gen_types = ["suffix", "prefix"];
-        let mut res = vec![];
-        for m_id in mod_ids {
-            let m = self.db.mods.get(&m_id).unwrap();
-            if m.stats.is_empty()
-                || m.domain != item.domain
-                || !target_gen_types.contains(&m.generation_type.as_str())
-                || m.groups.iter().any(|g| selected_groups.contains(g))
-            {
-                continue;
-            }
-            let mod_item = ModItem {
-                required_level: m.required_level,
-                weight: m
-                    .spawn_weights
-                    .iter()
-                    .filter(|sw| sw.weight > 0 && item.tags.contains(&sw.tag))
-                    .next()
-                    .unwrap()
-                    .weight,
-                representation: self
-                    .get_mods_representation(m)
-                    .unwrap_or_else(|_| format!("representation_err: {}", &m_id)),
-                mod_key: m_id.clone(),
-            };
-            res.push(mod_item);
-        }
-        res.sort_by(|a, b| a.mod_key.to_lowercase().cmp(&b.mod_key.to_lowercase()));
 
-        let filter = search.string_query.trim().to_lowercase();
-        let filters: Vec<&str> = filter.split(' ').collect();
-        let mut v1 = vec![];
-        let mut v2 = vec![];
-        for m in res.iter() {
-            let verbose_str = m.representation.to_lowercase();
-            if verbose_str.contains(&filter) {
-                v1.push(m.clone());
-            } else if filters.iter().all(|f| verbose_str.contains(&*f)) {
-                v2.push(m.clone());
-            }
-        }
-        v1.extend(v2);
-        v1
+        let mut res = self.create_mod_items(&mod_ids, item, selected_groups);
+        res.sort_by(|a, b| a.mod_key.to_lowercase().cmp(&b.mod_key.to_lowercase()));
+        filter_mods(&mut res, search.string_query.clone())
     }
 
     fn get_item_classes(&self) -> Vec<String> {
@@ -287,7 +296,6 @@ impl CraftRepo for FileRepo {
         self.db
             .base_items_by_name
             .iter()
-            // .filter(|(_, bi)| bi.item_class == item_class && bi.domain == "item")
             .filter(|(_, bi)| bi.domain == "item" && bi.item_class == item_class.to_string())
             .map(|(s, bi)| ItemBase {
                 name: s.to_string(),
