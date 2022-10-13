@@ -28,6 +28,13 @@ pub trait CraftRepo {
 pub struct Data {
     pub mods_table: Vec<ModItem>,
 }
+impl Default for Data {
+    fn default() -> Self {
+        Self {
+            mods_table: Vec::new(),
+        }
+    }
+}
 
 #[derive(Debug)]
 pub struct UiStates {
@@ -40,6 +47,20 @@ pub struct UiStates {
     pub selected_item_level_as_filter: u64,
 }
 
+impl Default for UiStates {
+    fn default() -> Self {
+        Self {
+            filter_string: "".to_string(),
+            item_string: "".to_string(),
+            item_level: "100".to_string(),
+
+            selected: vec![],
+            selected_item_class_as_filter: "Helmet".to_string(),
+            selected_item_base_as_filter: "Iron Hat".to_string(),
+            selected_item_level_as_filter: 100,
+        }
+    }
+}
 pub enum UiEvents {
     Started,
     ChangeModFilter,
