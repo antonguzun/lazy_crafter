@@ -2,11 +2,35 @@ use crate::entities::craft_repo::{Data, ModItem, UiEvents, UiStates};
 
 use crate::input_schemas::parse_item_level;
 use crate::storage::files::local_db::FileRepo;
+use crate::ui::combobox_item_bases::show_combobox_with_bases;
+use crate::ui::combobox_item_classes::show_combobox_with_classes;
+use crate::ui::table_of_filtered_mods::show_table_of_filtered_mods;
+use crate::ui::table_of_selected::show_table_of_selected;
 use crate::usecases::craft_searcher;
 use eframe::egui;
 use egui::Sense;
 use egui_extras::{Size, TableBuilder};
 use std::sync::{mpsc, Arc, Mutex};
+
+const APP_NAME: &str = "Lazy Crafter";
+
+pub fn run_ui_in_main_tread(
+    sender: mpsc::Sender<UiEvents>,
+    ui_states: Arc<Mutex<UiStates>>,
+    data: Arc<Mutex<Data>>,
+) {
+    sender.send(UiEvents::Started).unwrap();
+    let mut native_options = eframe::NativeOptions::default();
+    native_options.initial_window_size = Some(egui::Vec2 {
+        x: 1300.0,
+        y: 600.0,
+    });
+    eframe::run_native(
+        APP_NAME,
+        native_options,
+        Box::new(|cc| Box::new(EguiApp::new(cc, ui_states, data, sender))),
+    );
+}
 
 pub struct EguiApp {
     ui_states: Arc<Mutex<UiStates>>,
@@ -53,50 +77,8 @@ impl eframe::App for EguiApp {
             ui.heading("Input");
             ui.set_min_width(200.0);
 
-            egui::ComboBox::from_label("item class")
-                .selected_text(format!(
-                    "{:?}",
-                    &mut self.ui_states.lock().unwrap().selected_item_class_as_filter
-                ))
-                .show_ui(ui, |ui| {
-                    item_classes.iter().for_each(|i| {
-                        if ui
-                            .selectable_value(
-                                &mut self.ui_states.lock().unwrap().selected_item_class_as_filter,
-                                i.to_string(),
-                                i.to_string(),
-                            )
-                            .changed()
-                        {
-                            let selected = &mut self.ui_states.lock().unwrap().selected;
-                            selected.clear();
-                            self.event_tx.send(UiEvents::AddToSelectedMods).unwrap();
-                        };
-                    });
-                });
-            egui::ComboBox::from_label("item base")
-                .selected_text(format!(
-                    "{:?}",
-                    &mut self.ui_states.lock().unwrap().selected_item_base_as_filter
-                ))
-                .show_ui(ui, |ui| {
-                    item_bases.iter().for_each(|i| {
-                        if ui
-                            .selectable_value(
-                                &mut self.ui_states.lock().unwrap().selected_item_base_as_filter,
-                                i.name.to_string(),
-                                format!("{} {}", i.name.to_string(), i.required_level.to_string()),
-                            )
-                            .changed()
-                        {
-                            let state = &mut self.ui_states.lock().unwrap();
-                            state.selected.clear();
-                            state.selected_item_level_as_filter = i.required_level;
-                            state.item_level = i.required_level.to_string();
-                            self.event_tx.send(UiEvents::AddToSelectedMods).unwrap();
-                        };
-                    });
-                });
+            show_combobox_with_classes(ui, item_classes, &self.ui_states, &self.event_tx);
+            show_combobox_with_bases(ui, item_bases, &self.ui_states, &self.event_tx);
 
             ui.label("item lvl");
             if ui
@@ -122,50 +104,6 @@ impl eframe::App for EguiApp {
                 // self.event_tx.send(UiEvents::ChangeModFilter).unwrap();
             };
         });
-        egui::SidePanel::right("selected_mods_panel").show(ctx, |ui| {
-            ui.heading("Selected");
-            ui.set_min_width(450.0);
-            let selected_table = TableBuilder::new(ui)
-                .striped(true)
-                .cell_layout(egui::Layout::left_to_right(egui::Align::Center))
-                .column(Size::initial(70.0).at_least(70.0))
-                .column(Size::remainder().at_least(300.0))
-                .resizable(false);
-
-            selected_table
-                .header(30.0, |mut header| {
-                    header.col(|ui| {
-                        ui.heading("weight");
-                    });
-                    header.col(|ui| {
-                        ui.heading("modification");
-                    });
-                })
-                .body(|mut body| {
-                    let selected = self.ui_states.lock().unwrap().selected.clone();
-                    for row_index in 0..selected.len() {
-                        let row_height = calculate_row_height(&selected[row_index], 18.0);
-                        body.row(row_height, |mut row| {
-                            row.col(|ui| {
-                                ui.label((&selected[row_index].weight).to_string());
-                            });
-                            let label = egui::Label::new(&selected[row_index].representation)
-                                .wrap(false)
-                                .sense(Sense::click());
-                            row.col(|ui| {
-                                if ui.add(label).clicked() {
-                                    // &self.selected.retain(|x| x == &self.selected[row_index].clone());
-                                };
-                            });
-                        });
-                    }
-                });
-            if ui.button("clean selected").clicked() {
-                let selected = &mut self.ui_states.lock().unwrap().selected;
-                selected.clear();
-                self.event_tx.send(UiEvents::CleanSelectedMods).unwrap();
-            }
-        });
 
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.heading("Mods");
@@ -179,77 +117,24 @@ impl eframe::App for EguiApp {
                     self.event_tx.send(UiEvents::ChangeModFilter).unwrap();
                 };
             });
-
             let mod_items = self.data.lock().unwrap().mods_table.clone();
+            let selected = &mut self.ui_states.lock().unwrap().selected;
+            show_table_of_filtered_mods(ui, mod_items, selected, &self.event_tx);
+        });
 
-            let table = TableBuilder::new(ui)
-                .striped(true)
-                .cell_layout(egui::Layout::left_to_right(egui::Align::Center))
-                .column(Size::initial(30.0).at_least(50.0))
-                .column(Size::initial(30.0).at_least(50.0))
-                .column(Size::remainder().at_least(450.0))
-                .resizable(false);
+        egui::SidePanel::right("selected_mods_panel").show(ctx, |ui| {
+            ui.heading("Selected");
+            ui.set_min_width(450.0);
+            let selected = self.ui_states.lock().unwrap().selected.clone();
+            show_table_of_selected(ui, selected);
 
-            table
-                .header(30.0, |mut header| {
-                    header.col(|ui| {
-                        ui.heading("#");
-                    });
-                    header.col(|ui| {
-                        ui.heading("weight");
-                    });
-                    header.col(|ui| {
-                        ui.heading("modification");
-                    });
-                })
-                .body(|mut body| {
-                    for row_index in 0..mod_items.len() {
-                        let row_height = calculate_row_height(&mod_items[row_index], 18.0);
-                        body.row(row_height, |mut row| {
-                            row.col(|ui| {
-                                ui.label((row_index + 1).to_string());
-                            });
-                            row.col(|ui| {
-                                ui.label(&mod_items[row_index].weight.to_string());
-                            });
-                            let label = egui::Label::new(&mod_items[row_index].representation)
-                                .wrap(false)
-                                .sense(Sense::click());
-                            row.col(|ui| {
-                                if ui.add(label).clicked() {
-                                    let selected = &mut self.ui_states.lock().unwrap().selected;
-                                    selected.push(mod_items[row_index].clone());
-                                    println!("selected mods: {:?}", &selected);
-                                    self.event_tx.send(UiEvents::AddToSelectedMods).unwrap();
-                                };
-                            });
-                        });
-                    }
-                });
+            if ui.button("clean selected").clicked() {
+                let selected = &mut self.ui_states.lock().unwrap().selected;
+                selected.clear();
+                self.event_tx.send(UiEvents::CleanSelectedMods).unwrap();
+            }
         });
     }
-}
-
-
-
-const APP_NAME: &str = "Lazy Crafter";
-
-pub fn run_ui_in_main_tread(
-    sender: mpsc::Sender<UiEvents>,
-    ui_states: Arc<Mutex<UiStates>>,
-    data: Arc<Mutex<Data>>,
-) {
-    sender.send(UiEvents::Started).unwrap();
-    let mut native_options = eframe::NativeOptions::default();
-    native_options.initial_window_size = Some(egui::Vec2 {
-        x: 1300.0,
-        y: 600.0,
-    });
-    eframe::run_native(
-        APP_NAME,
-        native_options,
-        Box::new(|cc| Box::new(EguiApp::new(cc, ui_states, data, sender))),
-    );
 }
 
 // Rarity: Magic
