@@ -62,7 +62,6 @@ impl eframe::App for EguiApp {
             let item_bases = self.data.lock().unwrap().item_bases.clone();
             comboboxes::show_combobox_with_bases(ui, item_bases, &self.ui_states, &self.event_tx);
             // show_level_input(ui, item_bases, &self.ui_states, &self.event_tx);
-            // show_item_input(ui, item_bases, &self.ui_states, &self.event_tx);
             ui.horizontal(|ui| {
                 ui.set_max_width(150.0);
                 if ui
@@ -83,12 +82,12 @@ impl eframe::App for EguiApp {
             });
 
             ui.label("or paste item");
-            if ui
-                .code_editor(&mut self.ui_states.lock().unwrap().item_string)
-                .changed()
-            {
-                // self.event_tx.send(UiEvents::ChangeModFilter).unwrap();
-            };
+            inputs::show_item_input(
+                ui,
+                &self.data.lock().unwrap().item_class_by_base_name,
+                &self.ui_states,
+                &self.event_tx,
+            );
         });
         egui::SidePanel::right("selected_mods_panel").show(ctx, |ui| {
             ui.heading("Selected");

@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 #[derive(Debug, Clone)]
 pub struct ModItem {
     pub required_level: u64,
@@ -23,19 +25,23 @@ pub trait CraftRepo {
     fn find_mods(&self, search: &ModsQuery) -> Vec<ModItem>;
     fn get_item_classes(&self) -> Vec<String>;
     fn get_item_bases(&self, item_class: &str) -> Vec<ItemBase>;
+    fn get_item_class_by_item_name(&self) -> HashMap<String, String>;
 }
 
 pub struct Data {
     pub mods_table: Vec<ModItem>,
     pub item_classes: Vec<String>,
     pub item_bases: Vec<ItemBase>,
+    pub item_class_by_base_name: HashMap<String, String>,
 }
+
 impl Default for Data {
     fn default() -> Self {
         Self {
             mods_table: Vec::new(),
             item_classes: Vec::new(),
             item_bases: Vec::new(),
+            item_class_by_base_name: HashMap::new(),
         }
     }
 }
@@ -73,4 +79,5 @@ pub enum UiEvents {
     ChangeItemBase,
     AddToSelectedMods,
     CleanSelectedMods,
+    InsertionItemData,
 }

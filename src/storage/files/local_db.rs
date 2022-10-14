@@ -208,11 +208,15 @@ impl FileRepo {
         mod_ids: &HashSet<String>,
         item: &ItemBaseRich,
         selected_groups: HashSet<std::string::String>,
+        max_item_level: u64,
     ) -> Vec<ModItem> {
         let target_gen_types = ["suffix", "prefix"];
         let mut res = vec![];
         for m_id in mod_ids {
             let m = self.db.mods.get(m_id).unwrap();
+            if m.required_level > max_item_level {
+                continue;
+            }
             if m.stats.is_empty()
                 || m.domain != item.domain
                 || !target_gen_types.contains(&m.generation_type.as_str())
@@ -240,7 +244,7 @@ impl FileRepo {
     }
 }
 
-fn filter_mods(mods: &mut Vec<ModItem>, query_string: String) -> Vec<ModItem> {
+fn filter_mods_by_text(mods: &mut Vec<ModItem>, query_string: String) -> Vec<ModItem> {
     let filter = query_string.trim().to_lowercase();
     let filters: Vec<&str> = filter.split(' ').collect();
     let (mut v1, mut v2) = (vec![], vec![]);
@@ -291,9 +295,9 @@ impl CraftRepo for FileRepo {
                 .flat_map(|m| m.groups.clone()),
         );
 
-        let mut res = self.create_mod_items(&mod_ids, item, selected_groups);
+        let mut res = self.create_mod_items(&mod_ids, item, selected_groups, search.item_level);
         res.sort_by(|a, b| a.mod_key.to_lowercase().cmp(&b.mod_key.to_lowercase()));
-        filter_mods(&mut res, search.string_query.clone())
+        filter_mods_by_text(&mut res, search.string_query.clone())
     }
 
     fn get_item_classes(&self) -> Vec<String> {
@@ -313,5 +317,15 @@ impl CraftRepo for FileRepo {
                 },
             })
             .collect()
+    }
+
+    fn get_item_class_by_item_name(&self) -> HashMap<String, String> {
+        HashMap::from_iter(
+            self.db
+                .base_items_by_name
+                .iter()
+                .filter(|(_, bi)| bi.domain == "item")
+                .map(|(s, bi)| (s.clone(), bi.item_class.clone())),
+        )
     }
 }

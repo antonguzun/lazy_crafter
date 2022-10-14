@@ -19,9 +19,12 @@ fn run_db_in_background(
         for event in &receiver {
             if event == UiEvents::Started {
                 let item_classes = craft_searcher::get_item_classes(&craft_repo);
+                let item_class_by_base_name = craft_searcher::get_item_class_by_item_name(&craft_repo);
                 let data = &mut data.lock().unwrap();
                 data.item_classes = item_classes;
+                data.item_class_by_base_name = item_class_by_base_name;
                 debug!(target: "db thread", "Loaded item classes by stat event");
+
             }
             let ui_state = ui_states.lock().unwrap();
             info!(target: "db thread", "Got event, ui_state is {:?}", ui_state);
