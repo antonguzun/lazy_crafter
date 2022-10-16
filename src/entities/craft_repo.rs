@@ -4,6 +4,7 @@ use std::collections::HashMap;
 pub struct ModItem {
     pub required_level: u64,
     pub weight: u32,
+    pub generation_type: String,
     pub representation: String,
     pub mod_key: String,
 }

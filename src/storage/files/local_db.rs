@@ -226,6 +226,7 @@ impl FileRepo {
             }
             let mod_item = ModItem {
                 required_level: m.required_level,
+                generation_type: m.generation_type.clone(),
                 weight: m
                     .spawn_weights
                     .iter()

@@ -92,6 +92,39 @@ impl eframe::App for EguiApp {
         egui::SidePanel::right("selected_mods_panel").show(ctx, |ui| {
             ui.heading("Selected");
             let selected_mods = self.ui_states.lock().unwrap().selected.clone();
+            let total_suff_weight: u32 = self
+                .data
+                .lock()
+                .unwrap()
+                .mods_table
+                .iter()
+                .filter(|m| m.generation_type == String::from("prefix"))
+                .map(|m| m.weight)
+                .sum();
+            let total_suff_weight: f64 = total_suff_weight.try_into().unwrap();
+            let total_pref_weight: u32 = self
+                .data
+                .lock()
+                .unwrap()
+                .mods_table
+                .iter()
+                .filter(|m| m.generation_type == String::from("suffix"))
+                .map(|m| m.weight)
+                .sum();
+            let total_pref_weight: f64 = total_pref_weight.try_into().unwrap();
+            let estimate: f64 = selected_mods
+                .iter()
+                .map(|m| match m.generation_type.as_str() {
+                    "prefix" => m.weight as f64 / total_pref_weight,
+                    "suffix" => m.weight as f64 / total_suff_weight,
+                    _ => {
+                        panic!("lke")
+                    }
+                })
+                .product();
+            // let estimate: f64 = 0.0;
+            ui.label(format!("estimate ~{}%", estimate * 100.0));
+
             tables::show_table_of_selected(ui, selected_mods);
             let selected_mods = &mut self.ui_states.lock().unwrap().selected;
             buttons::show_cleaning_selected_mods_button(ui, selected_mods, &self.event_tx);
