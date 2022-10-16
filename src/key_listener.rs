@@ -4,8 +4,6 @@ use std::collections::HashSet;
 use std::sync::mpsc::channel;
 use std::thread;
 use std::time::{Duration, SystemTime};
-// extern crate x11_clipboard;
-// use x11_clipboard::Clipboard;
 use clipboard_win::{formats, Clipboard, Getter, Setter};
 
 fn hash_event_type(event_type: EventType) -> String {
@@ -96,4 +94,68 @@ pub fn run_listener_in_background() {
             }
         }
     });
+}
+
+fn find_mods(data: String) -> Vec<String> {
+    vec![]
+}
+
+
+#[test]
+fn test_find_mods1() {
+    let str = "Item Class: Bows
+Rarity: Magic
+Imperial Bow of Restoration
+--------
+Bow
+Physical Damage: 29-117
+Critical Strike Chance: 5.00%
+Attacks per Second: 1.45
+--------
+Requirements:
+Level: 66
+Dex: 212
+--------
+Sockets: G G G-G G B
+--------
+Item Level: 81
+--------
+24% increased Elemental Damage with Attack Skills (implicit)
+--------
+Gain 3 Life per Enemy Hit by Attacks"
+        .to_string();
+    let mods = vec!["LifeGainPerTargetLocal2".to_string()];
+    assert_eq!(find_mods(str), mods);
+}
+
+#[test]
+fn test_find_mods2() {
+    let str = "Item Class: Bows
+Rarity: Magic
+Freezing Imperial Bow of the Drake
+--------
+Bow
+Physical Damage: 29-117
+Elemental Damage: 44-84 (augmented)
+Critical Strike Chance: 5.00%
+Attacks per Second: 1.45
+--------
+Requirements:
+Level: 66
+Dex: 212
+--------
+Sockets: G G G-G G B
+--------
+Item Level: 81
+--------
+24% increased Elemental Damage with Attack Skills (implicit)
+--------
+Adds 44 to 84 Cold Damage
++22% to Fire Resistance"
+        .to_string();
+    let mods = vec![
+        "LocalAddedColdDamageTwoHand5".to_string(),
+        "FireResist3".to_string(),
+    ];
+    assert_eq!(find_mods(str), mods);
 }
