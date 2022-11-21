@@ -4,7 +4,6 @@ use std::collections::HashSet;
 use std::sync::mpsc::channel;
 use std::thread;
 use std::time::{Duration, SystemTime};
-use clipboard_win::{formats, Clipboard, Getter, Setter};
 
 fn hash_event_type(event_type: EventType) -> String {
     format!("{:?}", &event_type)
@@ -31,8 +30,10 @@ fn send(event_type: &EventType) {
     }
     thread::sleep(delay);
 }
-
+#[cfg(target_os = "windows")]
 fn run_craft() {
+    use clipboard_win::{formats, Clipboard, Getter, Setter};
+
     println!("run crafting");
     send(&EventType::KeyPress(Key::ShiftLeft));
 
@@ -59,6 +60,9 @@ fn run_craft() {
     send(&EventType::KeyRelease(Key::ShiftLeft));
 }
 
+#[cfg(target_os = "linux")]
+fn run_craft() {}
+
 pub fn run_listener_in_background() {
     let (schan, rchan) = channel();
     thread::spawn(move || {
@@ -75,7 +79,6 @@ pub fn run_listener_in_background() {
         let target_events = create_target_hash_set();
         // println!("target_events {:?}", target_events);
         let mut last_combo = SystemTime::now() - Duration::from_secs(500);
-
         for event in rchan.iter() {
             events.push(event);
             events.retain(|e| e.time > SystemTime::now() - keypress_bandwidth);
@@ -99,7 +102,6 @@ pub fn run_listener_in_background() {
 fn find_mods(data: String) -> Vec<String> {
     vec![]
 }
-
 
 #[test]
 fn test_find_mods1() {
