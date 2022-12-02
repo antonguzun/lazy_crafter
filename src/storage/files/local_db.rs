@@ -351,5 +351,5 @@ fn test_repr_freeze_warstaff2() {
     let mod_item = repo.db.mods.get(&mod_id).unwrap();
     let repr = repo.get_mods_representation(mod_item).unwrap();
 
-    assert_eq!(repr, expected`456_repr);
+    assert_eq!(repr, expected_repr);
 }
