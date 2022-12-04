@@ -417,27 +417,44 @@ impl CraftRepo for FileRepo {
     }
 }
 
-#[test]
-fn test_repr_freeze_warstaff() {
-    // TODO! fix that testcase
-    let mod_id = "TwoHandChanceToFreeze2".to_string();
-    let expected_repr = "25% chance to Freeze".to_string();
-    let repo = FileRepo::new().unwrap();
-    let mod_item = repo.db.mods.get(&mod_id).unwrap();
-    let repr = repo.get_mods_representation(mod_item).unwrap();
 
-    assert_eq!(repr, expected_repr);
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_repr_freeze_warstaff() {
+        // TODO! fix that testcase
+        let mod_id = "TwoHandChanceToFreeze2".to_string();
+        let expected_repr = "25% chance to Freeze".to_string();
+        let repo = FileRepo::new().unwrap();
+        let mod_item = repo.db.mods.get(&mod_id).unwrap();
+        let repr = repo.get_mods_representation(mod_item).unwrap();
+    
+        assert_eq!(repr, expected_repr);
+    }
+    
+    #[test]
+    fn test_repr_freeze_warstaff2() {
+        let mod_id = "AttackerTakesDamage2".to_string();
+        let expected_repr = "Reflects (5-10) Physical Damage to Melee Attackers".to_string();
+        let repo = FileRepo::new().unwrap();
+        let mod_item = repo.db.mods.get(&mod_id).unwrap();
+        let repr = repo.get_mods_representation(mod_item).unwrap();
+    
+        assert_eq!(repr, expected_repr);
+    }
+
+    #[test]
+    fn test_repr_physical_damage_long_bow() {
+        // TODO! fix that testcase
+        let mod_id = "LocalIncreasedPhysicalDamagePercent1".to_string();
+        let expected_repr = "(40-49)% increased Physical Damage".to_string();
+        let repo = FileRepo::new().unwrap();
+        let mod_item = repo.db.mods.get(&mod_id).unwrap();
+        let repr = repo.get_mods_representation(mod_item).unwrap();
+    
+        assert_eq!(repr, expected_repr);
+    }
 }
 
-#[test]
-fn test_repr_freeze_warstaff2() {
-    let mod_id = "AttackerTakesDamage2".to_string();
-    let expected_repr = "Reflects (5-10) Physical Damage to Melee Attackers".to_string();
-    let repo = FileRepo::new().unwrap();
-    let mod_item = repo.db.mods.get(&mod_id).unwrap();
-    let repr = repo.get_mods_representation(mod_item).unwrap();
 
-    assert_eq!(repr, expected_repr);
-}
-
-// TODO! add LocalIncreasedPhysicalDamagePercent1 testcase

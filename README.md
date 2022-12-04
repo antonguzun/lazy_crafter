@@ -1,12 +1,36 @@
 # lazy_crafter
 
 ## Build
-`cargo build`
 
+```sh
+cargo build
+```
 
-## Run
-`RUST_LOG=DEBUG cargo run`
+## Run as debug
 
+### unix
+
+```sh
+RUST_LOG=DEBUG cargo run
+```
+
+### windows
+
+```PowerShell
+@set RUST_LOG=DEBUG
+cargo run
+```
 
 ## Run tests
-`cargo run tests`
+
+### unit tests
+
+```sh
+cargo run tests
+```
+
+### integration tests
+
+```sh
+cargo test --test test_item_parser
+```
