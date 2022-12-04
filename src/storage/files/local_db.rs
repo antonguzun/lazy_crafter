@@ -344,6 +344,9 @@ impl CraftRepo for FileRepo {
             .ok_or(format!("{} not found in {}", item_name, item_class))
     }
 
+    // parse raw mod string to mod key
+    // provided raw mod string and each available mod for item_base to common template
+    // added filtration by stat min/max to avoid wrong matches 
     fn string_to_mod(
         &self,
         item_class: &str,
@@ -364,11 +367,14 @@ impl CraftRepo for FileRepo {
             .find_iter(mod_name)
             .map(|m| m.as_str().parse::<i32>().unwrap())
             .collect();
+        // add "\+?" to pattern because our mods representation doesn't contain it (look stat_translations.json field "format")
         let mod_template = Regex::new(r"\+?\d+").unwrap().replace_all(mod_name, "#");
 
         let res = mods
             .into_iter()
             .find_map(|m| {
+                // add (\d+-\d+\) because its how we represent range values
+                // but don't care about "\+?" because we already skipped "format" in representation
                 match Regex::new(r"\(\d+-\d+\)|\d+")
                     .unwrap()
                     .replace_all(&m.representation, "#")

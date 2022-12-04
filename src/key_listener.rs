@@ -52,9 +52,10 @@ fn run_craft(craft_repo: &impl CraftRepo) {
         formats::Unicode
             .read_clipboard(&mut output)
             .expect("Read sample");
-        let parsed_craft = craft_searcher::parse_craft(&craft_repo, &output).unwrap();
-        // do magic
         println!("copied {}", output);
+        let parsed_craft = craft_searcher::parse_craft(&craft_repo, &output).unwrap();
+        println!("parsed {}", &parsed_craft);
+        // do magic
 
         output.clear();
         send(&EventType::ButtonPress(Button::Left));

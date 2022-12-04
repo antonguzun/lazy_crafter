@@ -28,13 +28,6 @@ pub struct ParsedItem {
 }
 
 pub fn parse_raw_item(craft_repo: &impl CraftRepo, raw_item: &str) -> Result<ParsedItem, String> {
-    // use regex::Regex;
-    // let re = Regex::new(r"^Item Class: (.*)\n").unwrap();
-    // let raw_tem_class = &re
-    //     .captures_iter(raw_item)
-    //     .find(|cap| cap.len() > 1)
-    //     .ok_or("No item class found".to_string())?[1];
-
     let item_class = raw_item
         .split("\n")
         .find_map(|row| match craft_repo.item_class_if_exists(row) {
@@ -53,10 +46,15 @@ pub fn parse_raw_item(craft_repo: &impl CraftRepo, raw_item: &str) -> Result<Par
         )
         .ok_or("No item base found".to_string())?;
 
+    let last_part = match raw_item.split("--------").last() {
+        Some(last_part) => last_part,
+        None => return Err("No mods found".to_string()),
+    };
+    
     let mut mods = vec![];
     let mut raw_mods = vec![];
-
-    raw_item.split("\n").for_each(|row| {
+    
+    last_part.split("\n").for_each(|row| {
         match craft_repo.string_to_mod(&item_class, &item_base_name, row) {
             Ok(mod_name) => {
                 mods.push(mod_name);
@@ -65,6 +63,10 @@ pub fn parse_raw_item(craft_repo: &impl CraftRepo, raw_item: &str) -> Result<Par
             Err(_) => {}
         }
     });
+
+    if last_part.trim().split("\n").count() != mods.len() {
+        return Err("Found wrong count of mods".to_string());
+    }
 
     Ok(ParsedItem {
         item_class,
