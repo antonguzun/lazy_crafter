@@ -53,7 +53,13 @@ fn run_craft(craft_repo: &impl CraftRepo) {
             .read_clipboard(&mut output)
             .expect("Read sample");
         println!("copied {}", output);
-        let parsed_craft = craft_searcher::parse_craft(&craft_repo, &output).unwrap();
+        let parsed_craft = match craft_searcher::parse_craft(&craft_repo, &output) {
+            Ok(parsed_craft) => parsed_craft,
+            Err(_) => {
+                println!("Could not parse craft");
+                continue;
+            }
+        };
         println!("parsed {}", &parsed_craft);
         // do magic
 
