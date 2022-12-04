@@ -439,3 +439,5 @@ fn test_repr_freeze_warstaff2() {
 
     assert_eq!(repr, expected_repr);
 }
+
+// TODO! add LocalIncreasedPhysicalDamagePercent1 testcase

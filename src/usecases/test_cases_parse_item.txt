@@ -1,0 +1,2128 @@
+error:
+
+copied Item Class: Shields
+Rarity: Normal
+Copper Tower Shield
+--------
+Chance to Block: 24%
+Armour: 164
+--------
+Requirements:
+Level: 24
+Str: 62
+--------
+Sockets: R-R
+--------
+Item Level: 26
+--------
++39 to maximum Life (implicit)
+
+Could not parse craft
+\\
+copied Item Class: Boots
+Rarity: Magic
+Magpie's Ringmail Boots
+--------
+Armour: 29
+Energy Shield: 7
+--------
+Requirements:
+Level: 16
+Str: 15
+Int: 15
+--------
+Sockets: B
+--------
+Item Level: 26
+--------
+9% increased Rarity of Items found
+
+Could not parse craft
+\\
+copied Item Class: Bows
+Rarity: Magic
+Long Bow of the Salamander
+--------
+Bow
+Physical Damage: 8-33
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
++17% to Fire Resistance
+
+Could not parse craft: No item class found
+\\
+copied Item Class: Thrusting One Hand Swords
+Rarity: Magic
+Antique Rapier of the Penguin
+--------
+One Handed Sword
+Physical Damage: 12-46
+Critical Strike Chance: 6.50%
+Attacks per Second: 1.30
+Weapon Range: 14
+--------
+Requirements:
+Level: 26
+Dex: 89
+--------
+Sockets: G-G-G
+--------
+Item Level: 27
+--------
++25% to Global Critical Strike Multiplier (implicit)
+--------
++18% to Cold Resistance
+
+Could not parse craft: No item class found
+\\
+copied Item Class: Bows
+Rarity: Magic
+Journeyman's Long Bow
+--------
+Bow
+Physical Damage: 10-40 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+21% increased Physical Damage
++36 to Accuracy Rating
+
+Could not parse craft: Found wrong count of mods
+\\
+copied Item Class: Bows
+Rarity: Magic
+Heavy Long Bow of Steadiness
+--------
+Bow
+Physical Damage: 11-47 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+43% increased Physical Damage
++99 to Accuracy Rating
+
+Could not parse craft: Found wrong count of mods
+\\
+copied Item Class: Bows
+Rarity: Magic
+Serrated Long Bow of Rejuvenation
+--------
+Bow
+Physical Damage: 13-54 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+64% increased Physical Damage
+Gramts 2 Life per Enemy Hit
+
+Could not parse craft: Found wrong count of mods
+\\
+copied Item Class: Bows
+Rarity: Magic
+Serrated Long Bow of Rejuvenation
+--------
+Bow
+Physical Damage: 12-51 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+55% increased Physical Damage
+Gramts 2 Life per Enemy Hit
+
+Could not parse craft: Found wrong count of mods
+\\
+copied Item Class: Bows
+Rarity: Magic
+Journeyman's Long Bow
+--------
+Bow
+Physical Damage: 10-40 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+22% increased Physical Damage
++34 to Accuracy Rating
+
+Could not parse craft: Found wrong count of mods
+\\
+copied Item Class: Bows
+Rarity: Magic
+Frosted Long Bow of Rejuvenation
+--------
+Bow
+Physical Damage: 8-33
+Elemental Damage: 3-7 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+Adds 3 to 7 Cold Damage
+Gramts 2 Life per Enemy Hit
+
+Could not parse craft: Found wrong count of mods
+\\
+copied Item Class: Stackable Currency
+Rarity: Currency
+Binding Shard
+--------
+Stack Size: 9/20
+--------
+A stack of 20 shards becomes an Orb of Binding.
+Shift click to unstack.
+
+Could not parse craft: No item class found
+\\
+success:
+run crafting
+##### try 0 #####
+copied Item Class: Bows
+Rarity: Magic
+Heated Long Bow
+--------
+Bow
+Physical Damage: 8-33
+Elemental Damage: 3-6 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+Adds 3 to 6 Fire Damage
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Heated Long Bow",
+    mods: [
+        "LocalAddedFireDamageTwoHand1",
+    ],
+    raw_mods: [
+        "Adds 3 to 6 Fire Damage",
+    ],
+}
+##### try 1 #####
+copied Item Class: Bows
+Rarity: Magic
+Heated Long Bow
+--------
+Bow
+Physical Damage: 8-33
+Elemental Damage: 3-6 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+Adds 3 to 6 Fire Damage
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Heated Long Bow",
+    mods: [
+        "LocalAddedFireDamageTwoHand1",
+    ],
+    raw_mods: [
+        "Adds 3 to 6 Fire Damage",
+    ],
+}
+##### try 2 #####
+copied Item Class: Bows
+Rarity: Magic
+Humming Long Bow of the Inuit
+--------
+Bow
+Physical Damage: 8-33
+Elemental Damage: 2-11 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+Adds 2 to 11 Lightning Damage
++9% to Cold Resistance
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Humming Long Bow of the Inuit",
+    mods: [
+        "LocalAddedLightningDamageTwoHand1_",
+        "ColdResist1",
+    ],
+    raw_mods: [
+        "Adds 2 to 11 Lightning Damage",
+        "+9% to Cold Resistance",
+    ],
+}
+##### try 3 #####
+copied Item Class: Bows
+Rarity: Magic
+Heated Long Bow of Skill
+--------
+Bow
+Physical Damage: 8-33
+Elemental Damage: 4-7 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.39 (augmented)
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+Adds 4 to 7 Fire Damage
+7% increased Attack Speed
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Heated Long Bow of Skill",
+    mods: [
+        "LocalAddedFireDamageTwoHand1",
+        "LocalIncreasedAttackSpeed1",
+    ],
+    raw_mods: [
+        "Adds 4 to 7 Fire Damage",
+        "7% increased Attack Speed",
+    ],
+}
+##### try 4 #####
+copied Item Class: Bows
+Rarity: Magic
+Fletcher's Long Bow of the Whelpling
+--------
+Bow
+Physical Damage: 8-33
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
++1 to Level of Socketed Bow Gems
++9% to Fire Resistance
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Fletcher's Long Bow of the Whelpling",
+    mods: [
+        "LocalIncreaseSocketedBowGemLevel1",
+        "FireResist1",
+    ],
+    raw_mods: [
+        "+1 to Level of Socketed Bow Gems",
+        "+9% to Fire Resistance",
+    ],
+}
+##### try 5 #####
+copied Item Class: Bows
+Rarity: Magic
+Heated Long Bow
+--------
+Bow
+Physical Damage: 8-33
+Elemental Damage: 3-6 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+Adds 3 to 6 Fire Damage
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Heated Long Bow",
+    mods: [
+        "LocalAddedFireDamageTwoHand1",
+    ],
+    raw_mods: [
+        "Adds 3 to 6 Fire Damage",
+    ],
+}
+##### try 6 #####
+copied Item Class: Bows
+Rarity: Magic
+Journeyman's Long Bow
+--------
+Bow
+Physical Damage: 10-40 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+21% increased Physical Damage
++36 to Accuracy Rating
+
+Could not parse craft: Found wrong count of mods
+##### try 7 #####
+copied Item Class: Bows
+Rarity: Magic
+Long Bow of Impact
+--------
+Bow
+Physical Damage: 8-33
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+14% increased Stun Duration on Enemies
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Long Bow of Impact",
+    mods: [
+        "StunDuration1",
+    ],
+    raw_mods: [
+        "14% increased Stun Duration on Enemies",
+    ],
+}
+##### try 8 #####
+copied Item Class: Bows
+Rarity: Magic
+Long Bow of Impact
+--------
+Bow
+Physical Damage: 8-33
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+14% increased Stun Duration on Enemies
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Long Bow of Impact",
+    mods: [
+        "StunDuration1",
+    ],
+    raw_mods: [
+        "14% increased Stun Duration on Enemies",
+    ],
+}
+##### try 9 #####
+copied Item Class: Bows
+Rarity: Magic
+Smouldering Long Bow of Absorption
+--------
+Bow
+Physical Damage: 8-33
+Elemental Damage: 19-29 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+Adds 19 to 29 Fire Damage
+Gain 1 Mana per Enemy Killed
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Smouldering Long Bow of Absorption",
+    mods: [
+        "LocalAddedFireDamageTwoHand2",
+        "ManaGainedFromEnemyDeath1",
+    ],
+    raw_mods: [
+        "Adds 19 to 29 Fire Damage",
+        "Gain 1 Mana per Enemy Killed",
+    ],
+}
+##### try 10 #####
+copied Item Class: Bows
+Rarity: Magic
+Humming Long Bow of Absorption
+--------
+Bow
+Physical Damage: 8-33
+Elemental Damage: 2-10 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+Adds 2 to 10 Lightning Damage
+Gain 1 Mana per Enemy Killed
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Humming Long Bow of Absorption",
+    mods: [
+        "LocalAddedLightningDamageTwoHand1_",
+        "ManaGainedFromEnemyDeath1",
+    ],
+    raw_mods: [
+        "Adds 2 to 10 Lightning Damage",
+        "Gain 1 Mana per Enemy Killed",
+    ],
+}
+##### try 11 #####
+copied Item Class: Bows
+Rarity: Magic
+Heavy Long Bow of Steadiness
+--------
+Bow
+Physical Damage: 11-47 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+43% increased Physical Damage
++99 to Accuracy Rating
+
+Could not parse craft: Found wrong count of mods
+##### try 12 #####
+copied Item Class: Bows
+Rarity: Magic
+Smouldering Long Bow of the Squall
+--------
+Bow
+Physical Damage: 8-33
+Elemental Damage: 16-33 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 10
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+Adds 16 to 33 Fire Damage
++16% to Lightning Resistance
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Smouldering Long Bow of the Squall",
+    mods: [
+        "LocalAddedFireDamageTwoHand2",
+        "LightningResist2",
+    ],
+    raw_mods: [
+        "Adds 16 to 33 Fire Damage",
+        "+16% to Lightning Resistance",
+    ],
+}
+##### try 13 #####
+copied Item Class: Bows
+Rarity: Magic
+Smouldering Long Bow of the Squall
+--------
+Bow
+Physical Damage: 8-33
+Elemental Damage: 16-33 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 10
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+Adds 16 to 33 Fire Damage
++16% to Lightning Resistance
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Smouldering Long Bow of the Squall",
+    mods: [
+        "LocalAddedFireDamageTwoHand2",
+        "LightningResist2",
+    ],
+    raw_mods: [
+        "Adds 16 to 33 Fire Damage",
+        "+16% to Lightning Resistance",
+    ],
+}
+##### try 14 #####
+copied Item Class: Bows
+Rarity: Magic
+Long Bow of Success
+--------
+Bow
+Physical Damage: 8-33
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+Gain 4 Life per Enemy Killed
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Long Bow of Success",
+    mods: [
+        "LifeGainedFromEnemyDeath1",
+    ],
+    raw_mods: [
+        "Gain 4 Life per Enemy Killed",
+    ],
+}
+##### try 15 #####
+copied Item Class: Bows
+Rarity: Magic
+Serrated Long Bow of Rejuvenation
+--------
+Bow
+Physical Damage: 13-54 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+64% increased Physical Damage
+Gramts 2 Life per Enemy Hit
+
+Could not parse craft: Found wrong count of mods
+##### try 16 #####
+copied Item Class: Bows
+Rarity: Magic
+Long Bow of the Salamander
+--------
+Bow
+Physical Damage: 8-33
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
++13% to Fire Resistance
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Long Bow of the Salamander",
+    mods: [
+        "FireResist2",
+    ],
+    raw_mods: [
+        "+13% to Fire Resistance",
+    ],
+}
+##### try 17 #####
+copied Item Class: Bows
+Rarity: Magic
+Long Bow of the Salamander
+--------
+Bow
+Physical Damage: 8-33
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
++13% to Fire Resistance
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Long Bow of the Salamander",
+    mods: [
+        "FireResist2",
+    ],
+    raw_mods: [
+        "+13% to Fire Resistance",
+    ],
+}
+##### try 18 #####
+copied Item Class: Bows
+Rarity: Magic
+Serrated Long Bow of Rejuvenation
+--------
+Bow
+Physical Damage: 12-51 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+55% increased Physical Damage
+Gramts 2 Life per Enemy Hit
+
+Could not parse craft: Found wrong count of mods
+##### try 19 #####
+copied Item Class: Bows
+Rarity: Magic
+Smouldering Long Bow
+--------
+Bow
+Physical Damage: 8-33
+Elemental Damage: 20-29 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+Adds 20 to 29 Fire Damage
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Smouldering Long Bow",
+    mods: [
+        "LocalAddedFireDamageTwoHand2",
+    ],
+    raw_mods: [
+        "Adds 20 to 29 Fire Damage",
+    ],
+}
+##### try 20 #####
+copied Item Class: Bows
+Rarity: Magic
+Smouldering Long Bow
+--------
+Bow
+Physical Damage: 8-33
+Elemental Damage: 20-29 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+Adds 20 to 29 Fire Damage
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Smouldering Long Bow",
+    mods: [
+        "LocalAddedFireDamageTwoHand2",
+    ],
+    raw_mods: [
+        "Adds 20 to 29 Fire Damage",
+    ],
+}
+##### try 21 #####
+copied Item Class: Bows
+Rarity: Magic
+Journeyman's Long Bow
+--------
+Bow
+Physical Damage: 10-40 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+22% increased Physical Damage
++34 to Accuracy Rating
+
+Could not parse craft: Found wrong count of mods
+##### try 22 #####
+copied Item Class: Bows
+Rarity: Magic
+Frosted Long Bow
+--------
+Bow
+Physical Damage: 8-33
+Elemental Damage: 3-6 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+Adds 3 to 6 Cold Damage
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Frosted Long Bow",
+    mods: [
+        "LocalAddedColdDamageTwoHand1",
+    ],
+    raw_mods: [
+        "Adds 3 to 6 Cold Damage",
+    ],
+}
+##### try 23 #####
+copied Item Class: Bows
+Rarity: Magic
+Frosted Long Bow
+--------
+Bow
+Physical Damage: 8-33
+Elemental Damage: 3-6 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+Adds 3 to 6 Cold Damage
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Frosted Long Bow",
+    mods: [
+        "LocalAddedColdDamageTwoHand1",
+    ],
+    raw_mods: [
+        "Adds 3 to 6 Cold Damage",
+    ],
+}
+##### try 24 #####
+copied Item Class: Bows
+Rarity: Magic
+Buzzing Long Bow
+--------
+Bow
+Physical Damage: 8-33
+Elemental Damage: 3-47 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 10
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+Adds 3 to 47 Lightning Damage
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Buzzing Long Bow",
+    mods: [
+        "LocalAddedLightningDamageTwoHand2",
+    ],
+    raw_mods: [
+        "Adds 3 to 47 Lightning Damage",
+    ],
+}
+##### try 25 #####
+copied Item Class: Bows
+Rarity: Magic
+Heated Long Bow of Ease
+--------
+Bow
+Physical Damage: 8-33
+Elemental Damage: 5-7 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.43 (augmented)
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+Adds 5 to 7 Fire Damage
+10% increased Attack Speed
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Heated Long Bow of Ease",
+    mods: [
+        "LocalAddedFireDamageTwoHand1",
+        "LocalIncreasedAttackSpeed2",
+    ],
+    raw_mods: [
+        "Adds 5 to 7 Fire Damage",
+        "10% increased Attack Speed",
+    ],
+}
+##### try 26 #####
+copied Item Class: Bows
+Rarity: Magic
+Long Bow of Ire
+--------
+Bow
+Physical Damage: 8-33
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
++12% to Global Critical Strike Multiplier
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Long Bow of Ire",
+    mods: [
+        "LocalCriticalMultiplier1",
+    ],
+    raw_mods: [
+        "+12% to Global Critical Strike Multiplier",
+    ],
+}
+##### try 27 #####
+copied Item Class: Bows
+Rarity: Magic
+Frosted Long Bow of Rejuvenation
+--------
+Bow
+Physical Damage: 8-33
+Elemental Damage: 3-7 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+Adds 3 to 7 Cold Damage
+Gramts 2 Life per Enemy Hit
+
+Could not parse craft: Found wrong count of mods
+##### try 28 #####
+copied Item Class: Bows
+Rarity: Magic
+Heated Long Bow of the Whelpling
+--------
+Bow
+Physical Damage: 8-33
+Elemental Damage: 5-6 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+Adds 5 to 6 Fire Damage
++6% to Fire Resistance
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Heated Long Bow of the Whelpling",
+    mods: [
+        "LocalAddedFireDamageTwoHand1",
+        "FireResist1",
+    ],
+    raw_mods: [
+        "Adds 5 to 6 Fire Damage",
+        "+6% to Fire Resistance",
+    ],
+}
+##### try 29 #####
+copied Item Class: Bows
+Rarity: Magic
+Heated Long Bow of the Whelpling
+--------
+Bow
+Physical Damage: 8-33
+Elemental Damage: 5-6 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+Adds 5 to 6 Fire Damage
++6% to Fire Resistance
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Heated Long Bow of the Whelpling",
+    mods: [
+        "LocalAddedFireDamageTwoHand1",
+        "FireResist1",
+    ],
+    raw_mods: [
+        "Adds 5 to 6 Fire Damage",
+        "+6% to Fire Resistance",
+    ],
+}
+You pressed combo! prev combo at 2022-12-04T18:46:17.073758800+00:00
+run crafting
+##### try 0 #####
+copied Item Class: Bows
+Rarity: Magic
+Glinting Long Bow
+--------
+Bow
+Physical Damage: 10-38 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+Adds 2 to 5 Physical Damage
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Glinting Long Bow",
+    mods: [
+        "LocalAddedPhysicalDamageTwoHand1",
+    ],
+    raw_mods: [
+        "Adds 2 to 5 Physical Damage",
+    ],
+}
+##### try 1 #####
+copied Item Class: Bows
+Rarity: Magic
+Glinting Long Bow
+--------
+Bow
+Physical Damage: 10-38 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+Adds 2 to 5 Physical Damage
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Glinting Long Bow",
+    mods: [
+        "LocalAddedPhysicalDamageTwoHand1",
+    ],
+    raw_mods: [
+        "Adds 2 to 5 Physical Damage",
+    ],
+}
+##### try 2 #####
+copied Item Class: Bows
+Rarity: Magic
+Heavy Long Bow
+--------
+Bow
+Physical Damage: 11-47 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+43% increased Physical Damage
+
+Could not parse craft: Found wrong count of mods
+##### try 3 #####
+copied Item Class: Bows
+Rarity: Magic
+Chilled Long Bow
+--------
+Bow
+Physical Damage: 8-33
+Elemental Damage: 15-28 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+Adds 15 to 28 Cold Damage
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Chilled Long Bow",
+    mods: [
+        "LocalAddedColdDamageTwoHand2",
+    ],
+    raw_mods: [
+        "Adds 15 to 28 Cold Damage",
+    ],
+}
+##### try 4 #####
+copied Item Class: Bows
+Rarity: Magic
+Chilled Long Bow
+--------
+Bow
+Physical Damage: 8-33
+Elemental Damage: 15-28 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+Adds 15 to 28 Cold Damage
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Chilled Long Bow",
+    mods: [
+        "LocalAddedColdDamageTwoHand2",
+    ],
+    raw_mods: [
+        "Adds 15 to 28 Cold Damage",
+    ],
+}
+##### try 5 #####
+copied Item Class: Bows
+Rarity: Magic
+Chilled Long Bow of Ire
+--------
+Bow
+Physical Damage: 8-33
+Elemental Damage: 13-28 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+Adds 13 to 28 Cold Damage
++11% to Global Critical Strike Multiplier
+
+parsed ParsedItem {
+    item_class: "Bow",
+    item_base_name: "Long Bow",
+    item_name: "Chilled Long Bow of Ire",
+    mods: [
+        "LocalAddedColdDamageTwoHand2",
+        "LocalCriticalMultiplier1",
+    ],
+    raw_mods: [
+        "Adds 13 to 28 Cold Damage",
+        "+11% to Global Critical Strike Multiplier",
+    ],
+}
+##### try 6 #####
+copied Item Class: Bows
+Rarity: Magic
+Squire's Long Bow of the Cloud
+--------
+Bow
+Physical Damage: 9-39 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+18% increased Physical Damage
++6% to Lightning Resistance
++16 to Accuracy Rating
+
+Could not parse craft: Found wrong count of mods
+##### try 7 #####
+copied Item Class: Bows
+Rarity: Magic
+Serrated Long Bow of Ease
+--------
+Bow
+Physical Damage: 13-54 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.42 (augmented)
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+63% increased Physical Damage
+9% increased Attack Speed
+
+Could not parse craft: Found wrong count of mods
+##### try 8 #####
+copied Item Class: Bows
+Rarity: Magic
+Serrated Long Bow of Ease
+--------
+Bow
+Physical Damage: 13-54 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.42 (augmented)
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+63% increased Physical Damage
+9% increased Attack Speed
+
+Could not parse craft: Found wrong count of mods
+##### try 9 #####
+copied Item Class: Bows
+Rarity: Magic
+Serrated Long Bow of Ease
+--------
+Bow
+Physical Damage: 13-54 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.42 (augmented)
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+63% increased Physical Damage
+9% increased Attack Speed
+
+Could not parse craft: Found wrong count of mods
+##### try 10 #####
+copied Item Class: Bows
+Rarity: Magic
+Serrated Long Bow of Ease
+--------
+Bow
+Physical Damage: 13-54 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.42 (augmented)
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+63% increased Physical Damage
+9% increased Attack Speed
+
+Could not parse craft: Found wrong count of mods
+##### try 11 #####
+copied Item Class: Bows
+Rarity: Magic
+Serrated Long Bow of Ease
+--------
+Bow
+Physical Damage: 13-54 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.42 (augmented)
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+63% increased Physical Damage
+9% increased Attack Speed
+
+Could not parse craft: Found wrong count of mods
+##### try 12 #####
+copied Item Class: Bows
+Rarity: Magic
+Serrated Long Bow of Ease
+--------
+Bow
+Physical Damage: 13-54 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.42 (augmented)
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+63% increased Physical Damage
+9% increased Attack Speed
+
+Could not parse craft: Found wrong count of mods
+##### try 13 #####
+copied Item Class: Bows
+Rarity: Magic
+Serrated Long Bow of Ease
+--------
+Bow
+Physical Damage: 13-54 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.42 (augmented)
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+63% increased Physical Damage
+9% increased Attack Speed
+
+Could not parse craft: Found wrong count of mods
+##### try 14 #####
+copied Item Class: Bows
+Rarity: Magic
+Serrated Long Bow of Ease
+--------
+Bow
+Physical Damage: 13-54 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.42 (augmented)
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+63% increased Physical Damage
+9% increased Attack Speed
+
+Could not parse craft: Found wrong count of mods
+##### try 15 #####
+copied Item Class: Bows
+Rarity: Magic
+Serrated Long Bow of Ease
+--------
+Bow
+Physical Damage: 13-54 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.42 (augmented)
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+63% increased Physical Damage
+9% increased Attack Speed
+
+Could not parse craft: Found wrong count of mods
+##### try 16 #####
+copied Item Class: Stackable Currency
+Rarity: Currency
+Binding Shard
+--------
+Stack Size: 9/20
+--------
+A stack of 20 shards becomes an Orb of Binding.
+Shift click to unstack.
+
+Could not parse craft: No item class found
+##### try 17 #####
+copied Item Class: Stackable Currency
+Rarity: Currency
+Binding Shard
+--------
+Stack Size: 9/20
+--------
+A stack of 20 shards becomes an Orb of Binding.
+Shift click to unstack.
+
+Could not parse craft: No item class found
+##### try 18 #####
+copied Item Class: Stackable Currency
+Rarity: Currency
+Binding Shard
+--------
+Stack Size: 9/20
+--------
+A stack of 20 shards becomes an Orb of Binding.
+Shift click to unstack.
+
+Could not parse craft: No item class found
+##### try 19 #####
+copied Item Class: Stackable Currency
+Rarity: Currency
+Binding Shard
+--------
+Stack Size: 9/20
+--------
+A stack of 20 shards becomes an Orb of Binding.
+Shift click to unstack.
+
+Could not parse craft: No item class found
+##### try 20 #####
+copied Item Class: Stackable Currency
+Rarity: Currency
+Binding Shard
+--------
+Stack Size: 9/20
+--------
+A stack of 20 shards becomes an Orb of Binding.
+Shift click to unstack.
+
+Could not parse craft: No item class found
+##### try 21 #####
+copied Item Class: Stackable Currency
+Rarity: Currency
+Binding Shard
+--------
+Stack Size: 9/20
+--------
+A stack of 20 shards becomes an Orb of Binding.
+Shift click to unstack.
+\\
+add:
+\\
+Item Class: Two Hand Swords
+Rarity: Magic
+Wicked Engraved Greatsword of Stinging
+--------
+Two Handed Sword
+Physical Damage: 83-173 (augmented)
+Critical Strike Chance: 5.75% (augmented)
+Attacks per Second: 1.30
+Weapon Range: 13
+--------
+Requirements:
+Level: 68
+Str: 106
+Dex: 95
+--------
+Sockets: R-G-B 
+--------
+Item Level: 59
+--------
+40% increased Global Accuracy Rating (implicit)
+--------
+70% increased Physical Damage
+15% increased Critical Strike Chance
+\\
+Item Class: One Hand Maces
+Rarity: Rare
+Corpse Ram
+Battle Hammer
+--------
+One Handed Mace
+Physical Damage: 36-84 (augmented)
+Elemental Damage: 8-14 (augmented)
+Critical Strike Chance: 5.00%
+Attacks per Second: 1.57 (augmented)
+Weapon Range: 11
+--------
+Requirements:
+Level: 44
+Str: 143
+--------
+Sockets: R-R R 
+--------
+Item Level: 45
+--------
+10% reduced Enemy Stun Threshold (implicit)
+--------
++31 to Strength
+42% increased Physical Damage
+Adds 8 to 14 Cold Damage
+12% increased Attack Speed
+Gain 9 Life per Enemy Killed
+\\
+Item Class: Bows
+Rarity: Rare
+Mind Blast
+Imperial Bow
+--------
+Bow
+Physical Damage: 29-117
+Elemental Damage: 25-42 (augmented), 23-461 (augmented)
+Critical Strike Chance: 5.00%
+Attacks per Second: 1.45
+--------
+Requirements:
+Level: 66
+Dex: 212
+--------
+Sockets: G-G-G-G-G G 
+--------
+Item Level: 82
+--------
+22% increased Elemental Damage with Attack Skills (implicit)
+--------
+Adds 25 to 42 Cold Damage
+Adds 23 to 461 Lightning Damage
++29% to Cold Resistance
++28% to Lightning Resistance
+Gramts 5 Life per Enemy Hit
+\\
+Item Class: Bows
+Rarity: Rare
+Miracle Rain
+Harbinger Bow
+--------
+Bow
+Physical Damage: 50-133
+Elemental Damage: 101-179 (augmented), 156-267 (augmented), 13-218 (augmented)
+Critical Strike Chance: 6.90% (augmented)
+Attacks per Second: 1.20
+--------
+Requirements:
+Level: 68
+Dex: 212
+--------
+Sockets: R-B-B-R R 
+--------
+Item Level: 83
+--------
+Has no Green Sockets (enchant)
+Critical Modifiers have 8% increased Effect (enchant)
+--------
+38% increased Critical Strike Chance (implicit)
+--------
+Adds 101 to 179 Fire Damage
+Adds 156 to 267 Cold Damage
+Adds 13 to 218 Lightning Damage
++38% to Fire Resistance
+38% increased Projectile Speed
+\\
+Item Class: Gloves
+Rarity: Rare
+Sorrow Mitts
+Arcanist Gloves
+--------
+Quality: +20% (augmented)
+Energy Shield: 99 (augmented)
+--------
+Requirements:
+Level: 64
+Int: 95
+--------
+Sockets: G-G-G B 
+--------
+Item Level: 85
+--------
+74% increased Energy Shield
++67 to maximum Life
++7% to Chaos Resistance
+Strike Skills target 1 additional nearby Enemy
++128 to Accuracy Rating (crafted)
+--------
+Hunter Item
+\\
+Item Class: Body Armours
+Rarity: Rare
+Tempest Cloak
+Devout Chainmail
+--------
+Armour: 619 (augmented)
+Energy Shield: 127 (augmented)
+--------
+Requirements:
+Level: 57
+Str: 80
+Int: 80
+--------
+Sockets: R-B-B-B B W 
+--------
+Item Level: 85
+--------
+Has 1 White Socket (enchant)
+Defence Modifiers have 8% increased Effect (enchant)
+--------
++282 to Armour
++58 to maximum Energy Shield
++66 to maximum Life
++42% to Cold Resistance
++30% to Chaos Resistance
+\\
+Item Class: Helmets
+Rarity: Rare
+Loath Brow
+Lunaris Circlet
+--------
+Energy Shield: 79 (augmented)
+--------
+Requirements:
+Level: 52
+Int: 83
+--------
+Sockets: B-B-B 
+--------
+Item Level: 83
+--------
+Summoned Reaper has +12% to Physical Damage over Time Multiplier (enchant)
+--------
++2 to Level of Socketed Minion Gems
++35 to maximum Energy Shield
++13 to maximum Mana
++21% to Fire Resistance
++20% to Cold Resistance
+\\
+Item Class: Helmets
+Rarity: Rare
+Sol Guardian
+Deicide Mask
+--------
+Evasion Rating: 287 (augmented)
+Energy Shield: 49
+--------
+Requirements:
+Level: 67
+Dex: 73
+Int: 88
+--------
+Sockets: G-B-B-B 
+--------
+Item Level: 83
+--------
+Explosive Arrow deals 40% increased Damage (enchant)
+--------
+19% increased Global Accuracy Rating
++87 to Evasion Rating
++110 to maximum Life
++60 to maximum Mana
++26% to Cold Resistance
+14% increased Stun and Block Recovery
+15% increased Light Radius
+\\
+Item Class: Gloves
+Rarity: Rare
+Rift Grasp
+Goliath Gauntlets
+--------
+Quality: +17% (augmented)
+Armour: 307 (augmented)
+--------
+Requirements:
+Level: 60
+Str: 77
+--------
+Sockets: R-R-R-B 
+--------
+Item Level: 83
+--------
+Trigger Commandment of Blades on Hit (enchant)
+--------
+Adds 1 to 2 Cold Damage to Attacks
+12% increased Attack Speed
+43% increased Armour
+Regenerate 31.3 Life per second
+\\
+Item Class: Helmets
+Rarity: Rare
+Storm Brow
+Magistrate Crown
+--------
+Armour: 221 (augmented)
+Energy Shield: 45 (augmented)
+--------
+Requirements:
+Level: 58
+Str: 64
+Int: 64
+--------
+Sockets: G R 
+--------
+Item Level: 83
+--------
+Blink Arrow has 20% increased Cooldown Recovery Rate (enchant)
+--------
++1 to Level of Socketed Minion Gems
+33% increased Armour and Energy Shield
++97 to maximum Life
++33% to Cold Resistance
+\\
+Item Class: One Hand Axes
+Rarity: Rare
+Onslaught Edge
+Butcher Axe
+--------
+One Handed Axe
+Physical Damage: 66-123 (augmented)
+Elemental Damage: 10-18 (augmented)
+Critical Strike Chance: 5.00%
+Attacks per Second: 1.52 (augmented)
+Weapon Range: 11
+--------
+Requirements:
+Level: 63
+Str: 149
+Dex: 76
+--------
+Sockets: R 
+--------
+Item Level: 84
+--------
+Socketed Gems are supported by Level 18 Multistrike
++31 to Dexterity
+41% increased Physical Damage
++12% to Damage over Time Multiplier
+Adds 10 to 18 Fire Damage
+17% increased Attack Speed
+--------
+Elder Item
+\\
+Item Class: Helmets
+Rarity: Rare
+Gloom Dome
+Lacquered Helmet
+--------
+Armour: 150
+Evasion Rating: 150
+--------
+Requirements:
+Level: 60
+Str: 57
+Dex: 57
+--------
+Sockets: R R 
+--------
+Item Level: 83
+--------
+Corrupting Fever deals 40% increased Damage (enchant)
+--------
++41 to Dexterity
++90 to maximum Life
+20% increased Rarity of Items found
++15% to Lightning Resistance
+\\
+Item Class: Helmets
+Rarity: Rare
+Horror Shelter
+Regicide Mask
+--------
+Evasion Rating: 145
+Energy Shield: 30
+--------
+Requirements:
+Level: 60
+Dex: 58
+Int: 58
+--------
+Sockets: R-B-G 
+--------
+Item Level: 83
+--------
++36% to Raised Spectre Elemental Resistances (enchant)
+--------
++313 to Accuracy Rating
+Regenerate 27.9 Life per second
++27 to maximum Mana
++37% to Cold Resistance
+\\
+Item Class: Helmets
+Rarity: Rare
+Loath Visor
+Ursine Pelt
+--------
+Evasion Rating: 569 (augmented)
+--------
+Requirements:
+Level: 67
+Dex: 114
+--------
+Sockets: B-G-G 
+--------
+Item Level: 85
+--------
+Voltaxic Burst deals 3% increased Damage per 0.1 seconds of Duration (enchant)
+--------
+97% increased Evasion Rating
++59 to maximum Life
+18% increased Rarity of Items found
++47% to Cold Resistance
+15% increased Stun and Block Recovery
+\\
+Item Class: Claws
+Rarity: Rare
+Sorrow Talons
+Tiger's Paw
+--------
+Claw
+Physical Damage: 93-186 (augmented)
+Critical Strike Chance: 7.68% (augmented)
+Attacks per Second: 1.60
+Weapon Range: 11
+--------
+Requirements:
+Level: 58
+Dex: 88
+Int: 61
+--------
+Sockets: R-G-B 
+--------
+Item Level: 82
+--------
+Chaos Modifiers have 10% increased Effect (enchant)
+Critical Modifiers have 25% reduced Effect (enchant)
+--------
+1.6% of Physical Attack Damage Leeched as Life (implicit)
+--------
+200% increased Physical Damage
+Adds 8 to 19 Physical Damage
+28% increased Critical Strike Chance
++420 to Accuracy Rating
+\\
+Item Class: Body Armours
+Rarity: Rare
+Honour Shroud
+Sharkskin Tunic
+--------
+Evasion Rating: 624
+--------
+Requirements:
+Level: 56
+Dex: 152
+--------
+Sockets: G-R-G-G G-G 
+--------
+Item Level: 76
+--------
++24% chance to Suppress Spell Damage
++92 to maximum Life
+Regenerate 58.2 Life per second
+Reflects 3 Physical Damage to Melee Attackers
+\\
+Item Class: Boots
+Rarity: Rare
+Gloom League
+Stealth Boots
+--------
+Evasion Rating: 568 (augmented)
+--------
+Requirements:
+Level: 65
+Dex: 117
+--------
+Sockets: R-R-B-R 
+--------
+Item Level: 83
+--------
++51 to Dexterity
++130 to Evasion Rating
+60% increased Evasion Rating
++12% to Lightning Resistance
+30% increased Movement Speed
+15% increased Stun and Block Recovery
+--------
+Corrupted
+\\
+Item Class: Wands
+Rarity: Rare
+Viper Spell
+Imbued Wand
+--------
+Wand
+Physical Damage: 42-80 (augmented)
+Critical Strike Chance: 7.98% (augmented)
+Attacks per Second: 1.50
+--------
+Requirements:
+Level: 59
+Int: 188 (unmet)
+--------
+Sockets: B B 
+--------
+Item Level: 77
+--------
+35% increased Spell Damage (implicit)
+--------
+Adds 13 to 27 Physical Damage
+14% increased Critical Strike Chance
++35% to Lightning Resistance
+0.39% of Physical Attack Damage Leeched as Mana
+Damage Penetrates 7% Fire Resistance
+--------
+Warlord Item
+\\
+Item Class: Boots
+Rarity: Rare
+Ghoul Urge
+Legion Boots
+--------
+Armour: 113
+Energy Shield: 23
+--------
+Requirements:
+Level: 58
+Str: 54
+Int: 54
+--------
+Sockets: B-R-R-B 
+--------
+Item Level: 73
+--------
++13 to Strength
++24 to maximum Mana
++26% to Cold Resistance
++34% to Lightning Resistance
+10% increased Movement Speed
+\\
+Item Class: Belts
+Rarity: Rare
+Anarchy Bond
+Rustic Sash
+--------
+Requirements:
+Level: 52
+--------
+Item Level: 76
+--------
+16% increased Global Physical Damage (implicit)
+--------
+13% reduced Enemy Stun Threshold
++50 to maximum Life
++14% to Lightning Resistance
+22% increased Flask Effect Duration
+\\
+
