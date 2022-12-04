@@ -30,8 +30,8 @@ pub struct ParsedItem {
 pub fn parse_raw_item(craft_repo: &impl CraftRepo, raw_item: &str) -> Result<ParsedItem, String> {
     let item_class = raw_item
         .split("\n")
-        .find_map(|row| match craft_repo.item_class_if_exists(row) {
-            true => Some(row.to_string()),
+        .find_map(|row| match craft_repo.item_class_if_exists(row.trim()) {
+            true => Some(row.trim().to_string()),
             false => None,
         })
         .ok_or("No item class found".to_string())?;
@@ -39,8 +39,8 @@ pub fn parse_raw_item(craft_repo: &impl CraftRepo, raw_item: &str) -> Result<Par
     let (item_base_name, item_name) = raw_item
         .split("\n")
         .find_map(
-            |row| match craft_repo.string_to_item_base(&item_class, row) {
-                Ok(base_name) => Some((base_name, row.to_string())),
+            |row| match craft_repo.string_to_item_base(&item_class, row.trim()) {
+                Ok(base_name) => Some((base_name, row.trim().to_string())),
                 Err(_) => None,
             },
         )
@@ -55,10 +55,10 @@ pub fn parse_raw_item(craft_repo: &impl CraftRepo, raw_item: &str) -> Result<Par
     let mut raw_mods = vec![];
     
     last_part.split("\n").for_each(|row| {
-        match craft_repo.string_to_mod(&item_class, &item_base_name, row) {
+        match craft_repo.string_to_mod(&item_class, &item_base_name, row.trim()) {
             Ok(mod_name) => {
                 mods.push(mod_name);
-                raw_mods.push(row.to_string());
+                raw_mods.push(row.trim().to_string());
             }
             Err(_) => {}
         }

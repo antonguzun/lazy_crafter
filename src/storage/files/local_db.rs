@@ -332,7 +332,7 @@ impl CraftRepo for FileRepo {
     }
 
     fn item_class_if_exists(&self, item_class: &str) -> bool {
-        self.db.item_classes.contains(&item_class.to_string())
+        self.db.item_classes.contains(item_class)
     }
 
     fn string_to_item_base(&self, item_class: &str, item_name: &str) -> Result<String, String> {

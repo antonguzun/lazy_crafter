@@ -40,7 +40,7 @@ fn run_craft(craft_repo: &impl CraftRepo) {
     println!("run crafting");
     send(&EventType::KeyPress(Key::ShiftLeft));
 
-    for i in 0..3 {
+    for i in 0..30 {
         send(&EventType::KeyPress(Key::ControlLeft));
         send(&EventType::KeyPress(Key::KeyC));
         send(&EventType::KeyRelease(Key::ControlLeft));
@@ -53,14 +53,15 @@ fn run_craft(craft_repo: &impl CraftRepo) {
             .read_clipboard(&mut output)
             .expect("Read sample");
         println!("copied {}", output);
-        let parsed_craft = match craft_searcher::parse_craft(&craft_repo, &output) {
+        let parsed_craft = match craft_searcher::parse_raw_item(craft_repo, &output) {
             Ok(parsed_craft) => parsed_craft,
-            Err(_) => {
-                println!("Could not parse craft");
-                continue;
+            Err(e) => {
+                println!("Could not parse craft: {}", e);
+                send(&EventType::KeyRelease(Key::ShiftLeft));
+                return;
             }
         };
-        println!("parsed {}", &parsed_craft);
+        println!("parsed {:#?}", &parsed_craft);
         // do magic
 
         output.clear();
