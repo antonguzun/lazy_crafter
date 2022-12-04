@@ -4,6 +4,7 @@ use log::{debug, error};
 use std::collections::{HashMap, HashSet};
 use std::fs::File;
 use std::io::Read;
+use std::iter::zip;
 
 const LOG_TARGET: &str = "file_db";
 
@@ -329,11 +330,90 @@ impl CraftRepo for FileRepo {
                 .map(|(s, bi)| (s.clone(), bi.item_class.clone())),
         )
     }
+
+    fn item_class_if_exists(&self, item_class: &str) -> bool {
+        self.db.item_classes.contains(&item_class.to_string())
+    }
+
+    fn string_to_item_base(&self, item_class: &str, item_name: &str) -> Result<String, String> {
+        self.get_item_bases(item_class)
+            .into_iter()
+            .filter(|i| item_name.contains(&i.name))
+            .map(|i| i.name)
+            .next()
+            .ok_or(format!("{} not found in {}", item_name, item_class))
+    }
+
+    fn string_to_mod(
+        &self,
+        item_class: &str,
+        item_name: &str,
+        mod_name: &str,
+    ) -> Result<String, String> {
+        let query = ModsQuery {
+            item_base: item_name.to_string(),
+            item_level: 100,
+            string_query: "".to_string(),
+            selected_mods: vec![],
+        };
+        let mods = self.find_mods(&query);
+
+        use regex::Regex;
+        let values: Vec<i32> = Regex::new(r"\d+")
+            .unwrap()
+            .find_iter(mod_name)
+            .map(|m| m.as_str().parse::<i32>().unwrap())
+            .collect();
+        let mod_template = Regex::new(r"\+?\d+").unwrap().replace_all(mod_name, "#");
+
+        let res = mods
+            .into_iter()
+            .find_map(|m| {
+                match Regex::new(r"\(\d+-\d+\)|\d+")
+                    .unwrap()
+                    .replace_all(&m.representation, "#")
+                    == mod_template
+                {
+                    true => {
+                        let source_mod = self.db.mods.get(&m.mod_key).unwrap();
+                        if values.len() != source_mod.stats.len() {
+                            return None;
+                        }
+                        let mut values_correct = true;
+                        zip(&values, &source_mod.stats).for_each(|(v, s)| {
+                            match s.min {
+                                Some(min) => {
+                                    if i64::from(*v) < min {
+                                        values_correct = false;
+                                    }
+                                }
+                                None => {}
+                            }
+                            match s.max {
+                                Some(max) => {
+                                    if max < i64::from(*v) {
+                                        values_correct = false;
+                                    }
+                                }
+                                None => {}
+                            }
+                        });
+                        if !values_correct {
+                            return None;
+                        }
+                        Some(m)
+                    }
+                    false => None,
+                }
+            })
+            .ok_or("Can't find mod".to_string())?;
+        Ok(res.mod_key)
+    }
 }
 
 #[test]
 fn test_repr_freeze_warstaff() {
-    // TODO! fix this test
+    // TODO! fix that testcase
     let mod_id = "TwoHandChanceToFreeze2".to_string();
     let expected_repr = "25% chance to Freeze".to_string();
     let repo = FileRepo::new().unwrap();

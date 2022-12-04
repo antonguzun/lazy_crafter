@@ -27,6 +27,9 @@ pub trait CraftRepo {
     fn get_item_classes(&self) -> Vec<String>;
     fn get_item_bases(&self, item_class: &str) -> Vec<ItemBase>;
     fn get_item_class_by_item_name(&self) -> HashMap<String, String>;
+    fn item_class_if_exists(&self, item_class: &str) -> bool;
+    fn string_to_item_base(&self, item_class: &str, item_name: &str) -> Result<String, String>;
+    fn string_to_mod(&self, item_class: &str, item_name: &str, mod_name: &str) -> Result<String, String>;
 }
 
 pub struct Data {

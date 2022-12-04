@@ -1,3 +1,6 @@
+use crate::entities::craft_repo::CraftRepo;
+use crate::storage::files::local_db::FileRepo;
+use crate::usecases::craft_searcher;
 use chrono::{DateTime, Utc};
 use rdev::{listen, simulate, Button, EventType, Key};
 use std::collections::HashSet;
@@ -31,7 +34,7 @@ fn send(event_type: &EventType) {
     thread::sleep(delay);
 }
 #[cfg(target_os = "windows")]
-fn run_craft() {
+fn run_craft(craft_repo: &impl CraftRepo) {
     use clipboard_win::{formats, Clipboard, Getter, Setter};
 
     println!("run crafting");
@@ -49,7 +52,7 @@ fn run_craft() {
         formats::Unicode
             .read_clipboard(&mut output)
             .expect("Read sample");
-
+        let parsed_craft = craft_searcher::parse_craft(&craft_repo, &output).unwrap();
         // do magic
         println!("copied {}", output);
 
@@ -61,9 +64,11 @@ fn run_craft() {
 }
 
 #[cfg(target_os = "linux")]
-fn run_craft() {}
+fn run_craft(_craft_repo: &impl CraftRepo) {}
 
 pub fn run_listener_in_background() {
+    let craft_repo = FileRepo::new().unwrap(); // !TODO use common instance between threads
+
     let (schan, rchan) = channel();
     thread::spawn(move || {
         listen(move |event| {
@@ -91,73 +96,10 @@ pub fn run_listener_in_background() {
                 println!("You pressed combo! prev combo at {}", t.to_rfc3339());
                 last_combo = SystemTime::now();
                 events.clear();
-                run_craft();
+                run_craft(&craft_repo);
                 let delay = Duration::from_millis(100);
                 thread::sleep(delay);
             }
         }
     });
-}
-
-fn find_mods(data: String) -> Vec<String> {
-    vec![]
-}
-
-#[test]
-fn test_find_mods1() {
-    let str = "Item Class: Bows
-Rarity: Magic
-Imperial Bow of Restoration
---------
-Bow
-Physical Damage: 29-117
-Critical Strike Chance: 5.00%
-Attacks per Second: 1.45
---------
-Requirements:
-Level: 66
-Dex: 212
---------
-Sockets: G G G-G G B
---------
-Item Level: 81
---------
-24% increased Elemental Damage with Attack Skills (implicit)
---------
-Gain 3 Life per Enemy Hit by Attacks"
-        .to_string();
-    let mods = vec!["LifeGainPerTargetLocal2".to_string()];
-    assert_eq!(find_mods(str), mods);
-}
-
-#[test]
-fn test_find_mods2() {
-    let str = "Item Class: Bows
-Rarity: Magic
-Freezing Imperial Bow of the Drake
---------
-Bow
-Physical Damage: 29-117
-Elemental Damage: 44-84 (augmented)
-Critical Strike Chance: 5.00%
-Attacks per Second: 1.45
---------
-Requirements:
-Level: 66
-Dex: 212
---------
-Sockets: G G G-G G B
---------
-Item Level: 81
---------
-24% increased Elemental Damage with Attack Skills (implicit)
---------
-Adds 44 to 84 Cold Damage
-+22% to Fire Resistance"
-        .to_string();
-    let mods = vec![
-        "LocalAddedColdDamageTwoHand5".to_string(),
-        "FireResist3".to_string(),
-    ];
-    assert_eq!(find_mods(str), mods);
 }
