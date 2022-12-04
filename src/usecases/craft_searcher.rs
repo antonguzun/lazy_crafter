@@ -50,10 +50,10 @@ pub fn parse_raw_item(craft_repo: &impl CraftRepo, raw_item: &str) -> Result<Par
         Some(last_part) => last_part,
         None => return Err("No mods found".to_string()),
     };
-    
+
     let mut mods = vec![];
     let mut raw_mods = vec![];
-    
+
     last_part.split("\n").for_each(|row| {
         match craft_repo.string_to_mod(&item_class, &item_base_name, row.trim()) {
             Ok(mod_name) => {

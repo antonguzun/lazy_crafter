@@ -1,8 +1,7 @@
 use crate::entities::craft_repo::CraftRepo;
 use crate::storage::files::local_db::FileRepo;
-use crate::usecases::craft_searcher;
 use chrono::{DateTime, Utc};
-use rdev::{listen, simulate, Button, EventType, Key};
+use rdev::{listen, simulate, EventType, Key};
 use std::collections::HashSet;
 use std::sync::mpsc::channel;
 use std::thread;
@@ -35,7 +34,9 @@ fn send(event_type: &EventType) {
 }
 #[cfg(target_os = "windows")]
 fn run_craft(craft_repo: &impl CraftRepo) {
+    use crate::usecases::craft_searcher;
     use clipboard_win::{formats, Clipboard, Getter, Setter};
+    use rdev::Button;
 
     println!("run crafting");
     send(&EventType::KeyPress(Key::ShiftLeft));

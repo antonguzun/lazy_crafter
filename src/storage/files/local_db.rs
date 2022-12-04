@@ -346,7 +346,7 @@ impl CraftRepo for FileRepo {
 
     // parse raw mod string to mod key
     // provided raw mod string and each available mod for item_base to common template
-    // added filtration by stat min/max to avoid wrong matches 
+    // added filtration by stat min/max to avoid wrong matches
     fn string_to_mod(
         &self,
         item_class: &str,
