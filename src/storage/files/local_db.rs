@@ -112,7 +112,8 @@ impl FileRepo {
                 }
             }
         }
-        for i in t.English.iter() {
+        for i in t.English.iter().rev() {
+            // reverse important else representation calculation is wrong
             let mut cond_passed = true;
             for s in &stats {
                 let stat_position = stats_positions_by_id.get(&s.id).unwrap();
