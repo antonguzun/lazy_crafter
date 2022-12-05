@@ -1,42 +1,5 @@
 error:
 
-copied Item Class: Shields
-Rarity: Normal
-Copper Tower Shield
---------
-Chance to Block: 24%
-Armour: 164
---------
-Requirements:
-Level: 24
-Str: 62
---------
-Sockets: R-R
---------
-Item Level: 26
---------
-+39 to maximum Life (implicit)
-
-Could not parse craft
-\\
-copied Item Class: Boots
-Rarity: Magic
-Magpie's Ringmail Boots
---------
-Armour: 29
-Energy Shield: 7
---------
-Requirements:
-Level: 16
-Str: 15
-Int: 15
---------
-Sockets: B
---------
-Item Level: 26
---------
-9% increased Rarity of Items found
-
 Could not parse craft
 \\
 copied Item Class: Bows

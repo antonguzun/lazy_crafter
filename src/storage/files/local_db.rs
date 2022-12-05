@@ -417,7 +417,6 @@ impl CraftRepo for FileRepo {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -429,10 +428,10 @@ mod tests {
         let repo = FileRepo::new().unwrap();
         let mod_item = repo.db.mods.get(&mod_id).unwrap();
         let repr = repo.get_mods_representation(mod_item).unwrap();
-    
+
         assert_eq!(repr, expected_repr);
     }
-    
+
     #[test]
     fn test_repr_freeze_warstaff2() {
         let mod_id = "AttackerTakesDamage2".to_string();
@@ -440,7 +439,7 @@ mod tests {
         let repo = FileRepo::new().unwrap();
         let mod_item = repo.db.mods.get(&mod_id).unwrap();
         let repr = repo.get_mods_representation(mod_item).unwrap();
-    
+
         assert_eq!(repr, expected_repr);
     }
 
@@ -452,9 +451,7 @@ mod tests {
         let repo = FileRepo::new().unwrap();
         let mod_item = repo.db.mods.get(&mod_id).unwrap();
         let repr = repo.get_mods_representation(mod_item).unwrap();
-    
+
         assert_eq!(repr, expected_repr);
     }
 }
-
-

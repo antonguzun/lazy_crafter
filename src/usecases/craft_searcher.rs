@@ -1,5 +1,8 @@
 use std::collections::HashMap;
 
+use log::debug;
+use regex::Regex;
+
 use crate::entities::craft_repo::{CraftRepo, ItemBase, ModItem, ModsQuery};
 
 pub fn find_mods(repo: &impl CraftRepo, query: &ModsQuery) -> Vec<ModItem> {
@@ -28,18 +31,30 @@ pub struct ParsedItem {
 }
 
 pub fn parse_raw_item(craft_repo: &impl CraftRepo, raw_item: &str) -> Result<ParsedItem, String> {
-    let item_class = raw_item
-        .split("\n")
-        .find_map(|row| match craft_repo.item_class_if_exists(row.trim()) {
-            true => Some(row.trim().to_string()),
-            false => None,
-        })
-        .ok_or("No item class found".to_string())?;
+    let re = Regex::new(r"Item Class: (.*)\n").expect("regexp error during item class fetching");
+    let raw_item_class = re
+        .captures(raw_item)
+        .ok_or("No item class matches in string".to_string())?
+        .get(1)
+        .ok_or("No item class in string found".to_string())?
+        .as_str();
+
+    let item_class =
+        if craft_repo.item_class_if_exists(raw_item_class[..raw_item_class.len() - 1].trim()) {
+            raw_item_class[..raw_item_class.len() - 1].trim()
+        } else if craft_repo.item_class_if_exists(raw_item_class.trim()) {
+            raw_item_class.trim()
+        } else {
+            return Err(format!(
+                "Item class not found in db: {}",
+                &raw_item_class.trim()
+            ));
+        };
 
     let (item_base_name, item_name) = raw_item
         .split("\n")
         .find_map(
-            |row| match craft_repo.string_to_item_base(&item_class, row.trim()) {
+            |row| match craft_repo.string_to_item_base(item_class, row.trim()) {
                 Ok(base_name) => Some((base_name, row.trim().to_string())),
                 Err(_) => None,
             },
@@ -65,11 +80,17 @@ pub fn parse_raw_item(craft_repo: &impl CraftRepo, raw_item: &str) -> Result<Par
     });
 
     if last_part.trim().split("\n").count() != mods.len() {
-        return Err("Found wrong count of mods".to_string());
+        match last_part.trim().split("\n").last() {
+            Some(value) if !value.contains("implicit") => {
+                return Err("Found wrong count of mods".to_string());
+            }
+            Some(_) => {}
+            None => {}
+        }
     }
 
     Ok(ParsedItem {
-        item_class,
+        item_class: item_class.to_string(),
         item_base_name,
         item_name,
         mods,

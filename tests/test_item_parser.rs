@@ -98,6 +98,78 @@ Gain 4 Life per Enemy Killed", ParsedItem {
         "Gain 4 Life per Enemy Killed".to_string(),
     ],
 })]
+#[case("Item Class: Shields
+Rarity: Normal
+Copper Tower Shield
+--------
+Chance to Block: 24%
+Armour: 164
+--------
+Requirements:
+Level: 24
+Str: 62
+--------
+Sockets: R-R
+--------
+Item Level: 26
+--------
++39 to maximum Life (implicit)", ParsedItem {
+    item_class: "Shield".to_string(),
+    item_base_name: "Copper Tower Shield".to_string(),
+    item_name: "Copper Tower Shield".to_string(),
+    mods: vec![],
+    raw_mods: vec![],
+})]
+#[case("Item Class: Boots
+Rarity: Magic
+Magpie's Ringmail Boots
+--------
+Armour: 29
+Energy Shield: 7
+--------
+Requirements:
+Level: 16
+Str: 15
+Int: 15
+--------
+Sockets: B
+--------
+Item Level: 26
+--------
+9% increased Rarity of Items found", ParsedItem {
+    item_class: "Boots".to_string(),
+    item_base_name: "Ringmail Boots".to_string(),
+    item_name: "Magpie's Ringmail Boots".to_string(),
+    mods: vec!["ItemFoundRarityIncrease1".to_string()],
+    raw_mods: vec!["9% increased Rarity of Items found".to_string()],
+})]
+#[case("Item Class: Thrusting One Hand Swords
+Rarity: Magic
+Antique Rapier of the Penguin
+--------
+One Handed Sword
+Physical Damage: 12-46
+Critical Strike Chance: 6.50%
+Attacks per Second: 1.30
+Weapon Range: 14
+--------
+Requirements:
+Level: 26
+Dex: 89
+--------
+Sockets: G-G-G
+--------
+Item Level: 27
+--------
++25% to Global Critical Strike Multiplier (implicit)
+--------
++18% to Cold Resistance", ParsedItem { 
+    item_class: "Thrusting One Hand Sword".to_string(),
+    item_base_name: "Antique Rapier".to_string(),
+    item_name: "Antique Rapier of the Penguin".to_string(),
+    mods: vec!["ColdResist3".to_string()],
+    raw_mods: vec!["+18% to Cold Resistance".to_string()]
+})]
 fn test_parse_raw_item(repo: impl CraftRepo, #[case] input: &str, #[case] expected: ParsedItem) {
     assert_eq!(parse_raw_item(&repo, &input), Ok(expected));
 }
