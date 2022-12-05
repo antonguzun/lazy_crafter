@@ -423,7 +423,6 @@ mod tests {
     use super::*;
     #[test]
     fn test_repr_freeze_warstaff() {
-        // TODO! fix that testcase
         let mod_id = "TwoHandChanceToFreeze2".to_string();
         let expected_repr = "25% chance to Freeze".to_string();
         let repo = FileRepo::new().unwrap();
@@ -446,7 +445,6 @@ mod tests {
 
     #[test]
     fn test_repr_physical_damage_long_bow() {
-        // TODO! fix that testcase
         let mod_id = "LocalIncreasedPhysicalDamagePercent1".to_string();
         let expected_repr = "(40-49)% increased Physical Damage".to_string();
         let repo = FileRepo::new().unwrap();
@@ -455,4 +453,8 @@ mod tests {
 
         assert_eq!(repr, expected_repr);
     }
+
+    // TODO! add LifeRegeneration7
+    // GainLifeOnBlock6_
+    
 }

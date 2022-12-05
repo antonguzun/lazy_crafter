@@ -45,7 +45,7 @@ RUST_LOG=DEBUG cargo run
 ### windows
 
 ```PowerShell
-@set RUST_LOG=DEBUG
+$env:RUST_LOG='DEBUG'
 cargo run
 ```
 

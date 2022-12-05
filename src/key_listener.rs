@@ -41,7 +41,7 @@ fn run_craft(craft_repo: &impl CraftRepo) {
     println!("run crafting");
     send(&EventType::KeyPress(Key::ShiftLeft));
 
-    for i in 0..30 {
+    for i in 0..10 {
         send(&EventType::KeyPress(Key::ControlLeft));
         send(&EventType::KeyPress(Key::KeyC));
         send(&EventType::KeyRelease(Key::ControlLeft));

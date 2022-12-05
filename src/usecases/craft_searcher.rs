@@ -37,7 +37,8 @@ pub fn parse_raw_item(craft_repo: &impl CraftRepo, raw_item: &str) -> Result<Par
         .ok_or("No item class matches in string".to_string())?
         .get(1)
         .ok_or("No item class in string found".to_string())?
-        .as_str();
+        .as_str()
+        .trim();
 
     let item_class =
         if craft_repo.item_class_if_exists(raw_item_class[..raw_item_class.len() - 1].trim()) {
