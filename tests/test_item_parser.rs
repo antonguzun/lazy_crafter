@@ -173,3 +173,26 @@ Item Level: 27
 fn test_parse_raw_item(repo: impl CraftRepo, #[case] input: &str, #[case] expected: ParsedItem) {
     assert_eq!(parse_raw_item(&repo, &input), Ok(expected));
 }
+
+#[rstest]
+#[case("", "No item class matches in string".to_string())]
+#[case("Item Class: BlaBla
+Rarity: Magic
+Antique Rapier of the Penguin
+--------
+One Handed Sword", "Item class not found in db: BlaBla".to_string())]
+#[case("Item Class: Thrusting One Hand Swords
+Antique Rapier of the Penguin
+--------
++18% to Magic Resistance", "Found wrong count of mods".to_string())]
+#[case("Item Class: Thrusting One Hand Swords
+Antique Penguin of the Rapier
+--------
++18% to Magic Resistance", "No item base found".to_string())]
+fn test_parse_raw_item_negative(
+    repo: impl CraftRepo,
+    #[case] input: &str,
+    #[case] expected: String,
+) {
+    assert_eq!(parse_raw_item(&repo, &input), Err(expected));
+}
