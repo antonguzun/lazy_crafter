@@ -11,8 +11,6 @@
 - Filtering stabilization
 - Add currency choices for estimation
 - Implement estimation for selected mods and average/median cost
-- Add target mods for auto-crafting feature
-- Add maximum count of tries for auto-crafting feature
 - Auto-crafting stabilization
 - Imrove test coverage
 - CI
