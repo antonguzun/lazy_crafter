@@ -1,9 +1,10 @@
-use crate::entities::craft_repo::CraftRepo;
+use crate::entities::craft_repo::{CraftRepo, UiStates};
 use crate::storage::files::local_db::FileRepo;
 use chrono::{DateTime, Utc};
 use rdev::{listen, simulate, EventType, Key};
 use std::collections::HashSet;
 use std::sync::mpsc::channel;
+use std::sync::{Arc, Mutex};
 use std::thread;
 use std::time::{Duration, SystemTime};
 
@@ -33,15 +34,19 @@ fn send(event_type: &EventType) {
     thread::sleep(delay);
 }
 #[cfg(target_os = "windows")]
-fn run_craft(craft_repo: &impl CraftRepo) {
+fn run_craft(craft_repo: &impl CraftRepo, ui_states: Arc<Mutex<UiStates>>) {
     use crate::usecases::craft_searcher;
     use clipboard_win::{formats, Clipboard, Getter, Setter};
     use rdev::Button;
 
     println!("run crafting");
+
+    let selected_mods = ui_states.lock().unwrap().selected.clone();
+    let selected_mod_keys = HashSet::from_iter(selected_mods.iter().map(|m| m.mod_key.clone()));
+    let max_tries = 10;
     send(&EventType::KeyPress(Key::ShiftLeft));
 
-    for i in 0..10 {
+    for i in 0..max_tries - 1 {
         send(&EventType::KeyPress(Key::ControlLeft));
         send(&EventType::KeyPress(Key::KeyC));
         send(&EventType::KeyRelease(Key::ControlLeft));
@@ -62,6 +67,7 @@ fn run_craft(craft_repo: &impl CraftRepo) {
                 return;
             }
         };
+
         println!("parsed {:#?}", &parsed_craft);
         // do magic
 
@@ -73,9 +79,9 @@ fn run_craft(craft_repo: &impl CraftRepo) {
 }
 
 #[cfg(target_os = "linux")]
-fn run_craft(_craft_repo: &impl CraftRepo) {}
+fn run_craft(_repo: &impl CraftRepo, _ui_states: Arc<Mutex<UiStates>>) {}
 
-pub fn run_listener_in_background() {
+pub fn run_listener_in_background(ui_states: Arc<Mutex<UiStates>>) {
     let craft_repo = FileRepo::new().unwrap(); // !TODO use common instance between threads
 
     let (schan, rchan) = channel();
@@ -105,7 +111,7 @@ pub fn run_listener_in_background() {
                 println!("You pressed combo! prev combo at {}", t.to_rfc3339());
                 last_combo = SystemTime::now();
                 events.clear();
-                run_craft(&craft_repo);
+                run_craft(&craft_repo, Arc::clone(&ui_states));
                 let delay = Duration::from_millis(100);
                 thread::sleep(delay);
             }

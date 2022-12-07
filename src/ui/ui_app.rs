@@ -1,6 +1,6 @@
 use crate::entities::craft_repo::{Data, UiEvents, UiStates};
 
-use crate::input_schemas::parse_item_level;
+use crate::input_schemas::{parse_item_level, parse_max_tries};
 use crate::ui::{buttons, comboboxes, inputs, tables};
 use eframe::egui;
 use std::sync::{mpsc, Arc, Mutex};
@@ -90,6 +90,26 @@ impl eframe::App for EguiApp {
             );
         });
         egui::SidePanel::right("selected_mods_panel").show(ctx, |ui| {
+            ui.label("Max autocraft tries:");
+            ui.horizontal(|ui| {
+                
+
+                ui.set_max_width(150.0);
+                if ui
+                    .text_edit_singleline(&mut self.ui_states.lock().unwrap().max_autocraft_tries)
+                    .changed()
+                {
+                    let state = &mut self.ui_states.lock().unwrap();
+                    match parse_max_tries(&state.max_autocraft_tries) {
+                        Ok(max) => {
+                            // let state = &mut self.ui_states.lock().unwrap();
+                            state.selected_max_autocraft_tries = max as u64;
+                        }
+                        Err(_) => (),
+                    }
+                };
+            });
+
             ui.heading("Selected");
             let selected_mods = self.ui_states.lock().unwrap().selected.clone();
             let total_suff_weight: u32 = self

@@ -60,10 +60,12 @@ pub struct UiStates {
     pub filter_string: String,
     pub item_string: String,
     pub item_level: String,
+    pub max_autocraft_tries: String,
     pub selected: Vec<ModItem>,
     pub selected_item_class_as_filter: String,
     pub selected_item_base_as_filter: String,
     pub selected_item_level_as_filter: u64,
+    pub selected_max_autocraft_tries: u64,
 }
 
 impl Default for UiStates {
@@ -72,11 +74,13 @@ impl Default for UiStates {
             filter_string: "".to_string(),
             item_string: "".to_string(),
             item_level: "100".to_string(),
+            max_autocraft_tries: "5".to_string(),
 
             selected: vec![],
             selected_item_class_as_filter: "Helmet".to_string(),
             selected_item_base_as_filter: "Iron Hat".to_string(),
             selected_item_level_as_filter: 100,
+            selected_max_autocraft_tries: 5,
         }
     }
 }

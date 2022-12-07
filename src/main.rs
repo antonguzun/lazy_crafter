@@ -63,7 +63,7 @@ fn main() {
     let ui_states = Arc::new(Mutex::new(UiStates::default()));
 
     run_db_in_background(rx, Arc::clone(&ui_states), Arc::clone(&data));
-    key_listener::run_listener_in_background();
+    key_listener::run_listener_in_background(Arc::clone(&ui_states));
     info!("start ui");
     ui_app::run_ui_in_main_thread(tx, ui_states, data);
 }
