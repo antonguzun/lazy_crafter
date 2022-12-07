@@ -7,6 +7,7 @@ use std::sync::mpsc::channel;
 use std::sync::{Arc, Mutex};
 use std::thread;
 use std::time::{Duration, SystemTime};
+use log::{debug, info};
 
 fn hash_event_type(event_type: EventType) -> String {
     format!("{:?}", &event_type)
@@ -42,39 +43,56 @@ fn run_craft(craft_repo: &impl CraftRepo, ui_states: Arc<Mutex<UiStates>>) {
     println!("run crafting");
 
     let selected_mods = ui_states.lock().unwrap().selected.clone();
-    let selected_mod_keys = HashSet::from_iter(selected_mods.iter().map(|m| m.mod_key.clone()));
-    let max_tries = 10;
+    let selected_mod_keys: HashSet<String> = HashSet::from_iter(selected_mods.iter().map(|m| m.mod_key.clone()));
+    let max_tries = ui_states.lock().unwrap().selected_max_autocraft_tries.clone();
     send(&EventType::KeyPress(Key::ShiftLeft));
-
-    for i in 0..max_tries - 1 {
+    
+    let mut prev_output = String::new(); 
+    let mut down_counter = max_tries;
+    while down_counter > 0 { 
         send(&EventType::KeyPress(Key::ControlLeft));
         send(&EventType::KeyPress(Key::KeyC));
         send(&EventType::KeyRelease(Key::ControlLeft));
         send(&EventType::KeyRelease(Key::KeyC));
         let _clip = Clipboard::new_attempts(10).expect("Open clipboard");
-        println!("##### try {} #####", i);
+        println!("##### try {} #####", down_counter);
 
         let mut output = String::new();
         formats::Unicode
             .read_clipboard(&mut output)
             .expect("Read sample");
         println!("copied {}", output);
+        if output == prev_output {
+            info!("No change in clipboard, skipping");
+            continue;
+        }
+        prev_output = output.clone();
         let parsed_craft = match craft_searcher::parse_raw_item(craft_repo, &output) {
             Ok(parsed_craft) => parsed_craft,
             Err(e) => {
-                println!("Could not parse craft: {}", e);
+                info!("Could not parse craft: {}", e);
                 send(&EventType::KeyRelease(Key::ShiftLeft));
-                return;
+                output.clear();
+                break;
             }
         };
-
         println!("parsed {:#?}", &parsed_craft);
-        // do magic
+        let crafted_mod_keys: HashSet<String> = HashSet::from_iter(parsed_craft.mods);
+        if selected_mod_keys.is_subset(&crafted_mod_keys) {
+            info!("Crafted all target mods successfully");
+            send(&EventType::KeyRelease(Key::ShiftLeft));
+            output.clear();
+            break;
+        } 
 
         output.clear();
+        
         send(&EventType::ButtonPress(Button::Left));
         send(&EventType::ButtonRelease(Button::Left));
+        down_counter -= 1;
+        info!("Mod changed");
     }
+    info!("All attempts were exhausted");
     send(&EventType::KeyRelease(Key::ShiftLeft));
 }
 
