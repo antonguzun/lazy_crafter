@@ -1,4 +1,5 @@
 use crate::entities::craft_repo::{CraftRepo, ItemBase, ModItem, ModsQuery};
+use crate::storage::files::representation::handle_stat_value;
 use crate::storage::files::schemas::{ItemBaseRich, Mod, Stat, StatTranslation};
 use log::{debug, error};
 use std::collections::{HashMap, HashSet};
@@ -120,6 +121,7 @@ impl FileRepo {
                 let stat_max = s.max.unwrap();
                 let stat_min = s.min.unwrap();
                 let condition = &i.condition[stat_position.clone()];
+
                 if condition.negated == Some(true) {
                     return Ok(i.string.clone());
                 }
@@ -146,10 +148,19 @@ impl FileRepo {
                     let stat_position = stats_positions_by_id.get(&s.id).unwrap().clone();
                     let stat_max = s.max.unwrap();
                     let stat_min = s.min.unwrap();
+                    let index_handler: String = match i.index_handlers[stat_position.clone()].get(0)
+                    {
+                        Some(ih) => ih.to_string(),
+                        None => String::from("pass"),
+                    };
 
                     let to_str = match stat_max == stat_min {
-                        true => format!("{}", stat_max),
-                        false => format!("({}-{})", stat_min, stat_max),
+                        true => format!("{}", handle_stat_value(&index_handler, stat_max)),
+                        false => format!(
+                            "({}-{})",
+                            handle_stat_value(&index_handler, stat_min),
+                            handle_stat_value(&index_handler, stat_max)
+                        ),
                     };
                     let v = [
                         '{',
@@ -373,17 +384,18 @@ impl CraftRepo for FileRepo {
 
         let res = mods
             .into_iter()
+            // .filter(|m| m.representation.starts_with("Reflect")) // debug, REMOVE!
             .find_map(|m| {
                 // add (\d+-\d+\) because its how we represent range values
                 // but don't care about "\+?" because we already skipped "format" in representation
-                match Regex::new(r"\(\d+-\d+\)|\d+")
+                let re = Regex::new(r"\(\d+-\d+\)|\d+")
                     .unwrap()
-                    .replace_all(&m.representation, "#")
-                    == mod_template
-                {
+                    .replace_all(&m.representation, "#");
+                match re == mod_template {
                     true => {
                         let source_mod = self.db.mods.get(&m.mod_key).unwrap();
-                        if values.len() != source_mod.stats.len() {
+                        let source_mod_stats_count: usize = source_mod.stats.iter().filter(|s| s.id != "dummy_stat_display_nothing").count();
+                        if values.len() != source_mod_stats_count {
                             return None;
                         }
                         let mut values_correct = true;
@@ -421,40 +433,22 @@ impl CraftRepo for FileRepo {
 #[cfg(test)]
 mod tests {
     use super::*;
-    #[test]
-    fn test_repr_freeze_warstaff() {
-        let mod_id = "TwoHandChanceToFreeze2".to_string();
-        let expected_repr = "25% chance to Freeze".to_string();
-        let repo = FileRepo::new().unwrap();
-        let mod_item = repo.db.mods.get(&mod_id).unwrap();
-        let repr = repo.get_mods_representation(mod_item).unwrap();
+    use rstest::{fixture, rstest};
 
-        assert_eq!(repr, expected_repr);
+    #[fixture]
+    fn repo() -> FileRepo {
+        FileRepo::new().unwrap()
     }
 
-    #[test]
-    fn test_repr_freeze_warstaff2() {
-        let mod_id = "AttackerTakesDamage2".to_string();
-        let expected_repr = "Reflects (5-10) Physical Damage to Melee Attackers".to_string();
-        let repo = FileRepo::new().unwrap();
+    #[rstest]
+    #[case("TwoHandChanceToFreeze2".to_string(), "25% chance to Freeze".to_string())]
+    #[case("AttackerTakesDamage2".to_string(), "Reflects (5-10) Physical Damage to Melee Attackers".to_string())]
+    #[case("LocalIncreasedPhysicalDamagePercent1".to_string(), "(40-49)% increased Physical Damage".to_string())]
+    #[case("LifeRegeneration7".to_string(), "Regenerate (48-64) Life per second".to_string())]
+    #[case("GainLifeOnBlock6_".to_string(), "(86-100) Life gained when you Block".to_string())]
+    fn test_repr(repo: FileRepo, #[case] mod_id: String, #[case] expected: String) {
         let mod_item = repo.db.mods.get(&mod_id).unwrap();
         let repr = repo.get_mods_representation(mod_item).unwrap();
-
-        assert_eq!(repr, expected_repr);
+        assert_eq!(repr, expected);
     }
-
-    #[test]
-    fn test_repr_physical_damage_long_bow() {
-        let mod_id = "LocalIncreasedPhysicalDamagePercent1".to_string();
-        let expected_repr = "(40-49)% increased Physical Damage".to_string();
-        let repo = FileRepo::new().unwrap();
-        let mod_item = repo.db.mods.get(&mod_id).unwrap();
-        let repr = repo.get_mods_representation(mod_item).unwrap();
-
-        assert_eq!(repr, expected_repr);
-    }
-
-    // TODO! add LifeRegeneration7
-    // GainLifeOnBlock6_
-    
 }

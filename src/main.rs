@@ -9,6 +9,7 @@ use lazy_crafter::usecases::craft_searcher;
 use std::sync::{mpsc, Arc, Mutex};
 use std::thread;
 
+
 fn run_db_in_background(
     receiver: mpsc::Receiver<UiEvents>,
     ui_states: Arc<Mutex<UiStates>>,

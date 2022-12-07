@@ -170,7 +170,67 @@ Item Level: 27
     mods: vec!["ColdResist3".to_string()],
     raw_mods: vec!["+18% to Cold Resistance".to_string()]
 })]
+#[case("Item Class: Shields
+Rarity: Magic
+Spiny Copper Tower Shield of the Prism
+--------
+Chance to Block: 24%
+Armour: 164
+--------
+Requirements:
+Level: 24
+Str: 62
+--------
+Sockets: R-R
+--------
+Item Level: 26
+--------
++39 to maximum Life (implicit)
+--------
++8% to all Elemental Resistances
+Reflects 10 Physical Damage to Melee Attackers
+", ParsedItem {
+    item_class: "Shield".to_string(),
+    item_base_name: "Copper Tower Shield".to_string(),
+    item_name: "Spiny Copper Tower Shield of the Prism".to_string(),
+    mods: vec!["AllResistances2".to_string(), "AttackerTakesDamage2".to_string()],
+    raw_mods: vec!["+8% to all Elemental Resistances".to_string(), "Reflects 10 Physical Damage to Melee Attackers".to_string()],
+})]
 fn test_parse_raw_item(repo: impl CraftRepo, #[case] input: &str, #[case] expected: ParsedItem) {
+    assert_eq!(parse_raw_item(&repo, &input), Ok(expected));
+}
+
+#[rstest]
+#[case("Item Class: Thrusting One Hand Swords
+Rarity: Magic
+Heavy Antique Rapier of Light
+--------
+One Handed Sword
+Physical Damage: 17-67 (augmented)
+Critical Strike Chance: 6.50%
+Attacks per Second: 1.30
+Weapon Range: 14
+--------
+Requirements:
+Level: 26
+Dex: 89
+--------
+Sockets: G-G-G
+--------
+Item Level: 27
+--------
++25% to Global Critical Strike Multiplier (implicit)
+--------
+45% increased Physical Damage
+14% increased Global Accuracy Rating
+10% increased Light Radius", ParsedItem { 
+    item_class: "Thrusting One Hand Sword".to_string(),
+    item_base_name: "Antique Rapier".to_string(),
+    item_name: "Antique Rapier of the Penguin".to_string(),
+    mods: vec!["1".to_string(), "LocalLightRadiusAndAccuracyNew2".to_string()],
+    raw_mods: vec!["45% increased Physical Damage".to_string(), "14% increased Global Accuracy Rating".to_string(), "10% increased Light Radius".to_string()],
+})]
+fn test_parse_raw_item_debug(repo: impl CraftRepo, #[case] input: &str, #[case] expected: ParsedItem) {
     assert_eq!(parse_raw_item(&repo, &input), Ok(expected));
 }
 
@@ -189,6 +249,29 @@ Antique Rapier of the Penguin
 Antique Penguin of the Rapier
 --------
 +18% to Magic Resistance", "No item base found".to_string())]
+#[case("Item Class: Gloves
+Rarity: Rare
+Apocalypse Grip
+Stealth Gloves
+--------
+Evasion Rating: 256
+--------
+Requirements:
+Level: 62
+Dex: 97
+--------
+Sockets: B-B G
+--------
+Item Level: 83
+--------
++15% chance to Suppress Spell Damage
+Adds 7 to 13 Cold Damage to Attacks
++39 to maximum Life
+8% increased Rarity of Items found
++16% to Fire Resistance
++10% to Lightning Resistance
+--------
+Corrupted", "Found wrong count of mods".to_string())]
 fn test_parse_raw_item_negative(
     repo: impl CraftRepo,
     #[case] input: &str,
