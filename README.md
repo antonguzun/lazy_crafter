@@ -4,7 +4,7 @@
 
 - Mods filtering by item class, item base, item level and text search. (Not tested enought, there are some represenation mods mistakes)
 - Crafting chance calculation is not ready
-- Auto crafting is not ready, but you can try it in develop mod. (Ctrl+Alt+C on item with "currency in hand")
+- Auto crafting is not stable, but you can try it. (Ctrl+Alt+C on item with "currency in hand")
 
 ### Planned features
 
@@ -26,7 +26,7 @@
 
 earlier version x86
 
-https://github.com/antonguzun/lazy_crafter/releases/tag/0.1.0
+https://github.com/antonguzun/lazy_crafter/releases/tag/0.2.0
 
 ## Build
 
