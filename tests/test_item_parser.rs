@@ -226,11 +226,15 @@ Item Level: 27
 10% increased Light Radius", ParsedItem { 
     item_class: "Thrusting One Hand Sword".to_string(),
     item_base_name: "Antique Rapier".to_string(),
-    item_name: "Antique Rapier of the Penguin".to_string(),
-    mods: vec!["1".to_string(), "LocalLightRadiusAndAccuracyNew2".to_string()],
-    raw_mods: vec!["45% increased Physical Damage".to_string(), "14% increased Global Accuracy Rating".to_string(), "10% increased Light Radius".to_string()],
+    item_name: "Heavy Antique Rapier of Light".to_string(),
+    mods: vec!["LocalIncreasedPhysicalDamagePercent1".to_string(), "LocalLightRadiusAndAccuracyNew2".to_string()],
+    raw_mods: vec!["45% increased Physical Damage".to_string(), "14% increased Global Accuracy Rating\n10% increased Light Radius".to_string()],
 })]
-fn test_parse_raw_item_debug(repo: impl CraftRepo, #[case] input: &str, #[case] expected: ParsedItem) {
+fn test_parse_raw_item_debug(
+    repo: impl CraftRepo,
+    #[case] input: &str,
+    #[case] expected: ParsedItem,
+) {
     assert_eq!(parse_raw_item(&repo, &input), Ok(expected));
 }
 

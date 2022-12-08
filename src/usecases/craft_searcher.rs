@@ -80,7 +80,50 @@ pub fn parse_raw_item(craft_repo: &impl CraftRepo, raw_item: &str) -> Result<Par
         }
     });
 
+    let mut need_to_parse_deeper = false;
     if last_part.trim().split("\n").count() != mods.len() {
+        match last_part.trim().split("\n").last() {
+            Some(value) if !value.contains("implicit") => {
+                need_to_parse_deeper = true;
+            }
+            Some(_) => {}
+            None => {}
+        }
+    }
+    let mut added_complex_mods = 0;
+    if need_to_parse_deeper {
+        let mod_lines: Vec<&str> = last_part.trim().split("\n").collect();
+
+        let mut chunked_mods = vec![];
+        for chunk in mod_lines.chunks(2) {
+            if chunk.len() == 2 {
+                let v = format!("{}\n{}", chunk[0].clone(), chunk[1].clone());
+                chunked_mods.push(v);
+                let v = format!("{}\n{}", chunk[1].clone(), chunk[0].clone());
+                chunked_mods.push(v);
+            }
+        }
+        for chunk in mod_lines[1..].chunks(2) {
+            if chunk.len() == 2 {
+                let v = format!("{}\n{}", chunk[0].clone(), chunk[1].clone());
+                chunked_mods.push(v);
+                let v = format!("{}\n{}", chunk[1].clone(), chunk[0].clone());
+                chunked_mods.push(v);
+            }
+        }
+        chunked_mods.into_iter().for_each(|row| {
+            match craft_repo.string_to_mod(&item_class, &item_base_name, row.trim()) {
+                Ok(mod_name) => {
+                    mods.push(mod_name);
+                    raw_mods.push(row.trim().to_string());
+                    added_complex_mods += 1;
+                }
+                Err(_) => {}
+            }
+        });
+    }
+
+    if last_part.trim().split("\n").count() != mods.len() && added_complex_mods == 0 {
         match last_part.trim().split("\n").last() {
             Some(value) if !value.contains("implicit") => {
                 return Err("Found wrong count of mods".to_string());
@@ -88,6 +131,9 @@ pub fn parse_raw_item(craft_repo: &impl CraftRepo, raw_item: &str) -> Result<Par
             Some(_) => {}
             None => {}
         }
+    } else if last_part.trim().split("\n").count() != (mods.len() + added_complex_mods) {
+        // guess complex mod based on two mods always
+        return Err("Found wrong count of mods".to_string());
     }
 
     Ok(ParsedItem {

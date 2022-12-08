@@ -394,7 +394,11 @@ impl CraftRepo for FileRepo {
                 match re == mod_template {
                     true => {
                         let source_mod = self.db.mods.get(&m.mod_key).unwrap();
-                        let source_mod_stats_count: usize = source_mod.stats.iter().filter(|s| s.id != "dummy_stat_display_nothing").count();
+                        let source_mod_stats_count: usize = source_mod
+                            .stats
+                            .iter()
+                            .filter(|s| s.id != "dummy_stat_display_nothing")
+                            .count();
                         if values.len() != source_mod_stats_count {
                             return None;
                         }
@@ -411,6 +415,29 @@ impl CraftRepo for FileRepo {
                             match s.max {
                                 Some(max) => {
                                     if max < i64::from(*v) {
+                                        values_correct = false;
+                                    }
+                                }
+                                None => {}
+                            }
+                        });
+                        if values_correct {
+                            return Some(m);
+                        }
+                        let mut values_correct = true;
+                        let values: Vec<i32> = values.clone().into_iter().rev().collect();
+                        zip(values, &source_mod.stats).for_each(|(v, s)| {
+                            match s.min {
+                                Some(min) => {
+                                    if i64::from(v) < min {
+                                        values_correct = false;
+                                    }
+                                }
+                                None => {}
+                            }
+                            match s.max {
+                                Some(max) => {
+                                    if max < i64::from(v) {
                                         values_correct = false;
                                     }
                                 }
