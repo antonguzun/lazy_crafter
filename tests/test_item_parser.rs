@@ -196,11 +196,6 @@ Reflects 10 Physical Damage to Melee Attackers
     mods: vec!["AllResistances2".to_string(), "AttackerTakesDamage2".to_string()],
     raw_mods: vec!["+8% to all Elemental Resistances".to_string(), "Reflects 10 Physical Damage to Melee Attackers".to_string()],
 })]
-fn test_parse_raw_item(repo: impl CraftRepo, #[case] input: &str, #[case] expected: ParsedItem) {
-    assert_eq!(parse_raw_item(&repo, &input), Ok(expected));
-}
-
-#[rstest]
 #[case("Item Class: Thrusting One Hand Swords
 Rarity: Magic
 Heavy Antique Rapier of Light
@@ -230,6 +225,56 @@ Item Level: 27
     mods: vec!["LocalIncreasedPhysicalDamagePercent1".to_string(), "LocalLightRadiusAndAccuracyNew2".to_string()],
     raw_mods: vec!["45% increased Physical Damage".to_string(), "14% increased Global Accuracy Rating\n10% increased Light Radius".to_string()],
 })]
+#[case("Item Class: Bows
+Rarity: Magic
+Long Bow of Shining
+--------
+Bow
+Physical Damage: 8-33
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+9% increased Global Accuracy Rating
+5% increased Light Radius", ParsedItem {
+    item_class: "Bow".to_string(),
+    item_base_name: "Long Bow".to_string(),
+    item_name: "Long Bow of Shining".to_string(),
+    mods: vec!["LocalLightRadiusAndAccuracyNew1_".to_string()],
+    raw_mods: vec!["9% increased Global Accuracy Rating\n5% increased Light Radius".to_string()],
+})]
+fn test_parse_raw_item(repo: impl CraftRepo, #[case] input: &str, #[case] expected: ParsedItem) {
+    assert_eq!(parse_raw_item(&repo, &input), Ok(expected));
+}
+
+#[rstest]
+#[case("Item Class: Bows
+Rarity: Magic
+Smouldering Long Bow of Rejuvenation
+--------
+Bow
+Physical Damage: 8-33
+Elemental Damage: 16-33 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G
+--------
+Item Level: 13
+--------
+Adds 16 to 33 Fire Damage
+Gramts 2 Life per Enemy Hit", "FIX")]
 fn test_parse_raw_item_debug(
     repo: impl CraftRepo,
     #[case] input: &str,

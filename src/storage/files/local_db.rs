@@ -376,7 +376,7 @@ impl CraftRepo for FileRepo {
         use regex::Regex;
         let values: Vec<i32> = Regex::new(r"\d+")
             .unwrap()
-            .find_iter(mod_name)
+            .find_iter(&mod_name.replace("\r", "").replace("Gramts", "Gain"))
             .map(|m| m.as_str().parse::<i32>().unwrap())
             .collect();
         // add "\+?" to pattern because our mods representation doesn't contain it (look stat_translations.json field "format")

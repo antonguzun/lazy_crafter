@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use log::debug;
+use log::{debug, warn};
 use regex::Regex;
 
 use crate::entities::craft_repo::{CraftRepo, ItemBase, ModItem, ModsQuery};
@@ -70,6 +70,7 @@ pub fn parse_raw_item(craft_repo: &impl CraftRepo, raw_item: &str) -> Result<Par
     let mut mods = vec![];
     let mut raw_mods = vec![];
 
+    debug!("start parsing mods in {}", &last_part);
     last_part.split("\n").for_each(|row| {
         match craft_repo.string_to_mod(&item_class, &item_base_name, row.trim()) {
             Ok(mod_name) => {
@@ -92,25 +93,30 @@ pub fn parse_raw_item(craft_repo: &impl CraftRepo, raw_item: &str) -> Result<Par
     }
     let mut added_complex_mods = 0;
     if need_to_parse_deeper {
-        let mod_lines: Vec<&str> = last_part.trim().split("\n").collect();
+        debug!("start parsing mods deeper");
+
+        let mod_lines: Vec<&str> = last_part.clone().trim().split("\n").collect();
 
         let mut chunked_mods = vec![];
         for chunk in mod_lines.chunks(2) {
             if chunk.len() == 2 {
-                let v = format!("{}\n{}", chunk[0].clone(), chunk[1].clone());
+                let v = format!("{}\n{}", chunk[0].clone(), chunk[1].clone()).replace("\r", "");
                 chunked_mods.push(v);
-                let v = format!("{}\n{}", chunk[1].clone(), chunk[0].clone());
+                let v = format!("{}\n{}", chunk[1].clone(), chunk[0].clone()).replace("\r", "");
                 chunked_mods.push(v);
             }
         }
         for chunk in mod_lines[1..].chunks(2) {
             if chunk.len() == 2 {
-                let v = format!("{}\n{}", chunk[0].clone(), chunk[1].clone());
+                let v = format!("{}\n{}", chunk[0].clone(), chunk[1].clone()).replace("\r", "");
                 chunked_mods.push(v);
-                let v = format!("{}\n{}", chunk[1].clone(), chunk[0].clone());
+                let v = format!("{}\n{}", chunk[1].clone(), chunk[0].clone()).replace("\r", "");
                 chunked_mods.push(v);
             }
         }
+
+        debug!("start parsing mods in chunks {:?}", &chunked_mods);
+
         chunked_mods.into_iter().for_each(|row| {
             match craft_repo.string_to_mod(&item_class, &item_base_name, row.trim()) {
                 Ok(mod_name) => {
@@ -121,11 +127,16 @@ pub fn parse_raw_item(craft_repo: &impl CraftRepo, raw_item: &str) -> Result<Par
                 Err(_) => {}
             }
         });
+
+        if added_complex_mods == 0 {
+            warn!("found no complex mods for item");
+        }
     }
 
     if last_part.trim().split("\n").count() != mods.len() && added_complex_mods == 0 {
         match last_part.trim().split("\n").last() {
             Some(value) if !value.contains("implicit") => {
+                debug!("found wrong count of mods {:?}", mods);
                 return Err("Found wrong count of mods".to_string());
             }
             Some(_) => {}
@@ -133,6 +144,7 @@ pub fn parse_raw_item(craft_repo: &impl CraftRepo, raw_item: &str) -> Result<Par
         }
     } else if last_part.trim().split("\n").count() != (mods.len() + added_complex_mods) {
         // guess complex mod based on two mods always
+        debug!("found wrong count of mods with complex {:?}", mods);
         return Err("Found wrong count of mods".to_string());
     }
 

@@ -1,0 +1,149 @@
+Item Class: Shields
+Rarity: Magic
+Crab's Copper Tower Shield
+--------
+Chance to Block: 24%
+Armour: 192 (augmented)
+--------
+Requirements:
+Level: 24
+Str: 62
+--------
+Sockets: R-R 
+--------
+Item Level: 26
+--------
+{ Implicit Modifier — Life }
++39(30-40) to maximum Life (implicit)
+--------
+{ Prefix Modifier "Crab's" (Tier: 5) — Defences }
+17(14-20)% increased Armour
+8(8-9)% increased Stun and Block Recovery
+
+Item Class: Boots
+Rarity: Magic
+Sapphire Ringmail Boots of the Drake
+--------
+Armour: 29
+Energy Shield: 7
+--------
+Requirements:
+Level: 19
+Str: 15
+Int: 15
+--------
+Sockets: B 
+--------
+Item Level: 26
+--------
+{ Prefix Modifier "Sapphire" (Tier: 9) — Mana }
++31(30-34) to maximum Mana
+{ Suffix Modifier "of the Drake" (Tier: 6) — Elemental, Fire, Resistance }
++22(18-23)% to Fire Resistance
+
+Item Class: Gloves
+Rarity: Rare
+Apocalypse Grip
+Stealth Gloves
+--------
+Evasion Rating: 256
+--------
+Requirements:
+Level: 62
+Dex: 97
+--------
+Sockets: B-B G 
+--------
+Item Level: 83
+--------
+{ Prefix Modifier "Frigid" (Tier: 3) — Damage, Elemental, Cold, Attack }
+Adds 7(6-9) to 13(13-16) Cold Damage to Attacks
+{ Prefix Modifier "Magpie's" (Tier: 2) }
+8(8-12)% increased Rarity of Items found
+{ Prefix Modifier "Stalwart" (Tier: 6) — Life }
++39(30-39) to maximum Life
+{ Suffix Modifier "of the Salamander" (Tier: 7) — Elemental, Fire, Resistance }
++16(12-17)% to Fire Resistance
+{ Suffix Modifier "of Revoking" (Tier: 3) }
++15(9-10)% chance to Suppress Spell Damage
+(50% of Damage from Suppressed Hits and Ailments they inflict is prevented)
+{ Suffix Modifier "of the Cloud" (Tier: 8) — Elemental, Lightning, Resistance }
++10(6-11)% to Lightning Resistance
+--------
+Corrupted
+
+Item Class: Bows
+Rarity: Magic
+Squire's Long Bow of Ire
+--------
+Bow
+Physical Damage: 9-38 (augmented)
+Critical Strike Chance: 6.00%
+Attacks per Second: 1.30
+--------
+Requirements:
+Level: 9
+Dex: 38
+--------
+Sockets: B-G 
+--------
+Item Level: 13
+--------
+{ Prefix Modifier "Squire's" (Tier: 8) — Damage, Physical, Attack }
+15(15-19)% increased Physical Damage
++20(16-20) to Accuracy Rating
+{ Suffix Modifier "of Ire" (Tier: 6) — Damage, Critical }
++11(10-14)% to Global Critical Strike Multiplier
+
+Item Class: Two Hand Swords
+Rarity: Magic
+Glinting Engraved Greatsword
+--------
+Two Handed Sword
+Physical Damage: 51-107 (augmented)
+Critical Strike Chance: 5.00%
+Attacks per Second: 1.30
+Weapon Range: 13
+--------
+Requirements:
+Level: 48
+Str: 91
+Dex: 76
+--------
+Sockets: R-G-B 
+--------
+Item Level: 59
+--------
+{ Implicit Modifier — Attack }
+40% increased Global Accuracy Rating (implicit)
+--------
+{ Prefix Modifier "Glinting" (Tier: 9) — Damage, Physical, Attack }
+Adds 2 to 5(4-5) Physical Damage
+
+Item Class: Shields
+Rarity: Rare
+Rune Fend
+Pinnacle Tower Shield
+--------
+Chance to Block: 25%
+Armour: 487
+--------
+Requirements:
+Level: 70
+Str: 159
+--------
+Sockets: R-R 
+--------
+Item Level: 85
+--------
+{ Implicit Modifier — Life }
++24(20-30) to maximum Life (implicit)
+--------
+{ Prefix Modifier "Jagged" (Tier: 1) — Damage, Physical }
+Reflects 39(25-50) Physical Damage to Melee Attackers
+{ Suffix Modifier "of the Bear" (Tier: 7) — Attribute }
++18(18-22) to Strength
+{ Suffix Modifier "of Ryslatha" (Tier: 4) — Life }
+Regenerate 62.6(48.1-64) Life per second
+{ Suffix Modifier "of Corundum Skin" (Tier: 1) }
+26(26-28)% increased Stun and Block Recovery
