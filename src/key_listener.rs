@@ -1,13 +1,13 @@
-use crate::entities::craft_repo::{CraftRepo, UiStates};
+use crate::entities::craft_repo::{BackEvents, CraftRepo, UiStates};
 use crate::storage::files::local_db::FileRepo;
 use chrono::{DateTime, Utc};
+use log::{debug, info};
 use rdev::{listen, simulate, EventType, Key};
 use std::collections::HashSet;
-use std::sync::mpsc::channel;
+use std::sync::mpsc::{channel, Sender};
 use std::sync::{Arc, Mutex};
 use std::thread;
 use std::time::{Duration, SystemTime};
-use log::{debug, info};
 
 fn hash_event_type(event_type: EventType) -> String {
     format!("{:?}", &event_type)
@@ -35,7 +35,7 @@ fn send(event_type: &EventType) {
     thread::sleep(delay);
 }
 #[cfg(target_os = "windows")]
-fn run_craft(craft_repo: &impl CraftRepo, ui_states: Arc<Mutex<UiStates>>) {
+fn run_craft(craft_repo: &impl CraftRepo, ui_states: Arc<Mutex<UiStates>>) -> Result<(), String> {
     use crate::usecases::craft_searcher;
     use clipboard_win::{formats, Clipboard, Getter, Setter};
     use rdev::Button;
@@ -43,13 +43,18 @@ fn run_craft(craft_repo: &impl CraftRepo, ui_states: Arc<Mutex<UiStates>>) {
     println!("run crafting");
 
     let selected_mods = ui_states.lock().unwrap().selected.clone();
-    let selected_mod_keys: HashSet<String> = HashSet::from_iter(selected_mods.iter().map(|m| m.mod_key.clone()));
-    let max_tries = ui_states.lock().unwrap().selected_max_autocraft_tries.clone();
+    let selected_mod_keys: HashSet<String> =
+        HashSet::from_iter(selected_mods.iter().map(|m| m.mod_key.clone()));
+    let max_tries = ui_states
+        .lock()
+        .unwrap()
+        .selected_max_autocraft_tries
+        .clone();
     send(&EventType::KeyPress(Key::ShiftLeft));
-    
-    let mut prev_output = String::new(); 
+
+    let mut prev_output = String::new();
     let mut down_counter = max_tries;
-    while down_counter > 0 { 
+    while down_counter > 0 {
         send(&EventType::KeyPress(Key::ControlLeft));
         send(&EventType::KeyPress(Key::KeyC));
         send(&EventType::KeyRelease(Key::ControlLeft));
@@ -83,10 +88,10 @@ fn run_craft(craft_repo: &impl CraftRepo, ui_states: Arc<Mutex<UiStates>>) {
             send(&EventType::KeyRelease(Key::ShiftLeft));
             output.clear();
             break;
-        } 
+        }
 
         output.clear();
-        
+
         send(&EventType::ButtonPress(Button::Left));
         send(&EventType::ButtonRelease(Button::Left));
         down_counter -= 1;
@@ -94,12 +99,15 @@ fn run_craft(craft_repo: &impl CraftRepo, ui_states: Arc<Mutex<UiStates>>) {
     }
     info!("All attempts were exhausted");
     send(&EventType::KeyRelease(Key::ShiftLeft));
+    ()
 }
 
 #[cfg(target_os = "linux")]
-fn run_craft(_repo: &impl CraftRepo, _ui_states: Arc<Mutex<UiStates>>) {}
+fn run_craft(_repo: &impl CraftRepo, _ui_states: Arc<Mutex<UiStates>>) -> Result<(), String> {
+    Err(String::from("Auto crafting is not supported on linux yet"))
+}
 
-pub fn run_listener_in_background(ui_states: Arc<Mutex<UiStates>>) {
+pub fn run_listener_in_background(sender: Sender<BackEvents>, ui_states: Arc<Mutex<UiStates>>) {
     let craft_repo = FileRepo::new().unwrap(); // !TODO use common instance between threads
 
     let (schan, rchan) = channel();
@@ -129,7 +137,15 @@ pub fn run_listener_in_background(ui_states: Arc<Mutex<UiStates>>) {
                 println!("You pressed combo! prev combo at {}", t.to_rfc3339());
                 last_combo = SystemTime::now();
                 events.clear();
-                run_craft(&craft_repo, Arc::clone(&ui_states));
+                match run_craft(&craft_repo, Arc::clone(&ui_states)) {
+                    Ok(_) => {}
+                    Err(e) => {
+                        sender
+                            .send(BackEvents::Error(e))
+                            .expect("Could not send crafting error event");
+                    }
+                    Err(_) => {}
+                }
                 let delay = Duration::from_millis(100);
                 thread::sleep(delay);
             }

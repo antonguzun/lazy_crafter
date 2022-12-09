@@ -1,14 +1,16 @@
-use crate::entities::craft_repo::{Data, UiEvents, UiStates};
+use crate::entities::craft_repo::{BackEvents, Data, Message, UiEvents, UiStates};
 
 use crate::input_schemas::{parse_item_level, parse_max_tries};
-use crate::ui::{buttons, comboboxes, inputs, tables};
+use crate::ui::{buttons, comboboxes, errors, inputs, tables};
 use eframe::egui;
 use std::sync::{mpsc, Arc, Mutex};
+use std::thread;
 
 const APP_NAME: &str = "Lazy Crafter";
 
 pub fn run_ui_in_main_thread(
     sender: mpsc::Sender<UiEvents>,
+    receiver: mpsc::Receiver<BackEvents>,
     ui_states: Arc<Mutex<UiStates>>,
     data: Arc<Mutex<Data>>,
 ) {
@@ -18,6 +20,22 @@ pub fn run_ui_in_main_thread(
         x: 1100.0,
         y: 600.0,
     });
+
+    let ui_states_clone = Arc::clone(&ui_states);
+    thread::spawn(move || {
+        for event in receiver.iter() {
+            match event {
+                BackEvents::Error(err) => {
+                    ui_states_clone.lock().unwrap().messages.push(Message {
+                        text: err.to_string(),
+                        created_at: std::time::Instant::now(),
+                    });
+                }
+                _ => (),
+            };
+        }
+    });
+
     eframe::run_native(
         APP_NAME,
         native_options,
@@ -92,8 +110,6 @@ impl eframe::App for EguiApp {
         egui::SidePanel::right("selected_mods_panel").show(ctx, |ui| {
             ui.label("Max autocraft tries:");
             ui.horizontal(|ui| {
-                
-
                 ui.set_max_width(150.0);
                 if ui
                     .text_edit_singleline(&mut self.ui_states.lock().unwrap().max_autocraft_tries)
@@ -112,6 +128,7 @@ impl eframe::App for EguiApp {
 
             ui.heading("Selected");
             let selected_mods = self.ui_states.lock().unwrap().selected.clone();
+            // let messages = self.ui_states.lock().unwrap().messages.clone();
             let total_suff_weight: u32 = self
                 .data
                 .lock()
@@ -146,8 +163,17 @@ impl eframe::App for EguiApp {
             ui.label(format!("estimate ~{}%", estimate * 100.0));
 
             tables::show_table_of_selected(ui, selected_mods);
-            let selected_mods = &mut self.ui_states.lock().unwrap().selected;
-            buttons::show_cleaning_selected_mods_button(ui, selected_mods, &self.event_tx);
+
+            buttons::show_cleaning_selected_mods_button(
+                ui,
+                &mut self.ui_states.lock().unwrap().selected,
+                &self.event_tx,
+            );
+            
+            ui.with_layout(egui::Layout::top_down(egui::Align::Min), |ui| {
+                errors::show_errors(ui, &mut self.ui_states.lock().unwrap().messages);
+                ctx.request_repaint();
+            });
         });
 
         egui::CentralPanel::default().show(ctx, |ui| {

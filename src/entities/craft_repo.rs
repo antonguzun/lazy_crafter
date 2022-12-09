@@ -54,6 +54,11 @@ impl Default for Data {
         }
     }
 }
+#[derive(Debug, Clone)]
+pub struct Message {
+    pub text: String,
+    pub created_at: std::time::Instant,
+}
 
 #[derive(Debug)]
 pub struct UiStates {
@@ -66,6 +71,7 @@ pub struct UiStates {
     pub selected_item_base_as_filter: String,
     pub selected_item_level_as_filter: u64,
     pub selected_max_autocraft_tries: u64,
+    pub messages: Vec<Message>,
 }
 
 impl Default for UiStates {
@@ -81,6 +87,7 @@ impl Default for UiStates {
             selected_item_base_as_filter: "Iron Hat".to_string(),
             selected_item_level_as_filter: 100,
             selected_max_autocraft_tries: 5,
+            messages: vec![],
         }
     }
 }
@@ -93,4 +100,9 @@ pub enum UiEvents {
     AddToSelectedMods,
     CleanSelectedMods,
     InsertionItemData,
+}
+
+#[derive(PartialEq)]
+pub enum BackEvents {
+    Error(String),
 }

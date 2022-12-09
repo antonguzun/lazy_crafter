@@ -1,4 +1,4 @@
-use lazy_crafter::entities::craft_repo::{Data, ModsQuery, UiEvents, UiStates};
+use lazy_crafter::entities::craft_repo::{Data, ModsQuery, UiEvents, UiStates, BackEvents};
 use log::{debug, info};
 extern crate x11_clipboard;
 
@@ -57,13 +57,14 @@ fn main() {
     // db loader works in another thread and wait events from main tread
     env_logger::init();
     info!("Start app");
-    let (tx, rx): (mpsc::Sender<UiEvents>, mpsc::Receiver<UiEvents>) = mpsc::channel();
+    let (ui_tx, ui_rx): (mpsc::Sender<UiEvents>, mpsc::Receiver<UiEvents>) = mpsc::channel();
+    let (back_tx, back_rx): (mpsc::Sender<BackEvents>, mpsc::Receiver<BackEvents>) = mpsc::channel();
 
     let data = Arc::new(Mutex::new(Data::default()));
     let ui_states = Arc::new(Mutex::new(UiStates::default()));
 
-    run_db_in_background(rx, Arc::clone(&ui_states), Arc::clone(&data));
-    key_listener::run_listener_in_background(Arc::clone(&ui_states));
+    run_db_in_background(ui_rx, Arc::clone(&ui_states), Arc::clone(&data));
+    key_listener::run_listener_in_background(back_tx, Arc::clone(&ui_states));
     info!("start ui");
-    ui_app::run_ui_in_main_thread(tx, ui_states, data);
+    ui_app::run_ui_in_main_thread(ui_tx, back_rx, ui_states, data);
 }
