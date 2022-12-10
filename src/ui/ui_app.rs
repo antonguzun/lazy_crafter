@@ -49,13 +49,39 @@ struct EguiApp {
     event_tx: mpsc::Sender<UiEvents>,
 }
 
+fn setup_custom_fonts(ctx: &egui::Context) {
+    let mut fonts = egui::FontDefinitions::default();
+
+    fonts.font_data.insert(
+        "fontin".to_owned(),
+        egui::FontData::from_static(include_bytes!(
+            "../../assets/Fontin-Regular.ttf"
+        )),
+    );
+
+    fonts
+        .families
+        .entry(egui::FontFamily::Proportional)
+        .or_default()
+        .insert(0, "fontin".to_owned());
+
+    // fonts
+    //     .families
+    //     .entry(egui::FontFamily::Monospace)
+    //     .or_default()
+    //     .push("my_font".to_owned());
+
+    ctx.set_fonts(fonts);
+}
+
 impl EguiApp {
     fn new(
-        _cc: &eframe::CreationContext<'_>,
+        cc: &eframe::CreationContext<'_>,
         ui_states: Arc<Mutex<UiStates>>,
         data: Arc<Mutex<Data>>,
         event_tx: mpsc::Sender<UiEvents>,
     ) -> Self {
+        setup_custom_fonts(&cc.egui_ctx); 
         Self {
             ui_states,
             data,

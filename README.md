@@ -63,3 +63,4 @@ cargo test --test test_item_parser
 
 ### Dependences
 used prepaired data by RePoe https://github.com/brather1ng/RePoE
+used font https://www.exljbris.com/fontin.html
