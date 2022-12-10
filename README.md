@@ -26,6 +26,10 @@ earlier version x86
 
 https://github.com/antonguzun/lazy_crafter/releases/tag/0.3.0
 
+## Demo
+
+[![demo](https://img.youtube.com/vi/1LOfTQyZDGs/0.jpg)](https://www.youtube.com/watch?v=1LOfTQyZDGs "Demo")
+
 ## Build
 
 ```sh
@@ -63,4 +67,5 @@ cargo test --test test_item_parser
 
 ### Dependences
 used prepaired data by RePoe https://github.com/brather1ng/RePoE
+
 used font https://www.exljbris.com/fontin.html
