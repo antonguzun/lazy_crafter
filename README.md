@@ -24,7 +24,7 @@
 
 earlier version x86
 
-https://github.com/antonguzun/lazy_crafter/releases/tag/0.2.0
+https://github.com/antonguzun/lazy_crafter/releases/tag/0.3.0
 
 ## Build
 
