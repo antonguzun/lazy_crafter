@@ -32,8 +32,6 @@ pub fn show_combobox_with_bases(
                     if choices.changed() {
                         let state = &mut ui_states.lock().unwrap();
                         state.selected.clear();
-                        state.selected_item_level_as_filter = i.required_level;
-                        state.item_level = i.required_level.to_string();
                         events_sender.send(UiEvents::AddToSelectedMods).unwrap();
                         filter_query.clear();
                     };

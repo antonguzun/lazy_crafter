@@ -13,7 +13,7 @@ pub fn show_errors(ui: &mut Ui, messages: &mut Vec<Message>) {
 
     let texts = messages.iter().map(|m| m.text.clone()).collect::<Vec<String>>();
     for (i, message) in texts.iter().enumerate() {
-        let label = egui::Label::new(RichText::new(message).color(Color32::DARK_RED))
+        let label = egui::Label::new(RichText::new(message).color(Color32::LIGHT_RED))
             .wrap(false)
             .sense(Sense::click());
         if ui.add(label).clicked() {
