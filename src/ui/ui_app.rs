@@ -2,6 +2,7 @@ use crate::entities::craft_repo::{BackEvents, Data, Message, UiEvents, UiStates}
 
 use crate::input_schemas::{parse_item_level, parse_max_tries};
 use crate::ui::{buttons, comboboxes, errors, inputs, tables};
+use chrono;
 use eframe::egui;
 use std::sync::{mpsc, Arc, Mutex};
 use std::thread;
@@ -28,7 +29,7 @@ pub fn run_ui_in_main_thread(
                 BackEvents::Error(err) => {
                     ui_states_clone.lock().unwrap().messages.push(Message {
                         text: err.to_string(),
-                        created_at: std::time::Instant::now(),
+                        created_at: chrono::Local::now().timestamp(),
                     });
                 }
                 _ => (),
@@ -63,13 +64,6 @@ fn setup_custom_fonts(ctx: &egui::Context) {
         .entry(egui::FontFamily::Proportional)
         .or_default()
         .insert(0, "fontin".to_owned());
-
-    // fonts
-    //     .families
-    //     .entry(egui::FontFamily::Monospace)
-    //     .or_default()
-    //     .push("my_font".to_owned());
-
     ctx.set_fonts(fonts);
 }
 
@@ -205,7 +199,6 @@ impl eframe::App for EguiApp {
 
             ui.with_layout(egui::Layout::top_down(egui::Align::Min), |ui| {
                 errors::show_errors(ui, &mut self.ui_states.lock().unwrap().messages);
-                ctx.request_repaint();
             });
         });
 
@@ -221,5 +214,7 @@ impl eframe::App for EguiApp {
             let selected_mods = &mut self.ui_states.lock().unwrap().selected;
             tables::show_table_of_filtered_mods(ui, mod_items, selected_mods, &self.event_tx);
         });
+        ctx.request_repaint_after(std::time::Duration::from_secs(1));
+        ()
     }
 }

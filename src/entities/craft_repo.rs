@@ -57,7 +57,7 @@ impl Default for Data {
 #[derive(Debug, Clone)]
 pub struct Message {
     pub text: String,
-    pub created_at: std::time::Instant,
+    pub created_at: i64,
 }
 
 #[derive(Debug)]
