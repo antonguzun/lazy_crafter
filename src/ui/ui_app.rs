@@ -47,6 +47,7 @@ struct EguiApp {
     ui_states: Arc<Mutex<UiStates>>,
     data: Arc<Mutex<Data>>,
     event_tx: mpsc::Sender<UiEvents>,
+    combobox_filter_query: String,
 }
 
 fn setup_custom_fonts(ctx: &egui::Context) {
@@ -54,9 +55,7 @@ fn setup_custom_fonts(ctx: &egui::Context) {
 
     fonts.font_data.insert(
         "fontin".to_owned(),
-        egui::FontData::from_static(include_bytes!(
-            "../../assets/Fontin-Regular.ttf"
-        )),
+        egui::FontData::from_static(include_bytes!("../../assets/Fontin-Regular.ttf")),
     );
 
     fonts
@@ -81,11 +80,12 @@ impl EguiApp {
         data: Arc<Mutex<Data>>,
         event_tx: mpsc::Sender<UiEvents>,
     ) -> Self {
-        setup_custom_fonts(&cc.egui_ctx); 
+        setup_custom_fonts(&cc.egui_ctx);
         Self {
             ui_states,
             data,
             event_tx,
+            combobox_filter_query: String::new(),
         }
     }
 }
@@ -102,9 +102,16 @@ impl eframe::App for EguiApp {
                 item_classes,
                 &self.ui_states,
                 &self.event_tx,
+                &mut self.combobox_filter_query,
             );
             let item_bases = self.data.lock().unwrap().item_bases.clone();
-            comboboxes::show_combobox_with_bases(ui, item_bases, &self.ui_states, &self.event_tx);
+            comboboxes::show_combobox_with_bases(
+                ui,
+                item_bases,
+                &self.ui_states,
+                &self.event_tx,
+                &mut self.combobox_filter_query,
+            );
             // show_level_input(ui, item_bases, &self.ui_states, &self.event_tx);
             ui.horizontal(|ui| {
                 ui.set_max_width(150.0);
@@ -195,7 +202,7 @@ impl eframe::App for EguiApp {
                 &mut self.ui_states.lock().unwrap().selected,
                 &self.event_tx,
             );
-            
+
             ui.with_layout(egui::Layout::top_down(egui::Align::Min), |ui| {
                 errors::show_errors(ui, &mut self.ui_states.lock().unwrap().messages);
                 ctx.request_repaint();

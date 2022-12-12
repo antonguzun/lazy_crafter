@@ -315,11 +315,14 @@ impl CraftRepo for FileRepo {
     }
 
     fn get_item_classes(&self) -> Vec<String> {
-        self.db.item_classes.iter().map(|s| s.clone()).collect()
+        let mut r: Vec<String> = self.db.item_classes.iter().map(|s| s.clone()).collect();
+        r.sort();
+        r
     }
 
     fn get_item_bases(&self, item_class: &str) -> Vec<ItemBase> {
-        self.db
+        let mut r: Vec<ItemBase> = self
+            .db
             .base_items_by_name
             .iter()
             .filter(|(_, bi)| bi.domain == "item" && bi.item_class == item_class.to_string())
@@ -330,7 +333,9 @@ impl CraftRepo for FileRepo {
                     None => 100,
                 },
             })
-            .collect()
+            .collect();
+        r.sort_by(|a, b| a.name.cmp(&b.name));
+        r
     }
 
     fn get_item_class_by_item_name(&self) -> HashMap<String, String> {
