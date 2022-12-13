@@ -31,6 +31,7 @@ https://github.com/antonguzun/lazy_crafter/releases/tag/0.3.0
 [![demo](https://img.youtube.com/vi/tH3UOBZh0-w/0.jpg)](https://www.youtube.com/watch?v=tH3UOBZh0-w "Demo")
 
 ## Build
+it requires rustc 1.65 or newer
 
 ```sh
 cargo build

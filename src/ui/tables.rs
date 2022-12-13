@@ -1,7 +1,7 @@
 use crate::entities::craft_repo::{ModItem, UiEvents};
 use egui::widget_text::RichText;
 use egui::{Sense, Ui};
-use egui_extras::{Size, TableBuilder};
+use egui_extras::{TableBuilder, Column};
 use log::debug;
 use std::sync::mpsc;
 
@@ -22,9 +22,9 @@ pub fn show_table_of_filtered_mods(
     let table = TableBuilder::new(ui)
         .striped(true)
         .cell_layout(egui::Layout::left_to_right(egui::Align::Center))
-        .column(Size::initial(30.0).at_least(50.0))
-        .column(Size::initial(70.0).at_least(70.0))
-        .column(Size::remainder().at_least(300.0))
+        .column(Column::initial(30.0).at_least(50.0))
+        .column(Column::initial(70.0).at_least(70.0))
+        .column(Column::remainder().at_least(300.0))
         .resizable(false);
 
     table
@@ -68,8 +68,8 @@ pub fn show_table_of_selected(ui: &mut Ui, rows: Vec<ModItem>) {
     let selected_table = TableBuilder::new(ui)
         .striped(true)
         .cell_layout(egui::Layout::left_to_right(egui::Align::Center))
-        .column(Size::initial(70.0).at_least(70.0))
-        .column(Size::remainder().at_least(300.0))
+        .column(Column::initial(70.0).at_least(70.0))
+        .column(Column::remainder().at_least(300.0))
         .resizable(false);
 
     selected_table
