@@ -1,7 +1,5 @@
 use crate::entities::craft_repo::{CraftRepo, Estimation, ItemBase, ModItem, ModsQuery};
 
-
-
 fn chaos_variants_ratio(prefix_count: usize, suffix_count: usize) -> f64 {
     match (prefix_count, suffix_count) {
         (1, 3) => 0.2814,
@@ -14,7 +12,6 @@ fn chaos_variants_ratio(prefix_count: usize, suffix_count: usize) -> f64 {
     }
 }
 
-
 pub fn calculate_estimation_for_craft(
     repo: &impl CraftRepo,
     query: &ModsQuery,
@@ -23,9 +20,17 @@ pub fn calculate_estimation_for_craft(
         return Err("no mods selected".to_string());
     }
 
-    let prefix_count = query.selected_mods.iter().filter(|m| m.generation_type == "prefix").count();
-    let suffix_count = query.selected_mods.iter().filter(|m| m.generation_type == "suffix").count();
-    
+    let prefix_count = query
+        .selected_mods
+        .iter()
+        .filter(|m| m.generation_type == "prefix")
+        .count();
+    let suffix_count = query
+        .selected_mods
+        .iter()
+        .filter(|m| m.generation_type == "suffix")
+        .count();
+
     if prefix_count > 3 || suffix_count > 3 {
         return Err("too many affixes selected".to_string());
     }
@@ -46,6 +51,4 @@ pub fn calculate_estimation_for_craft(
     // sum all variants probabilities
 
     Err("not implemented".to_string())
-
-
 }
