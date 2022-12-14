@@ -54,7 +54,7 @@ fn run_craft(craft_repo: &impl CraftRepo, ui_states: Arc<Mutex<UiStates>>) -> Re
 
     let mut prev_output = String::new();
     let mut down_counter = max_tries;
- 
+
     while down_counter > 0 {
         send(&EventType::KeyPress(Key::ControlLeft));
         send(&EventType::KeyPress(Key::KeyC));
@@ -76,8 +76,8 @@ fn run_craft(craft_repo: &impl CraftRepo, ui_states: Arc<Mutex<UiStates>>) -> Re
         let parsed_craft = match item_parser::parse_raw_item(craft_repo, &output) {
             Ok(parsed_craft) => parsed_craft,
             Err(e) => {
-                let err_message = format!("Could not parse craft: {}", e); 
-                info!("{}", err_message); 
+                let err_message = format!("Could not parse craft: {}", e);
+                info!("{}", err_message);
                 send(&EventType::KeyRelease(Key::ShiftLeft));
                 output.clear();
                 return Err(err_message);

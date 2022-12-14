@@ -9,7 +9,6 @@ pub fn parse_item_level(raw: &String) -> Result<u32, String> {
     }
 }
 
-
 pub fn parse_max_tries(raw: &String) -> Result<u32, String> {
     let raw = raw.trim();
     match raw.trim().parse::<u32>() {

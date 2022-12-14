@@ -1,7 +1,7 @@
 use crate::entities::craft_repo::{ModItem, UiEvents};
 use egui::widget_text::RichText;
 use egui::{Sense, Ui};
-use egui_extras::{TableBuilder, Column};
+use egui_extras::{Column, TableBuilder};
 use log::debug;
 use std::sync::mpsc;
 

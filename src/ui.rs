@@ -1,6 +1,6 @@
 mod buttons;
 mod comboboxes;
+mod errors;
 mod inputs;
 mod tables;
-mod errors;
 pub mod ui_app;

@@ -93,7 +93,7 @@ impl Default for UiStates {
         }
     }
 }
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct Estimation {
     pub probability: f64,
 }

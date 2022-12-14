@@ -189,16 +189,14 @@ impl eframe::App for EguiApp {
             // let estimate: f64 = 0.0;
             let estimation = &self.data.lock().unwrap().estimation;
             match estimation {
-                Some(r) => {
-                    match r {
-                        Ok(est) => {
-                            ui.label(format!("estimate ~{}%", est.probability * 100.0));
-                        }
-                        Err(err) => {
-                            ui.label(format!("Error during estimate: {}", err));
-                        }
+                Some(r) => match r {
+                    Ok(est) => {
+                        ui.label(format!("estimate ~{}%", est.probability * 100.0));
                     }
-                }
+                    Err(err) => {
+                        ui.label(format!("Error during estimate: {}", err));
+                    }
+                },
                 None => (),
             }
 
