@@ -36,7 +36,7 @@ fn send(event_type: &EventType) {
 }
 #[cfg(target_os = "windows")]
 fn run_craft(craft_repo: &impl CraftRepo, ui_states: Arc<Mutex<UiStates>>) -> Result<(), String> {
-    use crate::usecases::craft_searcher;
+    use crate::usecases::item_parser;
     use clipboard_win::{formats, Clipboard, Getter, Setter};
     use rdev::Button;
 
@@ -73,7 +73,7 @@ fn run_craft(craft_repo: &impl CraftRepo, ui_states: Arc<Mutex<UiStates>>) -> Re
             continue;
         }
         prev_output = output.clone();
-        let parsed_craft = match craft_searcher::parse_raw_item(craft_repo, &output) {
+        let parsed_craft = match item_parser::parse_raw_item(craft_repo, &output) {
             Ok(parsed_craft) => parsed_craft,
             Err(e) => {
                 let err_message = format!("Could not parse craft: {}", e); 

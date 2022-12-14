@@ -187,7 +187,20 @@ impl eframe::App for EguiApp {
                 })
                 .product();
             // let estimate: f64 = 0.0;
-            ui.label(format!("estimate ~{}%", estimate * 100.0));
+            let estimation = &self.data.lock().unwrap().estimation;
+            match estimation {
+                Some(r) => {
+                    match r {
+                        Ok(est) => {
+                            ui.label(format!("estimate ~{}%", est.probability * 100.0));
+                        }
+                        Err(err) => {
+                            ui.label(format!("Error during estimate: {}", err));
+                        }
+                    }
+                }
+                None => (),
+            }
 
             tables::show_table_of_selected(ui, selected_mods);
 

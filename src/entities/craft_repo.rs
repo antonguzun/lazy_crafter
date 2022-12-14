@@ -42,6 +42,7 @@ pub struct Data {
     pub item_classes: Vec<String>,
     pub item_bases: Vec<ItemBase>,
     pub item_class_by_base_name: HashMap<String, String>,
+    pub estimation: Option<Result<Estimation, String>>,
 }
 
 impl Default for Data {
@@ -51,6 +52,7 @@ impl Default for Data {
             item_classes: Vec::new(),
             item_bases: Vec::new(),
             item_class_by_base_name: HashMap::new(),
+            estimation: None,
         }
     }
 }
@@ -90,6 +92,10 @@ impl Default for UiStates {
             messages: vec![],
         }
     }
+}
+#[derive(Debug)]
+pub struct Estimation {
+    pub probability: f64,
 }
 
 #[derive(PartialEq)]

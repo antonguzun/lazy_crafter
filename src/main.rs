@@ -1,14 +1,14 @@
-use lazy_crafter::entities::craft_repo::{Data, ModsQuery, UiEvents, UiStates, BackEvents};
-use log::{debug, info};
+use lazy_crafter::entities::craft_repo::{BackEvents, Data, ModsQuery, UiEvents, UiStates};
+use log::{debug, error, info};
 extern crate x11_clipboard;
 
 use lazy_crafter::key_listener;
 use lazy_crafter::storage::files::local_db::FileRepo;
 use lazy_crafter::ui::ui_app;
 use lazy_crafter::usecases::craft_searcher;
+use lazy_crafter::usecases::estimation;
 use std::sync::{mpsc, Arc, Mutex};
 use std::thread;
-
 
 fn run_db_in_background(
     receiver: mpsc::Receiver<UiEvents>,
@@ -42,9 +42,10 @@ fn run_db_in_background(
             };
             drop(ui_state);
             let mod_items = craft_searcher::find_mods(&craft_repo, &query);
-
+            let estimation = estimation::calculate_estimation_for_craft(&craft_repo, &query);
             let data = &mut data.lock().unwrap();
             data.item_bases = item_bases;
+            data.estimation = Some(estimation);
             data.mods_table = mod_items;
             debug!(target: "db thread", "Loaded item bases and filtered mods");
         }
@@ -58,7 +59,8 @@ fn main() {
     env_logger::init();
     info!("Start app");
     let (ui_tx, ui_rx): (mpsc::Sender<UiEvents>, mpsc::Receiver<UiEvents>) = mpsc::channel();
-    let (back_tx, back_rx): (mpsc::Sender<BackEvents>, mpsc::Receiver<BackEvents>) = mpsc::channel();
+    let (back_tx, back_rx): (mpsc::Sender<BackEvents>, mpsc::Receiver<BackEvents>) =
+        mpsc::channel();
 
     let data = Arc::new(Mutex::new(Data::default()));
     let ui_states = Arc::new(Mutex::new(UiStates::default()));

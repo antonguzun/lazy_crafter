@@ -1,6 +1,6 @@
 use lazy_crafter::entities::craft_repo::CraftRepo;
 use lazy_crafter::storage::files::local_db::FileRepo;
-use lazy_crafter::usecases::craft_searcher::{parse_raw_item, ParsedItem};
+use lazy_crafter::usecases::item_parser::{parse_raw_item, ParsedItem};
 
 use rstest::{fixture, rstest};
 
@@ -254,34 +254,37 @@ fn test_parse_raw_item(repo: impl CraftRepo, #[case] input: &str, #[case] expect
     assert_eq!(parse_raw_item(&repo, &input), Ok(expected));
 }
 
-#[rstest]
-#[case("Item Class: Bows
-Rarity: Magic
-Smouldering Long Bow of Rejuvenation
---------
-Bow
-Physical Damage: 8-33
-Elemental Damage: 16-33 (augmented)
-Critical Strike Chance: 6.00%
-Attacks per Second: 1.30
---------
-Requirements:
-Level: 9
-Dex: 38
---------
-Sockets: B-G
---------
-Item Level: 13
---------
-Adds 16 to 33 Fire Damage
-Gramts 2 Life per Enemy Hit", "FIX")]
-fn test_parse_raw_item_debug(
-    repo: impl CraftRepo,
-    #[case] input: &str,
-    #[case] expected: ParsedItem,
-) {
-    assert_eq!(parse_raw_item(&repo, &input), Ok(expected));
-}
+// #[rstest]
+// #[case(
+//     "Item Class: Bows
+// Rarity: Magic
+// Smouldering Long Bow of Rejuvenation
+// --------
+// Bow
+// Physical Damage: 8-33
+// Elemental Damage: 16-33 (augmented)
+// Critical Strike Chance: 6.00%
+// Attacks per Second: 1.30
+// --------
+// Requirements:
+// Level: 9
+// Dex: 38
+// --------
+// Sockets: B-G
+// --------
+// Item Level: 13
+// --------
+// Adds 16 to 33 Fire Damage
+// Gramts 2 Life per Enemy Hit",
+//     "FIX"
+// )]
+// fn test_parse_raw_item_debug(
+//     repo: impl CraftRepo,
+//     #[case] input: &str,
+//     #[case] expected: ParsedItem,
+// ) {
+//     assert_eq!(parse_raw_item(&repo, &input), Ok(expected));
+// }
 
 #[rstest]
 #[case("", "No item class matches in string".to_string())]
