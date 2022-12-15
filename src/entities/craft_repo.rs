@@ -15,6 +15,7 @@ pub struct ItemBase {
     pub name: String,
 }
 
+#[derive(Debug, Clone)]
 pub struct ModsQuery {
     pub string_query: String,
     pub item_level: u64,

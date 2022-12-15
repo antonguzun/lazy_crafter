@@ -156,7 +156,7 @@ impl eframe::App for EguiApp {
             ui.heading("Selected");
             let selected_mods = self.ui_states.lock().unwrap().selected.clone();
             // let messages = self.ui_states.lock().unwrap().messages.clone();
-            let total_suff_weight: u32 = self
+            let total_pref_weight: u32 = self
                 .data
                 .lock()
                 .unwrap()
@@ -165,8 +165,7 @@ impl eframe::App for EguiApp {
                 .filter(|m| m.generation_type == String::from("prefix"))
                 .map(|m| m.weight)
                 .sum();
-            let total_suff_weight: f64 = total_suff_weight.try_into().unwrap();
-            let total_pref_weight: u32 = self
+            let total_suff_weight: u32 = self
                 .data
                 .lock()
                 .unwrap()
@@ -175,6 +174,7 @@ impl eframe::App for EguiApp {
                 .filter(|m| m.generation_type == String::from("suffix"))
                 .map(|m| m.weight)
                 .sum();
+            let total_suff_weight: f64 = total_suff_weight.try_into().unwrap();
             let total_pref_weight: f64 = total_pref_weight.try_into().unwrap();
             let estimate: f64 = selected_mods
                 .iter()
@@ -188,6 +188,8 @@ impl eframe::App for EguiApp {
                 .product();
             // let estimate: f64 = 0.0;
             let estimation = &self.data.lock().unwrap().estimation;
+            ui.label(format!("total pref weight: {}", total_pref_weight));
+            ui.label(format!("total suff weight: {}", total_suff_weight));
             match estimation {
                 Some(r) => match r {
                     Ok(est) => {
