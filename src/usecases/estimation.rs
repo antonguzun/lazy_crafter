@@ -23,19 +23,17 @@ fn probability_for_variant(
         .filter(|m| m.generation_type == "prefix")
         .collect::<Vec<&ModItem>>();
     // let fake_prefixes = prefix_count - selected_prefixes.len();
-    // let cases_probability: Vec<f64> = vec![];
+    let cases_probability: Vec<f64> = vec![0.0];
 
     // let prefix_summarized_weight = available_mods
     //     .iter()
     //     .filter(|m| m.generation_type == "prefix")
     //     .map(|m| m.weight)
     //     .sum::<u32>();
-    
+
     // // let prefix_mod_key_with_weight = vec![];
 
     // let prefix_permutations: Vec<Option<ModItem>> = vec![];
-
-
 
     // for i in 0..prefix_count {
     //     for j in 0..prefix_count {}
