@@ -1,4 +1,7 @@
+use log::debug;
+
 use crate::entities::craft_repo::{CraftRepo, Estimation, ItemBase, ModItem, ModsQuery};
+use itertools::Itertools;
 
 fn chaos_variants_ratio(prefix_count: usize, suffix_count: usize) -> f64 {
     match (prefix_count, suffix_count) {
@@ -23,22 +26,43 @@ fn probability_for_variant(
         .filter(|m| m.generation_type == "prefix")
         .collect::<Vec<&ModItem>>();
     // let fake_prefixes = prefix_count - selected_prefixes.len();
-    let cases_probability: Vec<f64> = vec![0.0];
+    let mut cases_probability: Vec<f64> = vec![0.0];
 
-    // let prefix_summarized_weight = available_mods
-    //     .iter()
-    //     .filter(|m| m.generation_type == "prefix")
-    //     .map(|m| m.weight)
-    //     .sum::<u32>();
+    let target_prefixes = selected_prefixes
+        .iter()
+        .map(|m| m.mod_key.clone())
+        .collect::<Vec<String>>();
+    let mut prefixes_mod_keys = target_prefixes.clone();
+    for _i in 1..(prefix_count - selected_prefixes.len() + 1) {
+        prefixes_mod_keys.push(String::from("FAKE"));
+    }
+    debug!("prefixes_mod_keys: {:?}", prefixes_mod_keys);
+    let weight = available_mods
+        .iter()
+        .filter(|m| m.generation_type == "prefix")
+        .map(|m| m.weight)
+        .sum::<u32>();
 
-    // // let prefix_mod_key_with_weight = vec![];
-
-    // let prefix_permutations: Vec<Option<ModItem>> = vec![];
-
-    // for i in 0..prefix_count {
-    //     for j in 0..prefix_count {}
-    // }
-
+    for permutation in prefixes_mod_keys.iter().permutations(prefix_count).unique() {
+        let mut local_weight = weight;
+        let mut local_p = vec![1.0];
+        for mod_key in permutation.iter() {
+            let w;
+            if *mod_key == "FAKE" {
+                w = (local_weight as f64 * 0.1) as u32;
+            } else {
+                w = available_mods
+                    .iter()
+                    .find(|m| &m.mod_key == *mod_key)
+                    .unwrap()
+                    .weight;
+                local_p.push(w as f64 / local_weight as f64);
+            }
+            local_weight -= w;
+        }
+        cases_probability.push(local_p.iter().product());
+        debug!("permutation: {:?}", permutation);
+    }
     cases_probability.iter().sum()
 }
 
@@ -63,10 +87,14 @@ pub fn calculate_estimation_for_craft(
     if required_prefix_count > 3 || required_suffix_count > 3 {
         return Err("too many affixes selected".to_string());
     }
+    debug!(
+        "required_prefix_count: {}; required_suffix_count: {}",
+        required_prefix_count, required_suffix_count
+    );
 
     let mut variant_with_ratios = vec![];
-    for pc in required_prefix_count..3 {
-        for sc in required_suffix_count..3 {
+    for pc in required_prefix_count..3 + 1 {
+        for sc in required_suffix_count..3 + 1 {
             let ratio = chaos_variants_ratio(pc, sc);
             if ratio == 0.0 {
                 continue;
@@ -74,6 +102,7 @@ pub fn calculate_estimation_for_craft(
             variant_with_ratios.push((pc, sc, ratio));
         }
     }
+    debug!("variant_with_ratios: {:?}", variant_with_ratios);
 
     let available_mods_query = ModsQuery {
         string_query: query.string_query.clone(),

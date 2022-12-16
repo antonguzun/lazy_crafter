@@ -176,24 +176,13 @@ impl eframe::App for EguiApp {
                 .sum();
             let total_suff_weight: f64 = total_suff_weight.try_into().unwrap();
             let total_pref_weight: f64 = total_pref_weight.try_into().unwrap();
-            let estimate: f64 = selected_mods
-                .iter()
-                .map(|m| match m.generation_type.as_str() {
-                    "prefix" => m.weight as f64 / total_pref_weight,
-                    "suffix" => m.weight as f64 / total_suff_weight,
-                    _ => {
-                        panic!("lke")
-                    }
-                })
-                .product();
-            // let estimate: f64 = 0.0;
             let estimation = &self.data.lock().unwrap().estimation;
             ui.label(format!("total pref weight: {}", total_pref_weight));
             ui.label(format!("total suff weight: {}", total_suff_weight));
             match estimation {
                 Some(r) => match r {
                     Ok(est) => {
-                        ui.label(format!("estimate ~{}%", est.probability * 100.0));
+                        ui.label(format!("estimate ~ {}%", est.probability * 100.0));
                     }
                     Err(err) => {
                         ui.label(format!("Error during estimate: {}", err));
