@@ -36,6 +36,11 @@ pub trait CraftRepo {
         item_name: &str,
         mod_name: &str,
     ) -> Result<String, String>;
+    fn get_weight_of_target_and_better_mods(
+        &self,
+        query: &ModsQuery,
+        target_mod_key: String,
+    ) -> u32;
 }
 
 pub struct Data {

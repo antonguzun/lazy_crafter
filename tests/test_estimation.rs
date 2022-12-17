@@ -30,7 +30,7 @@ fn test_estimation(repo: impl CraftRepo, #[case] query: ModsQuery, #[case] expec
     item_base: "Abyssus".to_string(),
     item_level: 100,
     selected_mods: vec![],
-}, "No mods selected".to_string())]
+}, "no mods selected".to_string())]
 fn test_estimation_negative(
     repo: impl CraftRepo,
     #[case] query: ModsQuery,

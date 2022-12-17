@@ -38,6 +38,8 @@ pub struct Mod {
     pub spawn_weights: Vec<SpawnWeight>,
     pub stats: Vec<Stat>,
     pub groups: Vec<String>,
+    #[serde(rename = "type")]
+    pub type_field: String,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize, Eq, Hash)]

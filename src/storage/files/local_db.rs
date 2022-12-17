@@ -227,10 +227,9 @@ impl FileRepo {
         let mut res = vec![];
         for m_id in mod_ids {
             let m = self.db.mods.get(m_id).unwrap();
-            if m.required_level > max_item_level {
-                continue;
-            }
-            if m.stats.is_empty()
+
+            if m.required_level > max_item_level
+                || m.stats.is_empty()
                 || m.domain != item.domain
                 || !target_gen_types.contains(&m.generation_type.as_str())
                 || m.groups.iter().any(|g| selected_groups.contains(g))
@@ -255,6 +254,54 @@ impl FileRepo {
             res.push(mod_item);
         }
         res
+    }
+
+    fn get_weight_of_target_and_better_mods(
+        &self,
+        mod_ids: &HashSet<String>,
+        item: &ItemBaseRich,
+        target_mod_key: &str,
+        max_item_level: u64,
+    ) -> u32 {
+        let target_gen_types = ["suffix", "prefix"];
+        let mut res = vec![];
+        let target_mod = self.db.mods.get(target_mod_key).unwrap();
+        for m_id in mod_ids {
+            let m = self.db.mods.get(m_id).unwrap();
+            if m.type_field != target_mod.type_field
+                || m.required_level > max_item_level
+                || m.stats.is_empty()
+                || m.domain != item.domain
+                || m.domain != target_mod.domain
+                || !target_gen_types.contains(&m.generation_type.as_str())
+            {
+                continue;
+            }
+
+            let mut filter_by_stats = false;
+            for (ts, ms) in target_mod.stats.iter().zip(m.stats.iter()) {
+                if ts.id != ms.id || ts.min >= ms.min || ts.max >= ms.max {
+                    filter_by_stats = true;
+                    break;
+                }
+            }
+            if filter_by_stats {
+                continue;
+            }
+            let weight = m
+                .spawn_weights
+                .iter()
+                .find_map(|sw| {
+                    if sw.weight > 0 && item.tags.contains(&sw.tag) {
+                        Some(sw.weight)
+                    } else {
+                        None
+                    }
+                })
+                .unwrap();
+            res.push(weight)
+        }
+        res.iter().sum()
     }
 }
 
@@ -459,6 +506,32 @@ impl CraftRepo for FileRepo {
             })
             .ok_or("Can't find mod".to_string())?;
         Ok(res.mod_key)
+    }
+
+    fn get_weight_of_target_and_better_mods(
+        &self,
+        query: &ModsQuery,
+        target_mod_key: String,
+    ) -> u32 {
+        let item = self
+            .db
+            .base_items_by_name
+            .values()
+            .find(|i| i.name == query.item_base)
+            .unwrap();
+        debug!(
+            target: LOG_TARGET,
+            "tags for {}: {:?}", query.item_base, item.tags
+        );
+        let mut mod_ids: HashSet<String> = HashSet::new();
+        for t in &item.tags {
+            let ms = self.db.mod_id_by_tags.get(t);
+            if ms.is_some() {
+                mod_ids.extend(ms.unwrap().clone());
+            }
+        }
+
+        self.get_weight_of_target_and_better_mods(&mod_ids, item, &target_mod_key, query.item_level)
     }
 }
 

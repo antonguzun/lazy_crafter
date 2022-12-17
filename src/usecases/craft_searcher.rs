@@ -17,3 +17,11 @@ pub fn get_item_bases(repo: &impl CraftRepo, item_class: &str) -> Vec<ItemBase> 
 pub fn get_item_class_by_item_name(repo: &impl CraftRepo) -> HashMap<String, String> {
     repo.get_item_class_by_item_name()
 }
+
+pub fn get_weight_of_target_and_better_mods(
+    repo: &impl CraftRepo,
+    query: &ModsQuery,
+    target_mod_key: String,
+) -> u32 {
+    repo.get_weight_of_target_and_better_mods(query, target_mod_key)
+}
