@@ -1,7 +1,9 @@
 use log::debug;
 
 use crate::entities::craft_repo::{CraftRepo, Estimation, ItemBase, ModItem, ModsQuery};
-use crate::usecases::craft_searcher::get_weight_of_target_and_better_mods;
+use crate::usecases::craft_searcher::{
+    get_affected_weight_of_target_mod, get_weight_of_target_and_better_mods,
+};
 use itertools::Itertools;
 
 fn chaos_variants_ratio(prefix_count: usize, suffix_count: usize) -> f64 {
@@ -20,6 +22,8 @@ fn probability_for_variant(
     repo: &impl CraftRepo,
     prefix_count: usize,
     suffix_count: usize,
+    item_base: String,
+    item_level: u64,
     selected_mods: &Vec<(ModItem, u32)>,
     available_mods: &Vec<ModItem>,
 ) -> f64 {
@@ -28,8 +32,6 @@ fn probability_for_variant(
         .filter(|(m, _w)| m.generation_type == "prefix")
         .map(|(m, _w)| m)
         .collect::<Vec<&ModItem>>();
-
-    let mut cases_probability: Vec<f64> = vec![0.0];
 
     let target_prefixes = selected_prefixes
         .iter()
@@ -46,13 +48,17 @@ fn probability_for_variant(
         .map(|m| m.weight)
         .sum::<u32>();
 
+    let mut cases_probability: Vec<f64> = vec![0.0];
+
     for permutation in prefixes_mod_keys.iter().permutations(prefix_count).unique() {
         let mut local_weight = weight;
         let mut local_p = vec![1.0];
         for mod_key in permutation.iter() {
             let w;
+            let affected_weight;
             if *mod_key == "FAKE" {
                 w = (local_weight as f64 * 0.1) as u32;
+                affected_weight = w;
             } else {
                 w = selected_mods
                     .iter()
@@ -60,8 +66,20 @@ fn probability_for_variant(
                     .unwrap()
                     .1;
                 local_p.push(w as f64 / local_weight as f64);
+                let q = ModsQuery {
+                    string_query: "".to_string(),
+                    item_base: item_base.clone(),
+                    item_level,
+                    selected_mods: vec![selected_mods
+                        .iter()
+                        .find(|(m, _w)| m.mod_key == **mod_key)
+                        .unwrap()
+                        .0
+                        .clone()],
+                };
+                affected_weight = get_affected_weight_of_target_mod(repo, &q);
             }
-            local_weight -= w;
+            local_weight -= affected_weight; // affected weight is not same as target weight
         }
         cases_probability.push(local_p.iter().product());
         debug!("permutation: {:?}", permutation);
@@ -133,8 +151,15 @@ pub fn calculate_estimation_for_craft(
     let sum: f64 = variant_with_ratios
         .iter()
         .map(|(pc, sc, ratio)| {
-            probability_for_variant(repo, *pc, *sc, &target_mods_with_weights, &available_mods)
-                * ratio
+            probability_for_variant(
+                repo,
+                *pc,
+                *sc,
+                query.item_base.clone(),
+                query.item_level,
+                &target_mods_with_weights,
+                &available_mods,
+            ) * ratio
         })
         .sum();
     Ok(Estimation { probability: sum })

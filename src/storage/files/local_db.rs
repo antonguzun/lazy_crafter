@@ -288,7 +288,46 @@ impl FileRepo {
             if filter_by_stats {
                 continue;
             }
-            let weight = m
+            let weight = m // todo! move to trait
+                .spawn_weights
+                .iter()
+                .find_map(|sw| {
+                    if sw.weight > 0 && item.tags.contains(&sw.tag) {
+                        Some(sw.weight)
+                    } else {
+                        None
+                    }
+                })
+                .unwrap();
+            res.push(weight)
+        }
+        res.iter().sum()
+    }
+
+    fn get_affected_weight_of_target_mod(
+        &self,
+        mod_ids: &HashSet<String>,
+        item: &ItemBaseRich,
+        selected_groups: HashSet<std::string::String>,
+        max_item_level: u64,
+        affixes_types: Vec<String>,
+    ) -> u32 {
+        let target_gen_types = affixes_types
+            .iter()
+            .map(|v| v.as_str())
+            .collect::<Vec<&str>>();
+        let mut res = vec![];
+        for m_id in mod_ids {
+            let m = self.db.mods.get(m_id).unwrap();
+            if m.required_level > max_item_level
+                || m.stats.is_empty()
+                || m.domain != item.domain
+                || !target_gen_types.contains(&m.generation_type.as_str())
+                || !m.groups.iter().any(|g| selected_groups.contains(g))
+            {
+                continue;
+            }
+            let weight = m // todo! move to trait
                 .spawn_weights
                 .iter()
                 .find_map(|sw| {
@@ -532,6 +571,45 @@ impl CraftRepo for FileRepo {
         }
 
         self.get_weight_of_target_and_better_mods(&mod_ids, item, &target_mod_key, query.item_level)
+    }
+
+    fn get_affected_weight_of_target_mod(&self, query: &ModsQuery) -> u32 {
+        let item = self
+            .db
+            .base_items_by_name
+            .values()
+            .find(|i| i.name == query.item_base)
+            .unwrap();
+        debug!(
+            target: LOG_TARGET,
+            "tags for {}: {:?}", query.item_base, item.tags
+        );
+        let mut mod_ids: HashSet<String> = HashSet::new();
+        for t in &item.tags {
+            let ms = self.db.mod_id_by_tags.get(t);
+            if ms.is_some() {
+                mod_ids.extend(ms.unwrap().clone());
+            }
+        }
+        let selected_groups: HashSet<std::string::String> = HashSet::from_iter(
+            query
+                .selected_mods
+                .iter()
+                .map(|m| self.db.mods.get(&m.mod_key).unwrap())
+                .flat_map(|m| m.groups.clone()),
+        );
+        let affixes_types = query
+            .selected_mods
+            .iter()
+            .map(|m| m.generation_type.clone())
+            .collect();
+        self.get_affected_weight_of_target_mod(
+            &mod_ids,
+            item,
+            selected_groups,
+            query.item_level,
+            affixes_types,
+        )
     }
 }
 

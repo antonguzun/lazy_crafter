@@ -23,6 +23,14 @@ pub struct ModsQuery {
     pub selected_mods: Vec<ModItem>,
 }
 
+#[derive(Debug, Clone)]
+pub struct Query {
+    pub string_query: String,
+    pub item_level: u64,
+    pub item_base: String,
+    pub selected_mod_keys: Vec<String>,
+}
+
 pub trait CraftRepo {
     fn find_mods(&self, search: &ModsQuery) -> Vec<ModItem>;
     fn get_item_classes(&self) -> Vec<String>;
@@ -41,6 +49,7 @@ pub trait CraftRepo {
         query: &ModsQuery,
         target_mod_key: String,
     ) -> u32;
+    fn get_affected_weight_of_target_mod(&self, query: &ModsQuery) -> u32;
 }
 
 pub struct Data {

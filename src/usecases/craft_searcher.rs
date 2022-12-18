@@ -25,3 +25,7 @@ pub fn get_weight_of_target_and_better_mods(
 ) -> u32 {
     repo.get_weight_of_target_and_better_mods(query, target_mod_key)
 }
+
+pub fn get_affected_weight_of_target_mod(repo: &impl CraftRepo, query: &ModsQuery) -> u32 {
+    repo.get_affected_weight_of_target_mod(query)
+}
