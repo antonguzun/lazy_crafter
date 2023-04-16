@@ -250,6 +250,114 @@ Item Level: 13
     mods: vec!["LocalLightRadiusAndAccuracyNew1_".to_string()],
     raw_mods: vec!["9% increased Global Accuracy Rating\n5% increased Light Radius".to_string()],
 })]
+#[case("Item Class: Heist Tools
+Rarity: Rare
+Rapture Instrument
+Skeleton Keyring
+--------
+This item can be equipped by:
+Vinderi, the Dismantler
+Isla, the Engineer
+--------
+Requirements:
+Level 4 in Trap Disarmament
+--------
+Item Level: 83
+--------
+11% increased Trap Disarmament speed (implicit)
+--------
+38% increased Damage
+16% increased Job speed
+10% chance to not generate Alert Level on opening a Chest using Trap Disarmament
+--------
+Can only be equipped to Heist members.
+", ParsedItem {
+    item_class: "".to_string(),
+    item_base_name: "".to_string(),
+    item_name: "".to_string(),
+    mods: vec!["".to_string()],
+    raw_mods: vec!["".to_string()],
+})]
+#[case("Item Class: Heist Brooches
+Rarity: Rare
+Doom Choker
+Foliate Brooch
+--------
+Any Heist member can equip this item.
+--------
+Requirements:
+Level 5 in Any Job
+--------
+Item Level: 83
+--------
+26% increased Rarity of Items dropped in Heists (implicit)
+--------
+Heist Chests have a 13% chance to Duplicate contained Basic Currency
+Heist Chests have a 9% chance to Duplicate contained Legion Splinters
+11% increased Job speed
+--------
+Can only be equipped to Heist members.
+", ParsedItem {
+    item_class: "".to_string(),
+    item_base_name: "".to_string(),
+    item_name: "".to_string(),
+    mods: vec!["".to_string()],
+    raw_mods: vec!["".to_string()],
+})]
+#[case("Item Class: Heist Cloaks
+Rarity: Rare
+Empyrean Refuge
+Whisper-woven Cloak
+--------
+Any Heist member can equip this item.
+--------
+Requirements:
+Level 5 in Any Job
+--------
+Item Level: 83
+--------
+5% reduced raising of Alert Level (implicit)
+--------
+18% increased Damage while area is not in Lockdown
+Players deal 18% increased Damage while area is not in Lockdown
+12% reduced raising of Alert Level from opening Chests
+10% increased Job Experience gain
+--------
+Can only be equipped to Heist members.
+", ParsedItem {
+    item_class: "".to_string(),
+    item_base_name: "".to_string(),
+    item_name: "".to_string(),
+    mods: vec!["".to_string()],
+    raw_mods: vec!["".to_string()],
+})]
+#[case("Item Class: Heist Gear
+Rarity: Rare
+Blight Implement
+Obsidian Sharpening Stone
+--------
+Any Heist member can equip this item.
+--------
+Requirements:
+Level 5 in Any Job
+--------
+Item Level: 83
+--------
+27% increased Melee Damage (implicit)
+--------
+1 to 60 added Lightning Damage
+Players and their Minions have 1 to 60 added Lightning Damage
+The Ring's Cut reduced by 15%
+19% increased Job speed
+--------
+Can only be equipped to Heist members.
+", ParsedItem {
+    item_class: "".to_string(),
+    item_base_name: "".to_string(),
+    item_name: "".to_string(),
+    mods: vec!["".to_string()],
+    raw_mods: vec!["".to_string()],
+})]
 fn test_parse_raw_item(repo: impl CraftRepo, #[case] input: &str, #[case] expected: ParsedItem) {
     assert_eq!(parse_raw_item(&repo, &input), Ok(expected));
 }

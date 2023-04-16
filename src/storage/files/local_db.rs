@@ -64,14 +64,14 @@ impl FileRepo {
         let item_classes = HashSet::from_iter(
             raw_base_items
                 .iter()
-                .filter(|(_k, v)| v.domain == "item")
+                .filter(|(_k, v)| v.domain == "item"|| v.domain == "heist_npc")
                 .map(|(_k, v)| v.item_class.clone()),
         );
 
         let all_tags: HashSet<String> = HashSet::from_iter(
             raw_base_items
                 .values()
-                .filter(|b| b.domain == "item" && b.release_state == "released")
+                .filter(|b| (b.domain == "item" || b.domain == "heist_npc") && b.release_state == "released")
                 .flat_map(|b| b.tags.clone()),
         );
         let mut mod_id_by_tags: HashMap<String, Vec<String>> = HashMap::new();
@@ -411,7 +411,7 @@ impl CraftRepo for FileRepo {
             .db
             .base_items_by_name
             .iter()
-            .filter(|(_, bi)| bi.domain == "item" && bi.item_class == item_class.to_string())
+            .filter(|(_, bi)| (bi.domain == "item" || bi.domain == "heist_npc") && bi.item_class == item_class.to_string())
             .map(|(s, bi)| ItemBase {
                 name: s.to_string(),
                 required_level: match bi.requirements {
@@ -429,12 +429,13 @@ impl CraftRepo for FileRepo {
             self.db
                 .base_items_by_name
                 .iter()
-                .filter(|(_, bi)| bi.domain == "item")
+                .filter(|(_, bi)| (bi.domain == "item" || bi.domain == "heist_npc"))
                 .map(|(s, bi)| (s.clone(), bi.item_class.clone())),
         )
     }
 
     fn item_class_if_exists(&self, item_class: &str) -> bool {
+        print!("{:#?}", self.db.item_classes);
         self.db.item_classes.contains(item_class)
     }
 

@@ -20,7 +20,7 @@ fn create_target_hash_set() -> HashSet<String> {
     // target_events.insert(hash_event_type(EventType::KeyPress(Key::ShiftLeft)));
     target_events.insert(hash_event_type(EventType::KeyRelease(Key::Alt)));
     // target_events.insert(hash_event_type(EventType::KeyPress(Key::KeyD)));
-    target_events.insert(hash_event_type(EventType::KeyRelease(Key::KeyC)));
+    target_events.insert(hash_event_type(EventType::KeyRelease(Key::KeyG)));
     target_events
 }
 
