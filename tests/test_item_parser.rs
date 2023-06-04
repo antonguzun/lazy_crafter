@@ -358,6 +358,82 @@ Can only be equipped to Heist members.
     mods: vec!["".to_string()],
     raw_mods: vec!["".to_string()],
 })]
+#[case("Item Class: Gloves
+Rarity: Magic
+Polished Gripped Gloves of the Starfish
+--------
+Evasion Rating: 226
+--------
+Requirements:
+Level: 70
+Dex: 95
+--------
+Sockets: G-G 
+--------
+Item Level: 87
+--------
+15% increased Projectile Attack Damage (implicit)
+--------
+Adds 4 to 7 Physical Damage to Attacks
+Regenerate 23.9 Life per second
+", ParsedItem {
+    item_class: "".to_string(),
+    item_base_name: "".to_string(),
+    item_name: "".to_string(),
+    mods: vec!["".to_string()],
+    raw_mods: vec!["".to_string()],
+})]
+#[case("Item Class: Gloves
+Rarity: Magic
+Moth's Gripped Gloves of Abjuration
+--------
+Evasion Rating: 267 (augmented)
+--------
+Requirements:
+Level: 70
+Dex: 95
+--------
+Sockets: G-G 
+--------
+Item Level: 87
+--------
+15% increased Projectile Attack Damage (implicit)
+--------
++12% chance to Suppress Spell Damage
+18% increased Evasion Rating
+9% increased Stun and Block Recovery
+", ParsedItem {
+    item_class: "".to_string(),
+    item_base_name: "".to_string(),
+    item_name: "".to_string(),
+    mods: vec!["".to_string()],
+    raw_mods: vec!["".to_string()],
+})]
+#[case("Item Class: Boots
+Rarity: Magic
+Stallion's Shackled Boots of the Newt
+--------
+Evasion Rating: 63
+Energy Shield: 13
+--------
+Requirements:
+Level: 34
+Dex: 34
+Int: 34
+--------
+Sockets: B B 
+--------
+Item Level: 35
+--------
+Regenerate 1.5 Life per second
+20% increased Movement Speed
+", ParsedItem {
+    item_class: "".to_string(),
+    item_base_name: "".to_string(),
+    item_name: "".to_string(),
+    mods: vec!["".to_string()],
+    raw_mods: vec!["".to_string()],
+})]
 fn test_parse_raw_item(repo: impl CraftRepo, #[case] input: &str, #[case] expected: ParsedItem) {
     assert_eq!(parse_raw_item(&repo, &input), Ok(expected));
 }

@@ -6,13 +6,21 @@
 - Crafting chance calculation is not ready
 - Auto crafting is not stable, but you can try it. (Ctrl+Alt+C on item with "currency in hand")
 
+## Disclaimer
+
+This application doesn't follow GGG's ToS. GGG would ban you if you use that application.
+The app doesn't change game files. It works with your clipboard buffer and control your clicks only.
+It may be quite hard and expensive to reveal the usage of that kind of app. However, I can't give you any guaranties.
+
 ### Planned features
 
 - Filtering stabilization
+- Auto-crafting stabilization
+- Auto-colorization
+- Auto-linking
+- Improve test coverage
 - Add currency choices for estimation
 - Implement estimation for selected mods and average/median cost
-- Auto-crafting stabilization
-- Imrove test coverage
 - CI
 
 ### lower priority plans 
