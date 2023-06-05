@@ -124,7 +124,7 @@ struct ModMetaInfo {
 
 fn create_meta_mods_regexp_patter() -> Result<Regex, String> {
     let meta_mod_line_re =
-        Regex::new(r"\{\s+(\w+)\s+Modifier\s+(.*?)\s+\(Tier:\s+(\d+)\)\s+—\s+(.*?)(?:\s+\}|$)")
+        Regex::new(r"\{\s+(\w+)\s+Modifier\s+(.*?)\s+\(Tier:\s+(\d+)\)\s+(—\s+(.*?)(?:\s+\})|$)?")
             .expect("regexp error during item class fetching");
     Ok(meta_mod_line_re)
 }
@@ -160,7 +160,8 @@ fn fetch_mods(craft_repo: &impl CraftRepo, item_dto: ItemDTO) -> Result<Vec<RawM
                 let curr_mod_meta = ModMetaInfo {
                     generation_type: string_to_mod_gen_type(&c[1]),
                     tier: c[3].parse::<u32>().ok(),
-                    tags: c[4]
+                    tags: c.get(5)
+                        .map_or("", |m| m.as_str())
                         .split(",")
                         .into_iter()
                         .map(|v| v.trim().to_owned())
@@ -226,22 +227,24 @@ mod tests {
     #[rstest]
     #[case("{ Prefix Modifier \"Remora\'s\" (Tier: 1) — Life, Physical, Attack }".to_string(), vec!["Prefix", "\"Remora\'s\"", "1", "Life, Physical, Attack"])]
     #[case("{ Suffix Modifier \"of the Seal\" (Tier: 7) — Elemental, Cold, Resistance }".to_string(), vec!["Suffix", "\"of the Seal\"", "7", "Elemental, Cold, Resistance" ])]
-    fn test_mata_mod_patten(#[case] row: String, #[case] expected: Vec<&str>) {
+    #[case("{ Suffix Modifier \"of the Seal\" (Tier: 7) }".to_string(), vec!["Suffix", "\"of the Seal\"", "7", ""])]
+    fn test_meta_mod_patten(#[case] row: String, #[case] expected: Vec<&str>) {
         let re = create_meta_mods_regexp_patter().unwrap();
         assert_eq!(re.is_match(&row), true);
         let cap = re.captures(&row).unwrap();
+        // assert_eq!(cap.len(), 6);
         assert_eq!(&cap[1], expected[0]);
         assert_eq!(&cap[2], expected[1]);
         assert_eq!(&cap[3], expected[2]);
-        assert_eq!(&cap[4], expected[3]);
+        assert_eq!(&cap.get(5).map_or("", |m| m.as_str()), &expected[3]);
     }
     #[rstest]
     #[case("0.26(0.2-0.4)% of Physical Attack Damage Leeched as Life".to_string())]
     #[case("(Leeched Life is recovered over time. Multiple Leeches can occur simultaneously, up to a maximum rate)".to_string())]
-    fn test_mata_mod_patten_failed(#[case] row: String) {
+    fn test_meta_mod_patten_failed(#[case] row: String) {
         let re = create_meta_mods_regexp_patter().unwrap();
-        assert_eq!(re.is_match(&row), false);
-        let cap = re.captures(&row);
+        // assert_eq!(re.is_match(&row), false);
+        let cap: Option<regex::Captures> = re.captures(&row);
         assert_eq!(cap.is_none(), true)
     }
 
