@@ -68,7 +68,6 @@ fn fetch_item_base<'a>(
     })
 }
 
-
 #[derive(Debug, PartialEq)]
 enum ModGenerationTypeEnum {
     Prefix,
@@ -115,12 +114,14 @@ impl RawModDTO {
         }
     }
 }
+
 struct ModMetaInfo {
     generation_type: ModGenerationTypeEnum,
     tier: Option<u32>,
     tags: Vec<String>,
     mod_name: Option<String>,
 }
+
 fn create_meta_mods_regexp_patter() -> Result<Regex, String> {
     let meta_mod_line_re =
         Regex::new(r"\{\s+(\w+)\s+Modifier\s+(.*?)\s+\(Tier:\s+(\d+)\)\s+—\s+(.*?)(?:\s+\}|$)")
@@ -147,7 +148,7 @@ fn fetch_mods(craft_repo: &impl CraftRepo, item_dto: ItemDTO) -> Result<Vec<RawM
                 // row contains meta info for mod
                 if let Some(last_mod_meta) = mod_meta {
                     // let's close prev cap and continue new one
-                    let mod_id  = craft_repo.string_to_mod(
+                    let mod_id = craft_repo.string_to_mod(
                         &item_dto.item_class,
                         &item_dto.item_base_name,
                         &mod_text.join("\n"),
@@ -184,7 +185,7 @@ fn fetch_mods(craft_repo: &impl CraftRepo, item_dto: ItemDTO) -> Result<Vec<RawM
     }
     // close prev cap
     if let Some(last_mod_meta) = mod_meta {
-        let mod_id  = craft_repo.string_to_mod(
+        let mod_id = craft_repo.string_to_mod(
             &item_dto.item_class,
             &item_dto.item_base_name,
             &mod_text.join("\n"),
