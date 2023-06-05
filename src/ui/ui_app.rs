@@ -155,41 +155,42 @@ impl eframe::App for EguiApp {
 
             ui.heading("Selected");
             let selected_mods = self.ui_states.lock().unwrap().selected.clone();
-            // let messages = self.ui_states.lock().unwrap().messages.clone();
-            let total_pref_weight: u32 = self
-                .data
-                .lock()
-                .unwrap()
-                .mods_table
-                .iter()
-                .filter(|m| m.generation_type == String::from("prefix"))
-                .map(|m| m.weight)
-                .sum();
-            let total_suff_weight: u32 = self
-                .data
-                .lock()
-                .unwrap()
-                .mods_table
-                .iter()
-                .filter(|m| m.generation_type == String::from("suffix"))
-                .map(|m| m.weight)
-                .sum();
-            let total_suff_weight: f64 = total_suff_weight.try_into().unwrap();
-            let total_pref_weight: f64 = total_pref_weight.try_into().unwrap();
-            let estimation = &self.data.lock().unwrap().estimation;
-            ui.label(format!("total pref weight: {}", total_pref_weight));
-            ui.label(format!("total suff weight: {}", total_suff_weight));
-            match estimation {
-                Some(r) => match r {
-                    Ok(est) => {
-                        ui.label(format!("estimate ~ {}%", est.probability * 100.0));
-                    }
-                    Err(err) => {
-                        ui.label(format!("Error during estimate: {}", err));
-                    }
-                },
-                None => (),
-            }
+
+            // estimations removed from ui while it not ready
+            // let total_pref_weight: u32 = self
+            //     .data
+            //     .lock()
+            //     .unwrap()
+            //     .mods_table
+            //     .iter()
+            //     .filter(|m| m.generation_type == String::from("prefix"))
+            //     .map(|m| m.weight)
+            //     .sum();
+            // let total_suff_weight: u32 = self
+            //     .data
+            //     .lock()
+            //     .unwrap()
+            //     .mods_table
+            //     .iter()
+            //     .filter(|m| m.generation_type == String::from("suffix"))
+            //     .map(|m| m.weight)
+            //     .sum();
+            // let total_suff_weight: f64 = total_suff_weight.try_into().unwrap();
+            // let total_pref_weight: f64 = total_pref_weight.try_into().unwrap();
+            // let estimation = &self.data.lock().unwrap().estimation;
+            // ui.label(format!("total pref weight: {}", total_pref_weight));
+            // ui.label(format!("total suff weight: {}", total_suff_weight));
+            // match estimation {
+            //     Some(r) => match r {
+            //         Ok(est) => {
+            //             ui.label(format!("estimate ~ {}%", est.probability * 100.0));
+            //         }
+            //         Err(err) => {
+            //             ui.label(format!("Error during estimate: {}", err));
+            //         }
+            //     },
+            //     None => (),
+            // }
 
             tables::show_table_of_selected(ui, selected_mods);
 
