@@ -453,105 +453,9 @@ impl CraftRepo for FileRepo {
             .ok_or(format!("{} not found in {}", item_name, item_class))
     }
 
-    // parse raw mod string to mod key
+        // parse raw mod string to mod key
     // provided raw mod string and each available mod for item_base to common template
-    // added filtration by stat min/max to avoid wrong matches
-    fn string_to_mod_old(
-        &self,
-        item_class: &str,
-        item_name: &str,
-        mod_name: &str,
-    ) -> Result<String, String> {
-        let query = ModsQuery {
-            item_base: item_name.to_string(),
-            item_level: 100,
-            string_query: "".to_string(),
-            selected_mods: vec![],
-        };
-        let mods = self.find_mods(&query);
-
-        use regex::Regex;
-        let values: Vec<i32> = Regex::new(r"\d+")
-            .unwrap()
-            .find_iter(&mod_name.replace("\r", "").replace("Gramts", "Gain"))
-            .map(|m| m.as_str().parse::<i32>().unwrap())
-            .collect();
-        // add "\+?" to pattern because our mods representation doesn't contain it (look stat_translations.json field "format")
-        let mod_template = Regex::new(r"\+?\d+").unwrap().replace_all(mod_name, "#");
-
-        let res = mods
-            .into_iter()
-            // .filter(|m| m.representation.starts_with("Reflect")) // debug, REMOVE!
-            .find_map(|m| {
-                // add (\d+-\d+\) because its how we represent range values
-                // but don't care about "\+?" because we already skipped "format" in representation
-                let re = Regex::new(r"\(\d+-\d+\)|\d+")
-                    .unwrap()
-                    .replace_all(&m.representation, "#");
-                match re == mod_template {
-                    true => {
-                        let source_mod = self.db.mods.get(&m.mod_key).unwrap();
-                        let source_mod_stats_count: usize = source_mod
-                            .stats
-                            .iter()
-                            .filter(|s| s.id != "dummy_stat_display_nothing")
-                            .count();
-                        if values.len() != source_mod_stats_count {
-                            return None;
-                        }
-                        let mut values_correct = true;
-                        zip(&values, &source_mod.stats).for_each(|(v, s)| {
-                            match s.min {
-                                Some(min) => {
-                                    if f64::from(*v) < min {
-                                        values_correct = false;
-                                    }
-                                }
-                                None => {}
-                            }
-                            match s.max {
-                                Some(max) => {
-                                    if max < f64::from(*v) {
-                                        values_correct = false;
-                                    }
-                                }
-                                None => {}
-                            }
-                        });
-                        if values_correct {
-                            return Some(m);
-                        }
-                        let mut values_correct = true;
-                        let values: Vec<i32> = values.clone().into_iter().rev().collect();
-                        zip(values, &source_mod.stats).for_each(|(v, s)| {
-                            match s.min {
-                                Some(min) => {
-                                    if f64::from(v) < min {
-                                        values_correct = false;
-                                    }
-                                }
-                                None => {}
-                            }
-                            match s.max {
-                                Some(max) => {
-                                    if max < f64::from(v) {
-                                        values_correct = false;
-                                    }
-                                }
-                                None => {}
-                            }
-                        });
-                        if !values_correct {
-                            return None;
-                        }
-                        Some(m)
-                    }
-                    false => None,
-                }
-            })
-            .ok_or("Can't find mod".to_string())?;
-        Ok(res.mod_key)
-    }
+    // Idea: bring mod_name to mods representation in db and equal it
     fn string_to_mod(
         &self,
         item_class: &str,
@@ -568,6 +472,8 @@ impl CraftRepo for FileRepo {
 
         use regex::Regex;
 
+        //  bring input mod text in representation form
+        //  "blalba +4(2-9) blabla" to "blalba (2-9) blabla"
         let mod_template = Regex::new(r"((\+|\-)?\d+\()|((\+|\-)?\d+\.\d+\()")
             .unwrap()
             .replace_all(mod_name.trim(), "(");
@@ -577,31 +483,32 @@ impl CraftRepo for FileRepo {
             .into_iter()
             // .filter(|m| m.representation.contains("increased Evasion and Energy")) // debug, REMOVE!
             // .filter(|m| m.mod_key == "LocalIncreasedEvasionAndEnergyShieldAndStunRecovery4")
-            .find_map(|m| {
-                // match &mod_name.ends_with(&m.representation) {
-                match multiline_mod {
-                    true => {
-                        match (&m.representation.len() == &mod_template.len())
-                            && m.representation.contains("\n")
-                        {
-                            true => {
-                                let mut v1 = m.representation.split("\n").collect::<Vec<&str>>();
-                                let mut v2 = mod_template.split("\n").collect::<Vec<&str>>();
-                                v1.sort();
-                                v2.sort();
-                                if v1 == v2 {
-                                    Some(m)
-                                } else {
-                                    None
-                                }
+            .find_map(|m| match multiline_mod {
+                // trivial case, check input mod is equal representation
+                false => match &mod_template == &m.representation {
+                    true => Some(m),
+                    false => None,
+                },
+                // complex case, order of lines may be different for input mod and representation
+                true => {
+                    // cut unequal with cheap operations
+                    match (&m.representation.len() == &mod_template.len())
+                        && m.representation.contains("\n")
+                    {
+                        // compare mods as sorted lines
+                        true => {
+                            let mut v1 = m.representation.split("\n").collect::<Vec<&str>>();
+                            let mut v2 = mod_template.split("\n").collect::<Vec<&str>>();
+                            v1.sort();
+                            v2.sort();
+                            if v1 == v2 {
+                                Some(m)
+                            } else {
+                                None
                             }
-                            false => None,
                         }
-                    }
-                    false => match &mod_template == &m.representation {
-                        true => Some(m),
                         false => None,
-                    },
+                    }
                 }
             })
             .ok_or(format!("Can't find mod {}", mod_name))?;
