@@ -34,7 +34,7 @@ It may be quite hard and expensive to reveal the usage of that kind of app. Howe
 
 earlier version x86
 
-https://github.com/antonguzun/lazy_crafter/releases/tag/0.4.0
+https://github.com/antonguzun/lazy_crafter/releases/tag/0.4.1
 
 ## Demo
 
