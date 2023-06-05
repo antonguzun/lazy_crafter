@@ -157,7 +157,7 @@ impl FileRepo {
                     };
 
                     let to_str = match stat_max == stat_min {
-                        true => format!("{}", handle_stat_value(&index_handler, stat_max)),
+                        true => format!("{}", handle_stat_value(&index_handler, stat_max.abs())),
                         false => format!(
                             "({}-{})",
                             handle_stat_value(&index_handler, stat_min),
@@ -597,9 +597,17 @@ mod tests {
     #[case("LocalIncreasedPhysicalDamagePercent1".to_string(), "(40-49)% increased Physical Damage".to_string())]
     #[case("LifeRegeneration7".to_string(), "Regenerate (48.1-64) Life per second".to_string())]
     #[case("GainLifeOnBlock6_".to_string(), "(86-100) Life gained when you Block".to_string())]
+    #[case("ReducedLocalAttributeRequirements2".to_string(), "32% reduced Attribute Requirements".to_string())]
     fn test_repr(repo: FileRepo, #[case] mod_id: String, #[case] expected: String) {
         let mod_item = repo.db.mods.get(&mod_id).unwrap();
         let repr = repo.get_mods_representation(mod_item).unwrap();
+        assert_eq!(repr, expected);
+    }
+
+    #[rstest]
+    #[case("32% reduced Attribute Requirements".to_string(), "ReducedLocalAttributeRequirements2".to_string())]
+    fn test_string_to_mod(repo: FileRepo, #[case] mod_name: String, #[case] expected: String) {
+        let repr = repo.string_to_mod("asd", "Gripped Gloves", &mod_name).unwrap();
         assert_eq!(repr, expected);
     }
 }

@@ -114,6 +114,67 @@ Item Level: 74
              "FireResist2".to_string()],
     raw_mods: vec![],
 })]
+#[case("Item Class: Gloves
+Rarity: Magic
+Fawn's Gripped Gloves of Revoking
+--------
+Evasion Rating: 261 (augmented)
+--------
+Requirements:
+Level: 70
+Dex: 95
+--------
+Sockets: G-G 
+--------
+Item Level: 87
+--------
+{ Implicit Modifier — Damage, Attack }
+15(14-18)% increased Projectile Attack Damage (implicit)
+--------
+{ Prefix Modifier \"Fawn\'s\" (Tier: 1) — Life, Defences, Evasion }
++35(21-42) to Evasion Rating
++24(24-28) to maximum Life
+{ Suffix Modifier \"of Revoking\" (Tier: 3) }
++9(9-10)% chance to Suppress Spell Damage
+(50% of Damage from Suppressed Hits and Ailments they inflict is prevented)
+", ParsedItem {
+    item_class: "Gloves".to_string(),
+    item_base_name: "Gripped Gloves".to_string(),
+    item_name: "Fawn's Gripped Gloves of Revoking".to_string(),
+    mods: vec!["LocalBaseEvasionRatingAndLife2".to_string(),
+             "ChanceToSuppressSpells3".to_string(),],
+    raw_mods: vec![],
+})]
+#[case("Item Class: Gloves
+Rarity: Magic
+Sanguine Gripped Gloves of the Apt
+--------
+Evasion Rating: 226
+--------
+Requirements:
+Level: 70
+Dex: 64 (augmented)
+--------
+Sockets: G-G 
+--------
+Item Level: 87
+--------
+{ Implicit Modifier — Damage, Attack }
+15(14-18)% increased Projectile Attack Damage (implicit)
+--------
+{ Prefix Modifier \"Sanguine\" (Tier: 7) — Life }
++28(20-29) to maximum Life
+{ Suffix Modifier \"of the Apt\" (Tier: 1) }
+32% reduced Attribute Requirements
+(Attributes are Strength, Dexterity, and Intelligence)
+", ParsedItem {
+    item_class: "Gloves".to_string(),
+    item_base_name: "Gripped Gloves".to_string(),
+    item_name: "Sanguine Gripped Gloves of the Apt".to_string(),
+    mods: vec!["IncreasedLife2".to_string(),
+             "ReducedLocalAttributeRequirements2".to_string()],
+    raw_mods: vec![],
+})]
 fn test_parse_raw_item32(repo: impl CraftRepo, #[case] input: &str, #[case] expected: ParsedItem) {
     assert_eq!(parse_raw_item(&repo, &input), Ok(expected));
 }
