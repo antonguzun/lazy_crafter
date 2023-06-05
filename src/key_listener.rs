@@ -51,6 +51,7 @@ fn run_craft(craft_repo: &impl CraftRepo, ui_states: Arc<Mutex<UiStates>>) -> Re
         .selected_max_autocraft_tries
         .clone();
     send(&EventType::KeyPress(Key::ShiftLeft));
+    send(&EventType::KeyPress(Key::Alt));
 
     let mut prev_output = String::new();
     let mut down_counter = max_tries;
@@ -79,6 +80,7 @@ fn run_craft(craft_repo: &impl CraftRepo, ui_states: Arc<Mutex<UiStates>>) -> Re
                 let err_message = format!("Could not parse craft: {}", e);
                 info!("{}", err_message);
                 send(&EventType::KeyRelease(Key::ShiftLeft));
+                send(&EventType::KeyRelease(Key::Alt));
                 output.clear();
                 return Err(err_message);
             }
@@ -88,6 +90,7 @@ fn run_craft(craft_repo: &impl CraftRepo, ui_states: Arc<Mutex<UiStates>>) -> Re
         if selected_mod_keys.is_subset(&crafted_mod_keys) {
             info!("Crafted all target mods successfully");
             send(&EventType::KeyRelease(Key::ShiftLeft));
+            send(&EventType::KeyRelease(Key::Alt));
             output.clear();
             break;
         }
@@ -101,6 +104,7 @@ fn run_craft(craft_repo: &impl CraftRepo, ui_states: Arc<Mutex<UiStates>>) -> Re
     }
     info!("All attempts were exhausted");
     send(&EventType::KeyRelease(Key::ShiftLeft));
+    send(&EventType::KeyRelease(Key::Alt));
     Ok(())
 }
 
