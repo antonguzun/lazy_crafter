@@ -64,14 +64,16 @@ impl FileRepo {
         let item_classes = HashSet::from_iter(
             raw_base_items
                 .iter()
-                .filter(|(_k, v)| v.domain == "item"|| v.domain == "heist_npc")
+                .filter(|(_k, v)| v.domain == "item" || v.domain == "heist_npc")
                 .map(|(_k, v)| v.item_class.clone()),
         );
 
         let all_tags: HashSet<String> = HashSet::from_iter(
             raw_base_items
                 .values()
-                .filter(|b| (b.domain == "item" || b.domain == "heist_npc") && b.release_state == "released")
+                .filter(|b| {
+                    (b.domain == "item" || b.domain == "heist_npc") && b.release_state == "released"
+                })
                 .flat_map(|b| b.tags.clone()),
         );
         let mut mod_id_by_tags: HashMap<String, Vec<String>> = HashMap::new();
@@ -411,7 +413,10 @@ impl CraftRepo for FileRepo {
             .db
             .base_items_by_name
             .iter()
-            .filter(|(_, bi)| (bi.domain == "item" || bi.domain == "heist_npc") && bi.item_class == item_class.to_string())
+            .filter(|(_, bi)| {
+                (bi.domain == "item" || bi.domain == "heist_npc")
+                    && bi.item_class == item_class.to_string()
+            })
             .map(|(s, bi)| ItemBase {
                 name: s.to_string(),
                 required_level: match bi.requirements {
@@ -451,7 +456,7 @@ impl CraftRepo for FileRepo {
     // parse raw mod string to mod key
     // provided raw mod string and each available mod for item_base to common template
     // added filtration by stat min/max to avoid wrong matches
-    fn string_to_mod(
+    fn string_to_mod_old(
         &self,
         item_class: &str,
         item_name: &str,
@@ -498,7 +503,7 @@ impl CraftRepo for FileRepo {
                         zip(&values, &source_mod.stats).for_each(|(v, s)| {
                             match s.min {
                                 Some(min) => {
-                                    if i64::from(*v) < min {
+                                    if f64::from(*v) < min {
                                         values_correct = false;
                                     }
                                 }
@@ -506,7 +511,7 @@ impl CraftRepo for FileRepo {
                             }
                             match s.max {
                                 Some(max) => {
-                                    if max < i64::from(*v) {
+                                    if max < f64::from(*v) {
                                         values_correct = false;
                                     }
                                 }
@@ -521,7 +526,7 @@ impl CraftRepo for FileRepo {
                         zip(values, &source_mod.stats).for_each(|(v, s)| {
                             match s.min {
                                 Some(min) => {
-                                    if i64::from(v) < min {
+                                    if f64::from(v) < min {
                                         values_correct = false;
                                     }
                                 }
@@ -529,7 +534,7 @@ impl CraftRepo for FileRepo {
                             }
                             match s.max {
                                 Some(max) => {
-                                    if max < i64::from(v) {
+                                    if max < f64::from(v) {
                                         values_correct = false;
                                     }
                                 }
@@ -545,6 +550,61 @@ impl CraftRepo for FileRepo {
                 }
             })
             .ok_or("Can't find mod".to_string())?;
+        Ok(res.mod_key)
+    }
+    fn string_to_mod(
+        &self,
+        item_class: &str,
+        item_name: &str,
+        mod_name: &str,
+    ) -> Result<String, String> {
+        let query = ModsQuery {
+            item_base: item_name.to_string(),
+            item_level: 100,
+            string_query: "".to_string(),
+            selected_mods: vec![],
+        };
+        let mods = self.find_mods(&query);
+
+        use regex::Regex;
+
+        let mod_template = Regex::new(r"((\+|\-)?\d+\()|((\+|\-)?\d+\.\d+\()")
+            .unwrap()
+            .replace_all(mod_name.trim(), "(");
+
+        let multiline_mod = mod_template.contains("\n");
+        let res = mods
+            .into_iter()
+            // .filter(|m| m.representation.contains("increased Evasion and Energy")) // debug, REMOVE!
+            // .filter(|m| m.mod_key == "LocalIncreasedEvasionAndEnergyShieldAndStunRecovery4")
+            .find_map(|m| {
+                // match &mod_name.ends_with(&m.representation) {
+                match multiline_mod {
+                    true => {
+                        match (&m.representation.len() == &mod_template.len())
+                            && m.representation.contains("\n")
+                        {
+                            true => {
+                                let mut v1 = m.representation.split("\n").collect::<Vec<&str>>();
+                                let mut v2 = mod_template.split("\n").collect::<Vec<&str>>();
+                                v1.sort();
+                                v2.sort();
+                                if v1 == v2 {
+                                    Some(m)
+                                } else {
+                                    None
+                                }
+                            }
+                            false => None,
+                        }
+                    }
+                    false => match &mod_template == &m.representation {
+                        true => Some(m),
+                        false => None,
+                    },
+                }
+            })
+            .ok_or(format!("Can't find mod {}", mod_name))?;
         Ok(res.mod_key)
     }
 
@@ -628,7 +688,7 @@ mod tests {
     #[case("TwoHandChanceToFreeze2".to_string(), "25% chance to Freeze".to_string())]
     #[case("AttackerTakesDamage2".to_string(), "Reflects (5-10) Physical Damage to Melee Attackers".to_string())]
     #[case("LocalIncreasedPhysicalDamagePercent1".to_string(), "(40-49)% increased Physical Damage".to_string())]
-    #[case("LifeRegeneration7".to_string(), "Regenerate (48-64) Life per second".to_string())]
+    #[case("LifeRegeneration7".to_string(), "Regenerate (48.1-64) Life per second".to_string())]
     #[case("GainLifeOnBlock6_".to_string(), "(86-100) Life gained when you Block".to_string())]
     fn test_repr(repo: FileRepo, #[case] mod_id: String, #[case] expected: String) {
         let mod_item = repo.db.mods.get(&mod_id).unwrap();

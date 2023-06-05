@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use std::hash::{Hash, Hasher};
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct SpawnWeight {
@@ -9,8 +10,8 @@ pub struct SpawnWeight {
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Stat {
     pub id: String,
-    pub max: Option<i64>,
-    pub min: Option<i64>,
+    pub max: Option<f64>,
+    pub min: Option<f64>,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -42,24 +43,38 @@ pub struct Mod {
     pub type_field: String,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize, Eq, Hash)]
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize, Hash, Eq)]
 pub struct StatTranslation {
     pub English: Vec<LanguageInstance>,
     pub ids: Vec<String>,
     pub hidden: Option<bool>,
 }
 
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize, Hash, Eq)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct LanguageInstance {
     pub condition: Vec<Condition>,
     pub format: Vec<String>,
     pub index_handlers: Vec<Vec<String>>,
     pub string: String,
 }
-
-#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize, Hash, Eq)]
+impl Hash for LanguageInstance {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        self.format.hash(state);
+        self.index_handlers.hash(state);
+        self.string.hash(state);
+    }
+}
+impl PartialEq for LanguageInstance {
+    fn eq(&self, other: &Self) -> bool {
+        self.format == other.format
+            && self.index_handlers == other.index_handlers
+            && self.string == other.string
+    }
+}
+impl Eq for LanguageInstance {}
+#[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Condition {
-    pub min: Option<i64>,
-    pub max: Option<i64>,
+    pub min: Option<f64>,
+    pub max: Option<f64>,
     pub negated: Option<bool>,
 }
