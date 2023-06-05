@@ -18,9 +18,9 @@ fn create_target_hash_set() -> HashSet<String> {
     // target_events.insert(hash_event_type(EventType::KeyPress(Key::ControlLeft)));
     target_events.insert(hash_event_type(EventType::KeyRelease(Key::ControlLeft)));
     // target_events.insert(hash_event_type(EventType::KeyPress(Key::ShiftLeft)));
-    target_events.insert(hash_event_type(EventType::KeyRelease(Key::Alt)));
+    target_events.insert(hash_event_type(EventType::KeyRelease(Key::ShiftLeft)));
     // target_events.insert(hash_event_type(EventType::KeyPress(Key::KeyD)));
-    target_events.insert(hash_event_type(EventType::KeyRelease(Key::KeyC)));
+    target_events.insert(hash_event_type(EventType::KeyRelease(Key::KeyE)));
     target_events
 }
 
@@ -56,6 +56,7 @@ fn run_craft(craft_repo: &impl CraftRepo, ui_states: Arc<Mutex<UiStates>>) -> Re
     let mut prev_output = String::new();
     let mut down_counter = max_tries;
 
+    let mut no_changes_in_clipboard_counter: u32 = 0;
     while down_counter > 0 {
         send(&EventType::KeyPress(Key::ControlLeft));
         send(&EventType::KeyPress(Key::KeyC));
@@ -69,9 +70,17 @@ fn run_craft(craft_repo: &impl CraftRepo, ui_states: Arc<Mutex<UiStates>>) -> Re
             .read_clipboard(&mut output)
             .expect("Read sample");
         println!("copied {}", output);
+        if no_changes_in_clipboard_counter == 5 {
+            break;
+        }
         if output == prev_output {
             info!("No change in clipboard, skipping");
+            no_changes_in_clipboard_counter = no_changes_in_clipboard_counter.saturating_add(1);
+            let delay = Duration::from_millis(40);
+            thread::sleep(delay);
             continue;
+        } else {
+            no_changes_in_clipboard_counter = 0;
         }
         prev_output = output.clone();
         let parsed_craft = match item_parser::parse_raw_item(craft_repo, &output) {
