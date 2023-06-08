@@ -598,6 +598,7 @@ mod tests {
     #[case("LifeRegeneration7".to_string(), "Regenerate (48.1-64) Life per second".to_string())]
     #[case("GainLifeOnBlock6_".to_string(), "(86-100) Life gained when you Block".to_string())]
     #[case("ReducedLocalAttributeRequirements2".to_string(), "32% reduced Attribute Requirements".to_string())]
+    #[case("AdditionalArrowBow2_".to_string(), "Bow Attacks fire 2 additional Arrows".to_string())]
     fn test_repr(repo: FileRepo, #[case] mod_id: String, #[case] expected: String) {
         let mod_item = repo.db.mods.get(&mod_id).unwrap();
         let repr = repo.get_mods_representation(mod_item).unwrap();
@@ -608,6 +609,13 @@ mod tests {
     #[case("32% reduced Attribute Requirements".to_string(), "ReducedLocalAttributeRequirements2".to_string())]
     fn test_string_to_mod(repo: FileRepo, #[case] mod_name: String, #[case] expected: String) {
         let repr = repo.string_to_mod("asd", "Gripped Gloves", &mod_name).unwrap();
+        assert_eq!(repr, expected);
+    }
+
+    #[rstest]
+    #[case("Bow Attacks fire 2 additional Arrows".to_string(), "AdditionalArrowBow2_".to_string())]
+    fn test_string_to_mod_bow(repo: FileRepo, #[case] mod_name: String, #[case] expected: String) {
+        let repr = repo.string_to_mod("asd", "Spine Bow", &mod_name).unwrap();
         assert_eq!(repr, expected);
     }
 }
