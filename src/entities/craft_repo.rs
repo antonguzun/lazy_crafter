@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 #[derive(Debug, Clone)]
 pub struct ModItem {
@@ -50,6 +50,8 @@ pub trait CraftRepo {
         target_mod_key: String,
     ) -> u32;
     fn get_affected_weight_of_target_mod(&self, query: &ModsQuery) -> u32;
+    fn get_subset_of_mods(&self, mod_id: &str) -> HashSet<String>;
+    fn representation_by_mod_id(&self, mod_id: &str) -> String;
 }
 
 pub struct Data {

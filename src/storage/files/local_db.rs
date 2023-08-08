@@ -5,7 +5,6 @@ use log::{debug, error};
 use std::collections::{HashMap, HashSet};
 use std::fs::File;
 use std::io::Read;
-use std::iter::zip;
 
 const LOG_TARGET: &str = "file_db";
 
@@ -171,6 +170,11 @@ impl FileRepo {
                     ];
                     let from = String::from_iter(v);
                     repr = repr.replace(&from, &to_str);
+
+                    let format = &i.format[stat_position.clone()];
+                    if format.contains("#") {
+                        repr = format.replace("#", repr.as_str());
+                    }
                 }
                 return Ok(repr);
             }
@@ -453,7 +457,7 @@ impl CraftRepo for FileRepo {
             .ok_or(format!("{} not found in {}", item_name, item_class))
     }
 
-        // parse raw mod string to mod key
+    // parse raw mod string to mod key
     // provided raw mod string and each available mod for item_base to common template
     // Idea: bring mod_name to mods representation in db and equal it
     fn string_to_mod(
@@ -579,6 +583,17 @@ impl CraftRepo for FileRepo {
             affixes_types,
         )
     }
+
+    fn get_subset_of_mods(&self, mod_id: &str) -> HashSet<String> {
+        let mut r = HashSet::new();
+        r.insert(mod_id.to_owned());
+        r
+    }
+
+    fn representation_by_mod_id(&self, mod_id: &str) -> String {
+        let mod_item = self.db.mods.get(mod_id).unwrap();
+        self.get_mods_representation(mod_item).unwrap()
+    }
 }
 
 #[cfg(test)]
@@ -608,7 +623,9 @@ mod tests {
     #[rstest]
     #[case("32% reduced Attribute Requirements".to_string(), "ReducedLocalAttributeRequirements2".to_string())]
     fn test_string_to_mod(repo: FileRepo, #[case] mod_name: String, #[case] expected: String) {
-        let repr = repo.string_to_mod("asd", "Gripped Gloves", &mod_name).unwrap();
+        let repr = repo
+            .string_to_mod("asd", "Gripped Gloves", &mod_name)
+            .unwrap();
         assert_eq!(repr, expected);
     }
 
@@ -617,5 +634,15 @@ mod tests {
     fn test_string_to_mod_bow(repo: FileRepo, #[case] mod_name: String, #[case] expected: String) {
         let repr = repo.string_to_mod("asd", "Spine Bow", &mod_name).unwrap();
         assert_eq!(repr, expected);
+    }
+
+    #[rstest]
+    #[case("LifeRegeneration7".to_string(), vec!["LifeRegeneration7".to_string(), "LifeRegeneration9".to_string()])]
+    #[case("LifeRegeneration7".to_string(), vec!["LifeRegeneration7".to_string(), "LifeRegeneration9".to_string()])]
+    fn get_subset_of_mods(repo: FileRepo, #[case] mod_id: String, #[case] expected: Vec<String>) {
+        let set = repo.get_subset_of_mods(&mod_id);
+        let expected_set: HashSet<String> = HashSet::from_iter(expected);
+        assert!(set.is_subset(&expected_set));
+        assert!(expected_set.is_subset(&set));
     }
 }
