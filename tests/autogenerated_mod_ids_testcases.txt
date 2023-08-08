@@ -8,7 +8,6 @@ Strength7;+(38-42) to Strength
 Strength8;+(43-50) to Strength
 Strength9;+(51-55) to Strength
 Strength10;+(56-60) to Strength
-StrengthEssence7_;+(51-58) to Strength
 Dexterity1;+(8-12) to Dexterity
 Dexterity2;+(13-17) to Dexterity
 Dexterity3;+(18-22) to Dexterity
@@ -19,7 +18,6 @@ Dexterity7;+(38-42) to Dexterity
 Dexterity8;+(43-50) to Dexterity
 Dexterity9;+(51-55) to Dexterity
 Dexterity10;+(56-60) to Dexterity
-DexterityEssence7;+(51-58) to Dexterity
 Intelligence1;+(8-12) to Intelligence
 Intelligence2;+(13-17) to Intelligence
 Intelligence3;+(18-22) to Intelligence
@@ -30,7 +28,6 @@ Intelligence7;+(38-42) to Intelligence
 Intelligence8;+(43-50) to Intelligence
 Intelligence9;+(51-55) to Intelligence
 Intelligence10;+(56-60) to Intelligence
-IntelligenceEssence7;+(51-58) to Intelligence
 AllAttributes1;+(1-4) to all Attributes
 AllAttributes2;+(5-8) to all Attributes
 AllAttributes3;+(9-12) to all Attributes
@@ -53,15 +50,6 @@ IncreasedLife9;+(90-99) to maximum Life
 IncreasedLife10;+(100-109) to maximum Life
 IncreasedLife11;+(110-119) to maximum Life
 IncreasedLife12;+(120-129) to maximum Life
-IncreasedLifeEssence1_;+(5-14) to maximum Life
-IncreasedLifeEssence2;+(15-30) to maximum Life
-IncreasedLifeEssence3;+(31-45) to maximum Life
-IncreasedLifeEssenceChest1;+(120-126) to maximum Life
-IncreasedLifeEssenceShield1;+(110-116) to maximum Life
-IncreasedLifeEssenceHelm1;+(100-106) to maximum Life
-IncreasedLifeEssenceBootsGloves1;+(90-96) to maximum Life
-IncreasedLifeEnhancedMod;+(70-79) to maximum Life;(3-5)% increased maximum Life
-IncreasedLifeEnhancedBodyMod___;+(110-119) to maximum Life;(8-10)% increased maximum Life
 IncreasedMana1;+(15-19) to maximum Mana
 IncreasedMana2;+(20-24) to maximum Mana
 IncreasedMana3;+(25-29) to maximum Mana
@@ -75,12 +63,6 @@ IncreasedMana10;+(60-64) to maximum Mana
 IncreasedMana11;+(65-68) to maximum Mana
 IncreasedMana12;+(69-73) to maximum Mana
 IncreasedMana13;+(74-78) to maximum Mana
-IncreasedManaEssence7;+(69-77) to maximum Mana
-IncreasedManaEnhancedModPercent;+(69-73) to maximum Mana;(7-10)% increased maximum Mana
-IncreasedManaEnhancedModOnHit_;+(74-78) to maximum Mana;Gain (2-3) Mana per Enemy Hit with Attacks
-IncreasedManaEnhancedModRegen;+(74-78) to maximum Mana;Regenerate (5-7) Mana per second
-IncreasedManaEnhancedModReservation;+(69-73) to maximum Mana;(6-10)% increased Mana Reservation Efficiency of Skills
-IncreasedManaEnhancedModCost;+(74-78) to maximum Mana;-(8-6) to Total Mana Cost of Skills
 IncreasedManaWeapon1;+(30-39) to maximum Mana
 IncreasedManaWeapon2__;+(40-49) to maximum Mana
 IncreasedManaWeapon3_;+(50-59) to maximum Mana
@@ -117,8 +99,6 @@ IncreasedEnergyShield9;+(32-37) to maximum Energy Shield
 IncreasedEnergyShield10;+(38-43) to maximum Energy Shield
 IncreasedEnergyShield11;+(44-47) to maximum Energy Shield
 IncreasedEnergyShield12;+(48-51) to maximum Energy Shield
-IncreasedEnergyShieldEnhancedModES;+(44-47) to maximum Energy Shield;(7-10)% increased maximum Energy Shield
-IncreasedEnergyShieldEnhancedModRegen_;+(44-47) to maximum Energy Shield;Regenerate 0.4% of Energy Shield per second
 LocalIncreasedEnergyShield1;+(3-5) to maximum Energy Shield
 LocalIncreasedEnergyShield2;+(6-11) to maximum Energy Shield
 LocalIncreasedEnergyShield3;+(12-16) to maximum Energy Shield
@@ -130,19 +110,6 @@ LocalIncreasedEnergyShield8;+(50-61) to maximum Energy Shield
 LocalIncreasedEnergyShield9;+(62-76) to maximum Energy Shield
 LocalIncreasedEnergyShield10;+(77-90) to maximum Energy Shield
 LocalIncreasedEnergyShield11;+(91-100) to maximum Energy Shield
-LocalIncreasedEnergyShieldEssenceChest5;+(62-72) to maximum Energy Shield
-LocalIncreasedEnergyShieldEssenceChest6;+(73-82) to maximum Energy Shield
-LocalIncreasedEnergyShieldEssenceChest7__;+(88-95) to maximum Energy Shield
-LocalIncreasedEnergyShieldEssenceShield5;+(50-59) to maximum Energy Shield
-LocalIncreasedEnergyShieldEssenceShield6;+(60-69) to maximum Energy Shield
-LocalIncreasedEnergyShieldEssenceShield7;+(75-85) to maximum Energy Shield
-LocalIncreasedEnergyShieldEssenceBootsGloves4;+(18-26) to maximum Energy Shield
-LocalIncreasedEnergyShieldEssenceBootsGloves5;+(27-32) to maximum Energy Shield
-LocalIncreasedEnergyShieldEssenceBootsGloves6;+(28-35) to maximum Energy Shield
-LocalIncreasedEnergyShieldEssenceBootsGloves7;+(38-45) to maximum Energy Shield
-LocalIncreasedEnergyShieldEssenceHelm5;+(39-45) to maximum Energy Shield
-LocalIncreasedEnergyShieldEssenceHelm6;+(46-51) to maximum Energy Shield
-LocalIncreasedEnergyShieldEssenceHelm7;+(52-58) to maximum Energy Shield
 AddedPhysicalDamage1;Adds 1 to 2 Physical Damage to Attacks
 AddedPhysicalDamage2;Adds (2-3) to (4-5) Physical Damage to Attacks
 AddedPhysicalDamage3;Adds (3-4) to (6-7) Physical Damage to Attacks
@@ -161,14 +128,6 @@ AddedPhysicalDamageQuiver6;Adds (10-13) to (19-23) Physical Damage to Attacks
 AddedPhysicalDamageQuiver7;Adds (11-16) to (23-26) Physical Damage to Attacks
 AddedPhysicalDamageQuiver8;Adds (14-19) to (28-33) Physical Damage to Attacks
 AddedPhysicalDamageQuiver9;Adds (17-23) to (34-39) Physical Damage to Attacks
-AddedPhysicalDamageEssenceAmulet7;Adds (16-18) to (27-30) Physical Damage to Attacks
-AddedPhysicalDamageEssenceRing5;Adds (6-8) to (12-13) Physical Damage to Attacks
-AddedPhysicalDamageEssenceRing6;Adds (7-9) to (13-15) Physical Damage to Attacks
-AddedPhysicalDamageEssenceRing7;Adds (10-11) to (16-17) Physical Damage to Attacks
-AddedPhysicalDamageEssenceGlovesQuiver4;Adds (3-5) to (7-8) Physical Damage to Attacks
-AddedPhysicalDamageEssenceGlovesQuiver5;Adds (4-5) to (8-9) Physical Damage to Attacks
-AddedPhysicalDamageEssenceGlovesQuiver6;Adds (5-6) to (9-10) Physical Damage to Attacks
-AddedPhysicalDamageEssenceGlovesQuiver7;Adds (6-7) to (10-11) Physical Damage to Attacks
 AddedFireDamage1;Adds 1 to 2 Fire Damage to Attacks
 AddedFireDamage2;Adds (3-5) to (7-8) Fire Damage to Attacks
 AddedFireDamage3;Adds (5-7) to (11-13) Fire Damage to Attacks
@@ -187,12 +146,6 @@ AddedFireDamageQuiver6;Adds (17-22) to (33-38) Fire Damage to Attacks
 AddedFireDamageQuiver7;Adds (20-27) to (40-47) Fire Damage to Attacks
 AddedFireDamageQuiver8__;Adds (27-35) to (53-62) Fire Damage to Attacks
 AddedFireDamageQuiver9;Adds (37-50) to (74-87) Fire Damage to Attacks
-AddedFireDamageQuiverEssence10;Adds (41-55) to (81-96) Fire Damage to Attacks
-AddedFireDamageEssence7;Adds (23-27) to (43-48) Fire Damage to Attacks
-AddedFireDamageEssenceGlovesQuiver4;Adds (5-7) to (11-14) Fire Damage to Attacks
-AddedFireDamageEssenceGlovesQuiver5;Adds (6-8) to (13-17) Fire Damage to Attacks
-AddedFireDamageEssenceGlovesQuiver6;Adds (8-10) to (16-18) Fire Damage to Attacks
-AddedFireDamageEssenceGlovesQuiver7;Adds (9-11) to (17-21) Fire Damage to Attacks
 AddedColdDamage1;Adds 1 to 2 Cold Damage to Attacks
 AddedColdDamage2;Adds (3-4) to (7-8) Cold Damage to Attacks
 AddedColdDamage3;Adds (5-7) to (10-12) Cold Damage to Attacks
@@ -211,12 +164,6 @@ AddedColdDamageQuiver6;Adds (15-20) to (30-35) Cold Damage to Attacks
 AddedColdDamageQuiver7;Adds (18-24) to (36-42) Cold Damage to Attacks
 AddedColdDamageQuiver8;Adds (23-32) to (48-55) Cold Damage to Attacks
 AddedColdDamageQuiver9_;Adds (33-45) to (67-78) Cold Damage to Attacks
-AddedColdDamageQuiverEssence10;Adds (36-50) to (74-86) Cold Damage to Attacks
-AddedColdDamageEssence7;Adds (20-24) to (38-44) Cold Damage to Attacks
-AddedColdDamageEssenceQuiverGloves4;Adds (6-7) to (11-14) Cold Damage to Attacks
-AddedColdDamageEssenceQuiverGloves5;Adds (6-8) to (12-15) Cold Damage to Attacks
-AddedColdDamageEssenceQuiverGloves6;Adds (7-9) to (13-16) Cold Damage to Attacks
-AddedColdDamageEssenceQuiverGloves7;Adds (8-10) to (14-17) Cold Damage to Attacks
 AddedLightningDamage1;Adds 1 to 5 Lightning Damage to Attacks
 AddedLightningDamage2;Adds 1 to (14-15) Lightning Damage to Attacks
 AddedLightningDamage3;Adds (1-2) to (22-23) Lightning Damage to Attacks
@@ -235,35 +182,10 @@ AddedLightningDamageQuiver6___;Adds (2-5) to (56-62) Lightning Damage to Attacks
 AddedLightningDamageQuiver7;Adds (2-6) to (66-75) Lightning Damage to Attacks
 AddedLightningDamageQuiver8;Adds (3-8) to (89-99) Lightning Damage to Attacks
 AddedLightningDamageQuiver9;Adds (5-11) to (124-140) Lightning Damage to Attacks
-AddedLightningDamageQuiverEssence10__;Adds (6-13) to (136-155) Lightning Damage to Attacks
-AddedLightningDamageEssence7;Adds (4-8) to (71-76) Lightning Damage to Attacks
-AddedLightningDamageEssenceQuiverGloves3_;Adds (1-2) to (21-22) Lightning Damage to Attacks
-AddedLightningDamageEssenceQuiverGloves4;Adds (1-2) to (23-24) Lightning Damage to Attacks
-AddedLightningDamageEssenceQuiverGloves5;Adds (1-2) to (25-26) Lightning Damage to Attacks
-AddedLightningDamageEssenceQuiverGloves6;Adds (1-2) to (27-28) Lightning Damage to Attacks
-AddedLightningDamageEssenceQuiverGloves7;Adds (1-3) to (29-30) Lightning Damage to Attacks
 AddedChaosDamageQuiver1;Adds (27-41) to (55-69) Chaos Damage to Attacks
-AddedFireDamageEnhancedMod;Adds (5-7) to (11-13) Fire Damage to Attacks;25% of Physical Damage Converted to Fire Damage
-AddedColdDamageEnhancedMod;Adds (5-7) to (10-12) Cold Damage to Attacks;25% of Physical Damage Converted to Cold Damage
-AddedLightningDamageEnhancedMod;Adds (1-2) to (22-23) Lightning Damage to Attacks;25% of Physical Damage Converted to Lightning Damage
-LifeLeech1;(1-2)% of Physical Attack Damage Leeched as Life
-LifeLeech2;(3-4)% of Physical Attack Damage Leeched as Life
-LifeLeech3;(5-6)% of Physical Attack Damage Leeched as Life
 LifeLeechPermyriad1;(0.2-0.4)% of Physical Attack Damage Leeched as Life
 LifeLeechPermyriad2;(0.6-0.8)% of Physical Attack Damage Leeched as Life
 LifeLeechPermyriad3;(1-1.2)% of Physical Attack Damage Leeched as Life
-LifeLeechPermyriadEssence1;(0.5-0.7)% of Physical Attack Damage Leeched as Life
-LifeLeechPermyriadEssence2;(0.6-0.8)% of Physical Attack Damage Leeched as Life
-LifeLeechPermyriadEssence3_;(0.7-0.9)% of Physical Attack Damage Leeched as Life
-LifeLeechPermyriadEssence4;(0.8-1)% of Physical Attack Damage Leeched as Life
-LifeLeechPermyriadEssence5;(0.9-1.1)% of Physical Attack Damage Leeched as Life
-LifeLeechPermyriadEssence6;(1-1.2)% of Physical Attack Damage Leeched as Life
-LifeLeechPermyriadEssence7;(1.1-1.3)% of Physical Attack Damage Leeched as Life
-ElementalDamagePercent1;(4-8)% increased Elemental Damage
-ElementalDamagePercent2;(9-16)% increased Elemental Damage
-ElementalDamagePercent3;(17-24)% increased Elemental Damage
-ElementalDamagePercent4;(25-29)% increased Elemental Damage
-ElementalDamagePercent5;(30-34)% increased Elemental Damage
 LocalIncreasedPhysicalDamagePercentAndAccuracyRating1;(15-19)% increased Physical Damage;+(16-20) to Accuracy Rating
 LocalIncreasedPhysicalDamagePercentAndAccuracyRating2;(20-24)% increased Physical Damage;+(21-46) to Accuracy Rating
 LocalIncreasedPhysicalDamagePercentAndAccuracyRating3;(25-34)% increased Physical Damage;+(47-72) to Accuracy Rating
@@ -280,12 +202,6 @@ LocalIncreasedPhysicalDamagePercent5;(110-134)% increased Physical Damage
 LocalIncreasedPhysicalDamagePercent6;(135-154)% increased Physical Damage
 LocalIncreasedPhysicalDamagePercent7;(155-169)% increased Physical Damage
 LocalIncreasedPhysicalDamagePercent8;(170-179)% increased Physical Damage
-LocalIncreasedPhysicalDamageEnhancedMod;(155-169)% increased Physical Damage;Gain (9-10)% of Physical Damage as Extra Chaos Damage
-IncreasedPhysicalDamagePercent1;(8-12)% increased Global Physical Damage
-IncreasedPhysicalDamagePercent2;(13-17)% increased Global Physical Damage
-IncreasedPhysicalDamagePercent3;(18-22)% increased Global Physical Damage
-IncreasedPhysicalDamagePercent4;(23-28)% increased Global Physical Damage
-IncreasedPhysicalDamagePercent5__;(29-33)% increased Global Physical Damage
 LocalAddedPhysicalDamage1;Adds 1 to (2-3) Physical Damage
 LocalAddedPhysicalDamage2;Adds (4-5) to (8-9) Physical Damage
 LocalAddedPhysicalDamage3;Adds (6-9) to (13-15) Physical Damage
@@ -295,7 +211,6 @@ LocalAddedPhysicalDamage6;Adds (13-18) to (27-31) Physical Damage
 LocalAddedPhysicalDamage7;Adds (16-21) to (32-38) Physical Damage
 LocalAddedPhysicalDamage8;Adds (19-25) to (39-45) Physical Damage
 LocalAddedPhysicalDamage9;Adds (22-29) to (45-52) Physical Damage
-LocalAddedPhysicalDamageEssenceNew7;Adds (20-26) to (40-47) Physical Damage
 LocalAddedPhysicalDamageTwoHand1;Adds 2 to (4-5) Physical Damage
 LocalAddedPhysicalDamageTwoHand2;Adds (6-8) to (12-15) Physical Damage
 LocalAddedPhysicalDamageTwoHand3;Adds (10-13) to (21-25) Physical Damage
@@ -305,7 +220,6 @@ LocalAddedPhysicalDamageTwoHand6;Adds (20-28) to (43-51) Physical Damage
 LocalAddedPhysicalDamageTwoHand7;Adds (25-33) to (52-61) Physical Damage
 LocalAddedPhysicalDamageTwoHand8;Adds (30-40) to (63-73) Physical Damage
 LocalAddedPhysicalDamageTwoHand9;Adds (34-47) to (72-84) Physical Damage
-LocalAddedPhysicalDamageTwoHandEssenceNew7__;Adds (31-42) to (65-75) Physical Damage
 LocalIncreasedEnergyShieldPercent1;(11-28)% increased Energy Shield
 LocalIncreasedEnergyShieldPercent2;(27-42)% increased Energy Shield
 LocalIncreasedEnergyShieldPercent3;(43-55)% increased Energy Shield
@@ -373,8 +287,6 @@ LocalIncreasedPhysicalDamageReductionRatingPercentAndStunRecovery3;(21-26)% incr
 LocalIncreasedPhysicalDamageReductionRatingPercentAndStunRecovery4;(27-32)% increased Armour;(12-13)% increased Stun and Block Recovery
 LocalIncreasedPhysicalDamageReductionRatingPercentAndStunRecovery5;(33-38)% increased Armour;(14-15)% increased Stun and Block Recovery
 LocalIncreasedPhysicalDamageReductionRatingPercentAndStunRecovery6;(39-42)% increased Armour;(16-17)% increased Stun and Block Recovery
-LocalIncreasedPhysicalDamageReductionRatingPercentAndAdditionalBlockChance1;(25-30)% increased Armour;+2% Chance to Block
-LocalIncreasedPhysicalDamageReductionRatingPercentAndAdditionalBlockChance2;(31-36)% increased Armour;+3% Chance to Block
 LocalIncreasedEvasionRatingPercentAndStunRecovery1;(6-13)% increased Evasion Rating;(6-7)% increased Stun and Block Recovery
 LocalIncreasedEvasionRatingPercentAndStunRecovery2;(14-20)% increased Evasion Rating;(8-9)% increased Stun and Block Recovery
 LocalIncreasedEvasionRatingPercentAndStunRecovery3;(21-26)% increased Evasion Rating;(10-11)% increased Stun and Block Recovery
@@ -415,8 +327,6 @@ LocalAddedFireDamage7;Adds (46-62) to (93-107) Fire Damage
 LocalAddedFireDamage8;Adds (59-81) to (120-140) Fire Damage
 LocalAddedFireDamage9;Adds (74-101) to (150-175) Fire Damage
 LocalAddedFireDamage10_;Adds (89-121) to (180-210) Fire Damage
-LocalAddedFireDamageEssence7;Adds (80-109) to (162-189) Fire Damage
-LocalAddedFireDamageEnhancedMod_;Adds (59-79) to (118-138) Fire Damage;Attacks with this Weapon Penetrate (13-15)% Fire Resistance
 LocalAddedFireDamageTwoHand1;Adds (3-5) to (6-7) Fire Damage
 LocalAddedFireDamageTwoHand2;Adds (14-20) to (29-33) Fire Damage
 LocalAddedFireDamageTwoHand3;Adds (23-31) to (47-54) Fire Damage
@@ -427,18 +337,6 @@ LocalAddedFireDamageTwoHand7;Adds (85-115) to (172-200) Fire Damage
 LocalAddedFireDamageTwoHand8_;Adds (110-150) to (223-260) Fire Damage
 LocalAddedFireDamageTwoHand9;Adds (137-188) to (279-325) Fire Damage
 LocalAddedFireDamageTwoHand10;Adds (165-225) to (335-390) Fire Damage
-LocalAddedFireDamageRanged1;Adds (3-5) to (6-7) Fire Damage
-LocalAddedFireDamageRanged2;Adds (14-20) to (29-33) Fire Damage
-LocalAddedFireDamageRanged3;Adds (23-31) to (47-54) Fire Damage
-LocalAddedFireDamageRanged4;Adds (32-44) to (65-76) Fire Damage
-LocalAddedFireDamageRanged5;Adds (45-61) to (91-106) Fire Damage
-LocalAddedFireDamageRanged6;Adds (63-85) to (128-148) Fire Damage
-LocalAddedFireDamageRanged7;Adds (85-115) to (172-200) Fire Damage
-LocalAddedFireDamageRanged8;Adds (110-150) to (223-260) Fire Damage
-LocalAddedFireDamageRanged9_;Adds (137-188) to (279-325) Fire Damage
-LocalAddedFireDamageRanged10;Adds (165-225) to (335-390) Fire Damage
-LocalAddedFireDamageTwoHandEssence7;Adds (149-203) to (302-351) Fire Damage
-LocalAddedFireDamageEnhancedTwoHandMod;Adds (109-147) to (220-256) Fire Damage;Attacks with this Weapon Penetrate (13-15)% Fire Resistance
 LocalAddedColdDamage1;Adds (1-2) to (3-4) Cold Damage
 LocalAddedColdDamage2;Adds (7-9) to (14-16) Cold Damage
 LocalAddedColdDamage3;Adds (11-15) to (23-26) Cold Damage
@@ -449,8 +347,6 @@ LocalAddedColdDamage7;Adds (41-57) to (83-97) Cold Damage
 LocalAddedColdDamage8;Adds (54-74) to (108-126) Cold Damage
 LocalAddedColdDamage9;Adds (68-92) to (136-157) Cold Damage
 LocalAddedColdDamage10__;Adds (81-111) to (163-189) Cold Damage
-LocalAddedColdDamageEssence7;Adds (73-100) to (147-170) Cold Damage
-LocalAddedColdDamageEnhancedMod;Adds (53-72) to (107-124) Cold Damage;Attacks with this Weapon Penetrate (13-15)% Cold Resistance
 LocalAddedColdDamageTwoHand1;Adds (2-3) to (6-7) Cold Damage
 LocalAddedColdDamageTwoHand2;Adds (12-17) to (26-30) Cold Damage
 LocalAddedColdDamageTwoHand3;Adds (21-28) to (42-48) Cold Damage
@@ -461,18 +357,6 @@ LocalAddedColdDamageTwoHand7;Adds (77-104) to (154-178) Cold Damage
 LocalAddedColdDamageTwoHand8;Adds (99-136) to (200-232) Cold Damage
 LocalAddedColdDamageTwoHand9;Adds (124-170) to (250-290) Cold Damage
 LocalAddedColdDamageTwoHand10;Adds (149-204) to (300-348) Cold Damage
-LocalAddedColdDamageRanged1;Adds (2-3) to (6-7) Cold Damage
-LocalAddedColdDamageRanged2;Adds (12-17) to (26-30) Cold Damage
-LocalAddedColdDamageRanged3;Adds (21-28) to (42-48) Cold Damage
-LocalAddedColdDamageRanged4;Adds (29-40) to (58-68) Cold Damage
-LocalAddedColdDamageRanged5;Adds (41-55) to (81-95) Cold Damage
-LocalAddedColdDamageRanged6;Adds (57-77) to (114-132) Cold Damage
-LocalAddedColdDamageRanged7;Adds (77-104) to (154-178) Cold Damage
-LocalAddedColdDamageRanged8;Adds (99-136) to (200-232) Cold Damage
-LocalAddedColdDamageRanged9;Adds (124-170) to (250-290) Cold Damage
-LocalAddedColdDamageRanged10;Adds (149-204) to (300-348) Cold Damage
-LocalAddedColdDamageTwoHandEssence7;Adds (134-184) to (270-313) Cold Damage
-LocalAddedColdDamageEnhancedTwoHandMod;Adds (100-132) to (197-230) Cold Damage;Attacks with this Weapon Penetrate (13-15)% Cold Resistance
 LocalAddedLightningDamage1;Adds 1 to (5-6) Lightning Damage
 LocalAddedLightningDamage2;Adds 2 to (25-29) Lightning Damage
 LocalAddedLightningDamage3;Adds 2 to (41-48) Lightning Damage
@@ -483,8 +367,6 @@ LocalAddedLightningDamage7;Adds (8-10) to (152-176) Lightning Damage
 LocalAddedLightningDamage8;Adds (10-14) to (197-229) Lightning Damage
 LocalAddedLightningDamage9;Adds (13-17) to (247-286) Lightning Damage
 LocalAddedLightningDamage10;Adds (15-21) to (296-344) Lightning Damage
-LocalAddedLightningDamageEssence7_;Adds (13-19) to (266-310) Lightning Damage
-LocalAddedLightningDamageEnhancedMod;Adds (7-17) to (198-224) Lightning Damage;Attacks with this Weapon Penetrate (13-15)% Lightning Resistance
 LocalAddedLightningDamageTwoHand1_;Adds 2 to (10-11) Lightning Damage
 LocalAddedLightningDamageTwoHand2;Adds 3 to (46-53) Lightning Damage
 LocalAddedLightningDamageTwoHand3;Adds (4-5) to (76-88) Lightning Damage
@@ -495,18 +377,6 @@ LocalAddedLightningDamageTwoHand7;Adds (14-20) to (281-327) Lightning Damage
 LocalAddedLightningDamageTwoHand8;Adds (19-25) to (366-425) Lightning Damage
 LocalAddedLightningDamageTwoHand9;Adds (23-32) to (458-531) Lightning Damage
 LocalAddedLightningDamageTwoHand10;Adds (28-38) to (549-638) Lightning Damage
-LocalAddedLightningDamageRanged1;Adds 2 to (10-11) Lightning Damage
-LocalAddedLightningDamageRanged2;Adds 3 to (46-53) Lightning Damage
-LocalAddedLightningDamageRanged3___;Adds (4-5) to (76-88) Lightning Damage
-LocalAddedLightningDamageRanged4;Adds (5-8) to (106-123) Lightning Damage
-LocalAddedLightningDamageRanged5;Adds (8-10) to (148-173) Lightning Damage
-LocalAddedLightningDamageRanged6_;Adds (11-14) to (208-242) Lightning Damage
-LocalAddedLightningDamageRanged7;Adds (14-20) to (281-327) Lightning Damage
-LocalAddedLightningDamageRanged8;Adds (19-25) to (366-425) Lightning Damage
-LocalAddedLightningDamageRanged9;Adds (23-32) to (458-531) Lightning Damage
-LocalAddedLightningDamageRanged10_;Adds (28-38) to (549-638) Lightning Damage
-LocalAddedLightningDamageTwoHandEssence7;Adds (25-34) to (494-575) Lightning Damage
-LocalAddedLightningDamageEnhancedTwoHandMod;Adds (12-31) to (367-415) Lightning Damage;Attacks with this Weapon Penetrate (13-15)% Lightning Resistance
 IncreasedPhysicalDamageReductionRatingPercent1;(4-8)% increased Armour
 IncreasedPhysicalDamageReductionRatingPercent2;(9-13)% increased Armour
 IncreasedPhysicalDamageReductionRatingPercent3;(14-18)% increased Armour
@@ -514,8 +384,6 @@ IncreasedPhysicalDamageReductionRatingPercent4;(19-23)% increased Armour
 IncreasedPhysicalDamageReductionRatingPercent5;(24-28)% increased Armour
 IncreasedPhysicalDamageReductionRatingPercent6;(29-32)% increased Armour
 IncreasedPhysicalDamageReductionRatingPercent7;(33-36)% increased Armour
-IncreasedPhysicalDamageReductionRatingPercentEssence6;(29-31)% increased Armour
-IncreasedPhysicalDamageReductionRatingPercentEssence7;(32-33)% increased Armour
 IncreasedEvasionRatingPercent1;(4-8)% increased Evasion Rating
 IncreasedEvasionRatingPercent2;(9-13)% increased Evasion Rating
 IncreasedEvasionRatingPercent3;(14-18)% increased Evasion Rating
@@ -523,8 +391,6 @@ IncreasedEvasionRatingPercent4;(19-23)% increased Evasion Rating
 IncreasedEvasionRatingPercent5;(24-28)% increased Evasion Rating
 IncreasedEvasionRatingPercent6;(29-32)% increased Evasion Rating
 IncreasedEvasionRatingPercent7;(33-36)% increased Evasion Rating
-IncreasedEvasionRatingPercentEssence6;(29-31)% increased Evasion Rating
-IncreasedEvasionRatingPercentEssence7;(32-33)% increased Evasion Rating
 IncreasedEnergyShieldPercent1;(2-4)% increased maximum Energy Shield
 IncreasedEnergyShieldPercent2;(5-7)% increased maximum Energy Shield
 IncreasedEnergyShieldPercent3;(8-10)% increased maximum Energy Shield
@@ -532,11 +398,6 @@ IncreasedEnergyShieldPercent4;(11-13)% increased maximum Energy Shield
 IncreasedEnergyShieldPercent5;(14-16)% increased maximum Energy Shield
 IncreasedEnergyShieldPercent6;(17-19)% increased maximum Energy Shield
 IncreasedEnergyShieldPercent7;(20-22)% increased maximum Energy Shield
-IncreasedEnergyShieldPercentEssence1;(4-6)% increased maximum Energy Shield
-IncreasedEnergyShieldPercentEssence4;(11-13)% increased maximum Energy Shield
-IncreasedEnergyShieldPercentEssence5;(14-16)% increased maximum Energy Shield
-IncreasedEnergyShieldPercentEssence6;(17-18)% increased maximum Energy Shield
-IncreasedEnergyShieldPercentEssence7_;(18-19)% increased maximum Energy Shield
 IncreasedEvasionRating1;+(3-10) to Evasion Rating
 IncreasedEvasionRating2;+(11-35) to Evasion Rating
 IncreasedEvasionRating3;+(36-60) to Evasion Rating
@@ -544,7 +405,6 @@ IncreasedEvasionRating4;+(61-80) to Evasion Rating
 IncreasedEvasionRating5;+(81-120) to Evasion Rating
 IncreasedEvasionRating6;+(121-150) to Evasion Rating
 IncreasedEvasionRating7;+(151-170) to Evasion Rating
-IncreasedEvasionRatingEssence7;+(151-180) to Evasion Rating
 LocalIncreasedEvasionRating1;+(6-12) to Evasion Rating
 LocalIncreasedEvasionRating2;+(13-35) to Evasion Rating
 LocalIncreasedEvasionRating3;+(36-63) to Evasion Rating
@@ -556,19 +416,6 @@ LocalIncreasedEvasionRating8;+(151-200) to Evasion Rating
 LocalIncreasedEvasionRating9___;+(201-300) to Evasion Rating
 LocalIncreasedEvasionRating10;+(301-400) to Evasion Rating
 LocalIncreasedEvasionRating11;+(401-500) to Evasion Rating
-LocalIncreasedEvasionRatingEssence7;+(390-475) to Evasion Rating
-LocalIncreasedEvasionRatingEssenceHelm4__;+(40-49) to Evasion Rating
-LocalIncreasedEvasionRatingEssenceHelm5;+(121-140) to Evasion Rating
-LocalIncreasedEvasionRatingEssenceHelm6;+(141-160) to Evasion Rating
-LocalIncreasedEvasionRatingEssenceHelm7;+(161-180) to Evasion Rating
-LocalIncreasedEvasionRatingEssenceGlovesBoots3;+(21-25) to Evasion Rating
-LocalIncreasedEvasionRatingEssenceGlovesBoots4;+(81-90) to Evasion Rating
-LocalIncreasedEvasionRatingEssenceGlovesBoots5;+(91-105) to Evasion Rating
-LocalIncreasedEvasionRatingEssenceGlovesBoots6;+(106-120) to Evasion Rating
-LocalIncreasedEvasionRatingEssenceGlovesBoots7;+(121-135) to Evasion Rating
-LocalIncreasedEvasionRatingEssenceShield5;+(151-225) to Evasion Rating
-LocalIncreasedEvasionRatingEssenceShield6;+(226-300) to Evasion Rating
-LocalIncreasedEvasionRatingEssenceShield7____;+(301-375) to Evasion Rating
 IncreasedPhysicalDamageReductionRating1;+(3-10) to Armour
 IncreasedPhysicalDamageReductionRating2;+(11-35) to Armour
 IncreasedPhysicalDamageReductionRating3;+(36-60) to Armour
@@ -577,10 +424,6 @@ IncreasedPhysicalDamageReductionRating5;+(139-322) to Armour
 IncreasedPhysicalDamageReductionRating6;+(323-400) to Armour
 IncreasedPhysicalDamageReductionRating7;+(401-460) to Armour
 IncreasedPhysicalDamageReductionRating8_;+(461-540) to Armour
-IncreasedPhysicalDamageReductionRatingEssence7;+(481-520) to Armour
-IncreasedPhysicalDamageReductionRatingEssenceRing5;+(80-120) to Armour
-IncreasedPhysicalDamageReductionRatingEssenceRing6;+(121-200) to Armour
-IncreasedPhysicalDamageReductionRatingEssenceRing7;+(201-300) to Armour
 LocalIncreasedPhysicalDamageReductionRating1;+(6-12) to Armour
 LocalIncreasedPhysicalDamageReductionRating2;+(13-35) to Armour
 LocalIncreasedPhysicalDamageReductionRating3;+(36-63) to Armour
@@ -592,16 +435,6 @@ LocalIncreasedPhysicalDamageReductionRating8;+(151-200) to Armour
 LocalIncreasedPhysicalDamageReductionRating9_;+(201-300) to Armour
 LocalIncreasedPhysicalDamageReductionRating10;+(301-400) to Armour
 LocalIncreasedPhysicalDamageReductionRating11;+(401-500) to Armour
-LocalIncreasedPhysicalDamageReductionRatingEssence7;+(390-475) to Armour
-LocalIncreasedPhysicalDamageReductionRatingEssenceHelm5;+(121-140) to Armour
-LocalIncreasedPhysicalDamageReductionRatingEssenceHelm6_;+(141-160) to Armour
-LocalIncreasedPhysicalDamageReductionRatingEssenceHelm7_;+(161-180) to Armour
-LocalIncreasedPhysicalDamageReductionRatingEssenceBootsGloves5;+(91-105) to Armour
-LocalIncreasedPhysicalDamageReductionRatingEssenceBootsGloves6;+(106-120) to Armour
-LocalIncreasedPhysicalDamageReductionRatingEssenceBootsGloves7;+(121-135) to Armour
-LocalIncreasedPhysicalDamageReductionRatingEssenceShield5_;+(151-225) to Armour
-LocalIncreasedPhysicalDamageReductionRatingEssenceShield6;+(226-300) to Armour
-LocalIncreasedPhysicalDamageReductionRatingEssenceShield7____;+(301-375) to Armour
 LocalBaseArmourAndEvasionRating1;+(5-9) to Armour;+(5-9) to Evasion Rating
 LocalBaseArmourAndEvasionRating2;+(10-27) to Armour;+(10-27) to Evasion Rating
 LocalBaseArmourAndEvasionRating3;+(28-48) to Armour;+(28-48) to Evasion Rating
@@ -626,18 +459,6 @@ LocalBaseEvasionRatingAndEnergyShield5_;+(86-145) to Evasion Rating;+(29-48) to 
 LocalBaseEvasionRatingAndEnergyShield6;+(146-220) to Evasion Rating;+(49-60) to maximum Energy Shield
 LocalBaseEvasionRatingAndEnergyShield7___;+(221-300) to Evasion Rating;+(61-72) to maximum Energy Shield
 LocalBaseEvasionRatingAndEnergyShield8___;+(301-375) to Evasion Rating;+(73-80) to maximum Energy Shield
-LocalBaseArmourAndEvasionRatingAndLife1;+(8-10) to Evasion Rating;+(18-23) to maximum Life
-LocalBaseArmourAndEvasionRatingAndLife2;+(11-21) to Evasion Rating;+(24-28) to maximum Life
-LocalBaseArmourAndEvasionRatingAndLife3;+(22-48) to Evasion Rating;+(29-33) to maximum Life
-LocalBaseArmourAndEvasionRatingAndLife4;+(49-60) to Evasion Rating;+(34-38) to maximum Life
-LocalBaseArmourAndEnergyShieldAndLife1_;+(3-5) to maximum Energy Shield;+(18-23) to maximum Life
-LocalBaseArmourAndEnergyShieldAndLife2_;+(6-8) to maximum Energy Shield;+(24-28) to maximum Life
-LocalBaseArmourAndEnergyShieldAndLife3;+(9-12) to maximum Energy Shield;+(29-33) to maximum Life
-LocalBaseArmourAndEnergyShieldAndLife4_;+(13-15) to maximum Energy Shield;+(34-38) to maximum Life
-LocalBaseEvasionRatingAndEnergyShieldAndLife1;+(3-5) to maximum Energy Shield;+(18-23) to maximum Life
-LocalBaseEvasionRatingAndEnergyShieldAndLife2;+(6-8) to maximum Energy Shield;+(24-28) to maximum Life
-LocalBaseEvasionRatingAndEnergyShieldAndLife3;+(9-12) to maximum Energy Shield;+(29-33) to maximum Life
-LocalBaseEvasionRatingAndEnergyShieldAndLife4;+(13-15) to maximum Energy Shield;+(34-38) to maximum Life
 LocalBaseArmourAndLife1;+(20-32) to Armour;+(18-23) to maximum Life
 LocalBaseArmourAndLife2;+(33-48) to Armour;+(24-28) to maximum Life
 LocalBaseArmourAndLife3;+(49-96) to Armour;+(29-33) to maximum Life
@@ -660,10 +481,6 @@ MovementVelocity3;20% increased Movement Speed
 MovementVelocity4;25% increased Movement Speed
 MovementVelocity5;30% increased Movement Speed
 MovementVelocity6;35% increased Movement Speed
-MovementVelocityEssence7;32% increased Movement Speed
-MovementVelocityEnhancedModSpeed;30% increased Movement Speed;5% increased Movement Speed if you haven't been Hit Recently
-MovementVelocityEnhancedModDodge_;30% increased Movement Speed;(10-15)% chance to Avoid Bleeding
-MovementVelocityEnhancedModSpellDodge_;30% increased Movement Speed;(10-15)% chance to Avoid being Poisoned
 SpellDamage1;(3-7)% increased Spell Damage
 SpellDamage2;(8-12)% increased Spell Damage
 SpellDamage3;(13-17)% increased Spell Damage
@@ -677,10 +494,6 @@ SpellDamageOnWeapon5;(55-69)% increased Spell Damage
 SpellDamageOnWeapon6;(70-84)% increased Spell Damage
 SpellDamageOnWeapon7;(85-99)% increased Spell Damage
 SpellDamageOnWeapon8_;(100-109)% increased Spell Damage
-SpellDamageOnWeaponEssence5_;(50-66)% increased Spell Damage
-SpellDamageOnWeaponEssence6;(67-82)% increased Spell Damage
-SpellDamageOnWeaponEssence7;(83-94)% increased Spell Damage
-SpellDamageOnWeaponEnhancedMod;(70-74)% increased Spell Damage;Gain 5% of Non-Chaos Damage as extra Chaos Damage
 SpellDamageOnTwoHandWeapon1;(15-29)% increased Spell Damage
 SpellDamageOnTwoHandWeapon2;(30-44)% increased Spell Damage
 SpellDamageOnTwoHandWeapon3;(45-59)% increased Spell Damage
@@ -689,10 +502,6 @@ SpellDamageOnTwoHandWeapon5;(85-104)% increased Spell Damage
 SpellDamageOnTwoHandWeapon6;(105-124)% increased Spell Damage
 SpellDamageOnTwoHandWeapon7;(125-149)% increased Spell Damage
 SpellDamageOnTwoHandWeapon8;(150-164)% increased Spell Damage
-SpellDamageOnTwoHandWeaponEssence5;(85-106)% increased Spell Damage
-SpellDamageOnTwoHandWeaponEssence6;(107-122)% increased Spell Damage
-SpellDamageOnTwoHandWeaponEssence7;(123-144)% increased Spell Damage
-SpellDamageOnTwoHandWeaponEnhancedMod;(105-110)% increased Spell Damage;Gain 5% of Non-Chaos Damage as extra Chaos Damage
 SpellDamageAndManaOnWeapon1;(5-9)% increased Spell Damage;+(17-20) to maximum Mana
 SpellDamageAndManaOnWeapon2;(10-14)% increased Spell Damage;+(21-24) to maximum Mana
 SpellDamageAndManaOnWeapon3;(15-19)% increased Spell Damage;+(25-28) to maximum Mana
@@ -707,17 +516,6 @@ SpellDamageAndManaOnTwoHandWeapon4;(30-37)% increased Spell Damage;+(42-47) to m
 SpellDamageAndManaOnTwoHandWeapon5;(38-44)% increased Spell Damage;+(48-53) to maximum Mana
 SpellDamageAndManaOnTwoHandWeapon6;(45-50)% increased Spell Damage;+(54-59) to maximum Mana
 SpellDamageAndManaOnTwoHandWeapon7;(51-55)% increased Spell Damage;+(60-64) to maximum Mana
-TrapDamageOnWeaponEnhancedMod;(90-95)% increased Trap Damage
-TrapDamageOnTwoHandWeaponEnhancedMod;(133-138)% increased Trap Damage
-TrapThrowSpeedEnhancedMod;(20-22)% increased Trap Throwing Speed
-TrapCooldownRecoveryAndDurationEnhancedMod;(17-20)% increased Trap Duration;(14-15)% increased Cooldown Recovery Rate for throwing Traps
-TrapAreaOfEffectEnhancedMod_;Skills used by Traps have (22-25)% increased Area of Effect
-LocalIncreaseSocketedTrapGemLevelEnhancedMod_;+2 to Level of Socketed Trap Gems
-MinionDamageOnWeaponEnhancedMod__;Minions deal (90-95)% increased Damage
-MinionDamageOnTwoHandWeaponEnhancedMod;Minions deal (133-138)% increased Damage
-MinionAttackAndCastSpeedEnhancedMod;Minions have (13-15)% increased Attack Speed;Minions have (13-15)% increased Cast Speed
-MinionDurationEnhancedMod_;(17-20)% increased Minion Duration
-LocalIncreaseSocketedMinionGemLevelEnhancedMod;+2 to Level of Socketed Minion Gems
 FireDamagePrefixOnWeapon1;(10-19)% increased Fire Damage
 FireDamagePrefixOnWeapon2;(20-29)% increased Fire Damage
 FireDamagePrefixOnWeapon3;(30-39)% increased Fire Damage
@@ -734,8 +532,6 @@ FireDamagePrefixOnTwoHandWeapon5;(85-104)% increased Fire Damage
 FireDamagePrefixOnTwoHandWeapon6;(105-124)% increased Fire Damage
 FireDamagePrefixOnTwoHandWeapon7;(125-149)% increased Fire Damage
 FireDamagePrefixOnTwoHandWeapon8_;(150-164)% increased Fire Damage
-FireDamagePrefixOnWeaponEnhancedMod;(75-79)% increased Fire Damage;Adds (15-20) to (30-35) Fire Damage to Spells
-FireDamagePrefixOnTwoHandWeaponEnhancedMod;(111-115)% increased Fire Damage;Adds (20-27) to (41-48) Fire Damage to Spells
 ColdDamagePrefixOnWeapon1;(10-19)% increased Cold Damage
 ColdDamagePrefixOnWeapon2;(20-29)% increased Cold Damage
 ColdDamagePrefixOnWeapon3_;(30-39)% increased Cold Damage
@@ -752,8 +548,6 @@ ColdDamagePrefixOnTwoHandWeapon5_;(85-104)% increased Cold Damage
 ColdDamagePrefixOnTwoHandWeapon6;(105-124)% increased Cold Damage
 ColdDamagePrefixOnTwoHandWeapon7;(125-149)% increased Cold Damage
 ColdDamagePrefixOnTwoHandWeapon8;(150-164)% increased Cold Damage
-ColdDamagePrefixOnWeaponEnhancedMod;(75-79)% increased Cold Damage;Adds (12-16) to (25-29) Cold Damage to Spells
-ColdDamagePrefixOnTwoHandWeaponEnhancedMod;(111-115)% increased Cold Damage;Adds (19-25) to (37-44) Cold Damage to Spells
 LightningDamagePrefixOnWeapon1_;(10-19)% increased Lightning Damage
 LightningDamagePrefixOnWeapon2;(20-29)% increased Lightning Damage
 LightningDamagePrefixOnWeapon3;(30-39)% increased Lightning Damage
@@ -770,21 +564,12 @@ LightningDamagePrefixOnTwoHandWeapon5;(85-104)% increased Lightning Damage
 LightningDamagePrefixOnTwoHandWeapon6;(105-124)% increased Lightning Damage
 LightningDamagePrefixOnTwoHandWeapon7;(125-149)% increased Lightning Damage
 LightningDamagePrefixOnTwoHandWeapon8;(150-164)% increased Lightning Damage
-LightningDamagePrefixOnWeaponEnhancedMod_;(75-79)% increased Lightning Damage;Adds (1-4) to (53-56) Lightning Damage to Spells
-LightningDamagePrefixOnTwoHandWeaponEnhancedMod;(111-115)% increased Lightning Damage;Adds (2-6) to (79-84) Lightning Damage to Spells
 WeaponElementalDamage1;(5-10)% increased Elemental Damage with Attack Skills
 WeaponElementalDamage2;(11-20)% increased Elemental Damage with Attack Skills
 WeaponElementalDamage3;(21-30)% increased Elemental Damage with Attack Skills
 WeaponElementalDamage4;(31-36)% increased Elemental Damage with Attack Skills
 WeaponElementalDamage5;(37-42)% increased Elemental Damage with Attack Skills
 WeaponElementalDamage6_;(43-50)% increased Elemental Damage with Attack Skills
-WeaponElementalDamageEssence1;(11-15)% increased Elemental Damage with Attack Skills
-WeaponElementalDamageEssence2;(16-20)% increased Elemental Damage with Attack Skills
-WeaponElementalDamageEssence3;(21-25)% increased Elemental Damage with Attack Skills
-WeaponElementalDamageEssence4;(26-29)% increased Elemental Damage with Attack Skills
-WeaponElementalDamageEssence5;(30-34)% increased Elemental Damage with Attack Skills
-WeaponElementalDamageEssence6_;(35-38)% increased Elemental Damage with Attack Skills
-WeaponElementalDamageEssence7;(39-42)% increased Elemental Damage with Attack Skills
 WeaponElementalDamageOnWeapons1_;(11-20)% increased Elemental Damage with Attack Skills
 WeaponElementalDamageOnWeapons2;(21-30)% increased Elemental Damage with Attack Skills
 WeaponElementalDamageOnWeapons3_;(31-36)% increased Elemental Damage with Attack Skills
@@ -797,18 +582,8 @@ WeaponElementalDamageOnTwohandWeapon3;(53-61)% increased Elemental Damage with A
 WeaponElementalDamageOnTwohandWeapon4;(63-71)% increased Elemental Damage with Attack Skills
 WeaponElementalDamageOnTwohandWeapon5;(73-85)% increased Elemental Damage with Attack Skills
 WeaponElementalDamageOnTwohandWeapon6;(87-100)% increased Elemental Damage with Attack Skills
-ManaLeech1;(1-2)% of Physical Attack Damage Leeched as Mana
-ManaLeech2;(3-4)% of Physical Attack Damage Leeched as Mana
 ManaLeechPermyriad1;(0.2-0.4)% of Physical Attack Damage Leeched as Mana
 ManaLeechPermyriad2;(0.6-0.8)% of Physical Attack Damage Leeched as Mana
-ManaLeechPermyriadEssence7;(0.9-1)% of Physical Attack Damage Leeched as Mana
-LocalManaLeechPermyriadEssence5;(0.2-0.4)% of Physical Attack Damage Leeched as Mana
-LocalManaLeechPermyriadEssence6;(0.6-0.8)% of Physical Attack Damage Leeched as Mana
-LocalManaLeechPermyriadEssence7;(0.9-1)% of Physical Attack Damage Leeched as Mana
-ItemFoundQuantityIncrease1;(4-8)% increased Quantity of Items found
-ItemFoundQuantityIncrease2;(9-12)% increased Quantity of Items found
-ItemFoundQuantityIncrease3;(13-16)% increased Quantity of Items found
-ItemFoundQuantityIncrease4;(17-20)% increased Quantity of Items found
 ItemFoundRarityIncrease1;(6-10)% increased Rarity of Items found
 ItemFoundRarityIncrease2;(11-14)% increased Rarity of Items found
 ItemFoundRarityIncrease3;(15-20)% increased Rarity of Items found
@@ -824,7 +599,6 @@ IncreasedCastSpeed4;(17-20)% increased Cast Speed
 IncreasedCastSpeed5;(21-24)% increased Cast Speed
 IncreasedCastSpeed6;(25-28)% increased Cast Speed
 IncreasedCastSpeed7;(29-32)% increased Cast Speed
-IncreasedCastSpeedEssence7;(26-28)% increased Cast Speed
 IncreasedCastSpeedTwoHand1_;(8-13)% increased Cast Speed
 IncreasedCastSpeedTwoHand2;(14-19)% increased Cast Speed
 IncreasedCastSpeedTwoHand3;(20-25)% increased Cast Speed
@@ -832,11 +606,6 @@ IncreasedCastSpeedTwoHand4;(26-31)% increased Cast Speed
 IncreasedCastSpeedTwoHand5;(32-37)% increased Cast Speed
 IncreasedCastSpeedTwoHand6;(38-43)% increased Cast Speed
 IncreasedCastSpeedTwoHand7;(44-49)% increased Cast Speed
-IncreasedCastSpeedTwoHandEssence7;(39-42)% increased Cast Speed
-IncreasedCastSpeedEnhancedMod_;Adds (17-24) to (36-40) Chaos Damage to Spells;(29-32)% increased Cast Speed
-IncreasedCastSpeedTwoHandEnhancedMod;Adds (24-32) to (49-57) Chaos Damage to Spells;(44-49)% increased Cast Speed
-IncreasedCastSpeedRing3;(13-14)% increased Cast Speed
-IncreasedCastSpeedRing4;(15-16)% increased Cast Speed
 IncreasedCastSpeedFishing;(24-28)% increased Cast Speed
 LocalIncreasedAttackSpeed1;(5-7)% increased Attack Speed
 LocalIncreasedAttackSpeed2;(8-10)% increased Attack Speed
@@ -846,26 +615,10 @@ LocalIncreasedAttackSpeed5;(17-19)% increased Attack Speed
 LocalIncreasedAttackSpeed6;(20-22)% increased Attack Speed
 LocalIncreasedAttackSpeed7;(23-25)% increased Attack Speed
 LocalIncreasedAttackSpeed8;(26-27)% increased Attack Speed
-LocalIncreasedAttackSpeedEssence7;(28-30)% increased Attack Speed
-LocalIncreasedAttackSpeedEssenceRanged4_;(11-12)% increased Attack Speed
-LocalIncreasedAttackSpeedEssenceRanged5;(13-14)% increased Attack Speed
-LocalIncreasedAttackSpeedEssenceRanged6;(15-16)% increased Attack Speed
-LocalIncreasedAttackSpeedEssenceRanged7;(17-18)% increased Attack Speed
-LocalIncreasedAttackSpeedEnhancedMod;Adds (23-36) to (49-61) Chaos Damage;(26-27)% increased Attack Speed
-LocalIncreasedAttackSpeedRangedEnhancedMod_;Adds (23-36) to (49-61) Chaos Damage;(14-16)% increased Attack Speed
 IncreasedAttackSpeed1;(5-7)% increased Attack Speed
 IncreasedAttackSpeed2;(8-10)% increased Attack Speed
 IncreasedAttackSpeed3;(11-13)% increased Attack Speed
 IncreasedAttackSpeed4;(14-16)% increased Attack Speed
-IncreasedAttackSpeedEssenceGloves7;(17-18)% increased Attack Speed
-IncreasedAttackSpeedEssenceJewellery4;(4-5)% increased Attack Speed
-IncreasedAttackSpeedEssenceJewellery5;(5-6)% increased Attack Speed
-IncreasedAttackSpeedEssenceJewellery6;(6-7)% increased Attack Speed
-IncreasedAttackSpeedEssenceJewellery7;(7-8)% increased Attack Speed
-IncreasedAttackSpeedEssenceQuiver4;(6-7)% increased Attack Speed
-IncreasedAttackSpeedEssenceQuiver5_;(8-9)% increased Attack Speed
-IncreasedAttackSpeedEssenceQuiver6;(10-12)% increased Attack Speed
-IncreasedAttackSpeedEssenceQuiver7___;(13-15)% increased Attack Speed
 IncreasedAccuracy1;+(5-15) to Accuracy Rating
 IncreasedAccuracy2;+(16-60) to Accuracy Rating
 IncreasedAccuracy3;+(61-100) to Accuracy Rating
@@ -876,7 +629,6 @@ IncreasedAccuracy7;+(201-250) to Accuracy Rating
 IncreasedAccuracy8;+(251-320) to Accuracy Rating
 IncreasedAccuracy9;+(321-400) to Accuracy Rating
 IncreasedAccuracy10;+(401-500) to Accuracy Rating
-IncreasedAccuracyEssence7;+(401-440) to Accuracy Rating
 IncreasedAccuracyNew1_;+(50-100) to Accuracy Rating
 IncreasedAccuracyNew2;+(100-165) to Accuracy Rating
 IncreasedAccuracyNew3;+(166-250) to Accuracy Rating
@@ -894,33 +646,23 @@ LifeRegeneration8_;Regenerate (64.1-96) Life per second
 LifeRegeneration9;Regenerate (96.1-128) Life per second
 LifeRegeneration10__;Regenerate (128.1-152) Life per second
 LifeRegeneration11____;Regenerate (152.1-176) Life per second
-LifeRegenerationEssence2;Regenerate (2-5) Life per second
-LifeRegenerationEssence7;Regenerate (30-40) Life per second
-LifeRegenerationEnhancedMod;Regenerate (16-20) Life per second;Regenerate 0.4% of Life per second
-LifeRegenerationPercent1;Regenerate (0.4-0.5)% of Life per second
-LifeRegenerationPercent2__;Regenerate (0.6-0.7)% of Life per second
-LifeRegenerationPercent3_;Regenerate (0.8-0.9)% of Life per second
-LifeRegenerationPercent4;Regenerate (1-1.1)% of Life per second
 ManaRegeneration1;(10-19)% increased Mana Regeneration Rate
 ManaRegeneration2;(20-29)% increased Mana Regeneration Rate
 ManaRegeneration3;(30-39)% increased Mana Regeneration Rate
 ManaRegeneration4;(40-49)% increased Mana Regeneration Rate
 ManaRegeneration5;(50-59)% increased Mana Regeneration Rate
 ManaRegeneration6;(60-69)% increased Mana Regeneration Rate
-ManaRegenerationEssence7_;(70-76)% increased Mana Regeneration Rate
 StunThresholdReduction1;(5-7)% reduced Enemy Stun Threshold
 StunThresholdReduction2;(8-9)% reduced Enemy Stun Threshold
 StunThresholdReduction3;(10-11)% reduced Enemy Stun Threshold
 StunThresholdReduction4;(12-13)% reduced Enemy Stun Threshold
 StunThresholdReduction5;(14-15)% reduced Enemy Stun Threshold
-StunThresholdReductionEssence7;(16-17)% reduced Enemy Stun Threshold
 CriticalStrikeChance1;(10-14)% increased Global Critical Strike Chance
 CriticalStrikeChance2;(15-19)% increased Global Critical Strike Chance
 CriticalStrikeChance3;(20-24)% increased Global Critical Strike Chance
 CriticalStrikeChance4;(25-29)% increased Global Critical Strike Chance
 CriticalStrikeChance5;(30-34)% increased Global Critical Strike Chance
 CriticalStrikeChance6;(35-38)% increased Global Critical Strike Chance
-CriticalStrikeChance7;(39-44)% increased Global Critical Strike Chance
 CriticalStrikeChanceWithBows1_;(10-14)% increased Critical Strike Chance with Bows
 CriticalStrikeChanceWithBows2_;(15-19)% increased Critical Strike Chance with Bows
 CriticalStrikeChanceWithBows3;(20-24)% increased Critical Strike Chance with Bows
@@ -928,11 +670,6 @@ CriticalStrikeChanceWithBows4;(25-29)% increased Critical Strike Chance with Bow
 CriticalStrikeChanceWithBows5_;(30-34)% increased Critical Strike Chance with Bows
 CriticalStrikeChanceWithBows6;(35-38)% increased Critical Strike Chance with Bows
 CriticalStrikeChanceWithBows7;(39-44)% increased Critical Strike Chance with Bows
-CriticalStrikeChanceEssence7;(39-42)% increased Global Critical Strike Chance
-CriticalStrikeChanceEssenceGloves4;(15-17)% increased Global Critical Strike Chance
-CriticalStrikeChanceEssenceGloves5;(18-20)% increased Global Critical Strike Chance
-CriticalStrikeChanceEssenceGloves6;(21-23)% increased Global Critical Strike Chance
-CriticalStrikeChanceEssenceGloves7;(24-26)% increased Global Critical Strike Chance
 FireResist1;+(6-11)% to Fire Resistance
 FireResist2;+(12-17)% to Fire Resistance
 FireResist3;+(18-23)% to Fire Resistance
@@ -957,22 +694,12 @@ LightningResist5;+(30-35)% to Lightning Resistance
 LightningResist6;+(36-41)% to Lightning Resistance
 LightningResist7;+(42-45)% to Lightning Resistance
 LightningResist8;+(46-48)% to Lightning Resistance
-FireResistEnhancedModPhys_;+(46-48)% to Fire Resistance;(9-10)% of Physical Damage from Hits taken as Fire Damage
-ColdResistEnhancedModPhys;+(46-48)% to Cold Resistance;(9-10)% of Physical Damage from Hits taken as Cold Damage
-LightningResistEnhancedModPhys;+(46-48)% to Lightning Resistance;(9-10)% of Physical Damage from Hits taken as Lightning Damage
-FireResistEnhancedModLeech;+(46-48)% to Fire Resistance;0.4% of Fire Damage Leeched as Life
-ColdResistEnhancedModLeech;+(46-48)% to Cold Resistance;0.4% of Cold Damage Leeched as Life
-LightningResistEnhancedModLeech_;+(46-48)% to Lightning Resistance;0.4% of Lightning Damage Leeched as Life
-FireResistEnhancedModAilments;+(46-48)% to Fire Resistance;(45-52) to (75-78) added Fire Damage against Burning Enemies
-ColdResistEnhancedModAilments__;+(46-48)% to Cold Resistance;(30-50)% increased Damage with Hits against Chilled Enemies
-LightningResistEnhancedModAilments;+(46-48)% to Lightning Resistance;(40-60)% increased Critical Strike Chance against Shocked Enemies
 ChaosResist1;+(5-10)% to Chaos Resistance
 ChaosResist2;+(11-15)% to Chaos Resistance
 ChaosResist3;+(16-20)% to Chaos Resistance
 ChaosResist4;+(21-25)% to Chaos Resistance
 ChaosResist5;+(26-30)% to Chaos Resistance
 ChaosResist6;+(31-35)% to Chaos Resistance
-ChaosResistEnhancedMod_;+(31-35)% to Chaos Resistance;(9-10)% reduced Chaos Damage taken over time
 AllResistances1;+(3-5)% to all Elemental Resistances
 AllResistances2;+(6-8)% to all Elemental Resistances
 AllResistances3;+(9-11)% to all Elemental Resistances
@@ -991,40 +718,31 @@ CriticalMultiplierWithBows3;+(20-24)% to Critical Strike Multiplier with Bows
 CriticalMultiplierWithBows4__;+(25-29)% to Critical Strike Multiplier with Bows
 CriticalMultiplierWithBows5_;+(30-34)% to Critical Strike Multiplier with Bows
 CriticalMultiplierWithBows6;+(35-38)% to Critical Strike Multiplier with Bows
-CriitcalMultiplierEssence7;+(35-41)% to Global Critical Strike Multiplier
-CriticalMultiplierEssenceRing5_;+(15-17)% to Global Critical Strike Multiplier
-CriticalMultiplierEssenceRing6_;+(18-20)% to Global Critical Strike Multiplier
-CriticalMultiplierEssenceRing7;+(21-25)% to Global Critical Strike Multiplier
 StunRecovery1;(11-13)% increased Stun and Block Recovery
 StunRecovery2;(14-16)% increased Stun and Block Recovery
 StunRecovery3;(17-19)% increased Stun and Block Recovery
 StunRecovery4;(20-22)% increased Stun and Block Recovery
 StunRecovery5;(23-25)% increased Stun and Block Recovery
 StunRecovery6;(26-28)% increased Stun and Block Recovery
-StunRecoveryEssence7;(29-34)% increased Stun and Block Recovery
 StunDuration1;(11-15)% increased Stun Duration on Enemies
 StunDuration2;(16-20)% increased Stun Duration on Enemies
 StunDuration3;(21-25)% increased Stun Duration on Enemies
 StunDuration4;(26-30)% increased Stun Duration on Enemies
 StunDuration5;(31-35)% increased Stun Duration on Enemies
-StunDurationEssence7;(36-39)% increased Stun Duration on Enemies
 SpellCriticalStrikeChance1;(10-19)% increased Critical Strike Chance for Spells
 SpellCriticalStrikeChance2;(20-39)% increased Critical Strike Chance for Spells
 SpellCriticalStrikeChance3;(40-59)% increased Critical Strike Chance for Spells
 SpellCriticalStrikeChance4;(60-79)% increased Critical Strike Chance for Spells
 SpellCriticalStrikeChance5;(80-99)% increased Critical Strike Chance for Spells
 SpellCriticalStrikeChance6_;(100-109)% increased Critical Strike Chance for Spells
-SpellCriticalStrikeChanceEssence7;(110-119)% increased Critical Strike Chance for Spells
 ProjectileSpeed1;(10-17)% increased Projectile Speed
 ProjectileSpeed2;(18-25)% increased Projectile Speed
 ProjectileSpeed3;(26-33)% increased Projectile Speed
 ProjectileSpeed4;(34-41)% increased Projectile Speed
 ProjectileSpeed5;(42-46)% increased Projectile Speed
-ProjectileSpeedEssence6;(47-52)% increased Projectile Speed
 LifeGainPerTarget1;Gain 2 Life per Enemy Hit with Attacks
 LifeGainPerTarget2;Gain 3 Life per Enemy Hit with Attacks
 LifeGainPerTarget3;Gain 4 Life per Enemy Hit with Attacks
-LifeGainPerTarget4;Gain 5 Life per Enemy Hit with Attacks
 LifeGainPerTargetLocal1;Grants 2 Life per Enemy Hit
 LifeGainPerTargetLocal2;Grants 3 Life per Enemy Hit
 LifeGainPerTargetLocal3;Grants 4 Life per Enemy Hit
@@ -1035,32 +753,18 @@ FireDamagePercent3;(13-17)% increased Fire Damage
 FireDamagePercent4;(18-22)% increased Fire Damage
 FireDamagePercent5;(23-26)% increased Fire Damage
 FireDamagePercent6;(27-30)% increased Fire Damage
-FireDamagePercentEssence2_;(11-14)% increased Fire Damage
-FireDamagePercentEssence3;(15-18)% increased Fire Damage
-FireDamagePercentEssence4;(19-22)% increased Fire Damage
-FireDamagePercentEssence5;(23-26)% increased Fire Damage
-FireDamagePercentEssence6_;(27-30)% increased Fire Damage
-FireDamagePercentEssence7;(31-34)% increased Fire Damage
 ColdDamagePercent1;(3-7)% increased Cold Damage
 ColdDamagePercent2;(8-12)% increased Cold Damage
 ColdDamagePercent3;(13-17)% increased Cold Damage
 ColdDamagePercent4;(18-22)% increased Cold Damage
 ColdDamagePercent5;(23-26)% increased Cold Damage
 ColdDamagePercent6;(27-30)% increased Cold Damage
-ColdDamagePercentEssence1;(6-10)% increased Cold Damage
-ColdDamagePercentEssence2;(11-14)% increased Cold Damage
-ColdDamagePercentEssence3;(15-18)% increased Cold Damage
-ColdDamagePercentEssence4_;(19-22)% increased Cold Damage
-ColdDamagePercentEssence5;(23-26)% increased Cold Damage
-ColdDamagePercentEssence6_;(27-30)% increased Cold Damage
-ColdDamagePercentEssence7;(31-34)% increased Cold Damage
 LightningDamagePercent1;(3-7)% increased Lightning Damage
 LightningDamagePercent2;(8-12)% increased Lightning Damage
 LightningDamagePercent3;(13-17)% increased Lightning Damage
 LightningDamagePercent4;(18-22)% increased Lightning Damage
 LightningDamagePercent5;(23-26)% increased Lightning Damage
 LightningDamagePercent6;(27-30)% increased Lightning Damage
-LightningDamagePercentEssence7;(31-34)% increased Lightning Damage
 LifeGainedFromEnemyDeath1;Gain (3-6) Life per Enemy Killed
 LifeGainedFromEnemyDeath2;Gain (7-10) Life per Enemy Killed
 LifeGainedFromEnemyDeath3;Gain (11-14) Life per Enemy Killed
@@ -1108,14 +812,10 @@ GlobalChaosSpellGemsLevelTwoHand2;+3 to Level of all Chaos Spell Skill Gems
 GlobalPhysicalSpellGemsLevel1;+1 to Level of all Physical Spell Skill Gems
 GlobalPhysicalSpellGemsLevelTwoHand1_;+(1-2) to Level of all Physical Spell Skill Gems
 GlobalPhysicalSpellGemsLevelTwoHand2_;+3 to Level of all Physical Spell Skill Gems
-LocalIncreaseSocketedSpellGemLevelRace;+1 to Level of Socketed Spell Gems
 LocalIncreaseSocketedMeleeGemLevel1;+1 to Level of Socketed Melee Gems
 LocalIncreaseSocketedMeleeGemLevel;+2 to Level of Socketed Melee Gems
 LocalIncreaseSocketedBowGemLevel1;+1 to Level of Socketed Bow Gems
 LocalIncreaseSocketedBowGemLevel2;+2 to Level of Socketed Bow Gems
-LocalIncreaseSocketedMinionGemLevel1;+1 to Level of Socketed Minion Gems
-LocalIncreaseSocketedMinionGemLevel2;+2 to Level of Socketed Minion Gems
-LocalIncreaseSocketedMinionGemLevel3_;+3 to Level of Socketed Minion Gems
 GlobalIncreaseMinionSpellSkillGemLevel1;+1 to Level of all Minion Skill Gems
 GlobalIncreaseMinionSpellSkillGemLevel2;+2 to Level of all Minion Skill Gems
 LocalIncreasedAccuracy1;+(5-15) to Accuracy Rating
@@ -1127,53 +827,15 @@ LocalIncreasedAccuracy6;+(166-200) to Accuracy Rating
 LocalIncreasedAccuracy7;+(201-250) to Accuracy Rating
 LocalIncreasedAccuracy;+(251-320) to Accuracy Rating
 LocalIncreasedAccuracy9_;+(321-360) to Accuracy Rating
-LocalIncreasedAccuracyEssence7;+(361-380) to Accuracy Rating
 LocalIncreasedAccuracyNew1;+(80-130) to Accuracy Rating
 LocalIncreasedAccuracyNew2;+(131-215) to Accuracy Rating
 LocalIncreasedAccuracyNew3;+(216-325) to Accuracy Rating
 LocalIncreasedAccuracyNew4;+(326-455) to Accuracy Rating
 LocalIncreasedAccuracyNew5;+(456-624) to Accuracy Rating
 LocalIncreasedAccuracyNew6;+(625-780) to Accuracy Rating
-CannotBeFrozenWarbands;Cannot be Frozen
 AdditionalArrowBow1_;Bow Attacks fire an additional Arrow
 AdditionalArrowBow2_;Bow Attacks fire 2 additional Arrows
 AdditionalArrowQuiver1_;Bow Attacks fire an additional Arrow
-MinionRunSpeedEssence2;Minions have (13-15)% increased Movement Speed
-MinionRunSpeedEssence3;Minions have (16-18)% increased Movement Speed
-MinionRunSpeedEssence4;Minions have (19-21)% increased Movement Speed
-MinionRunSpeedEssence5;Minions have (22-24)% increased Movement Speed
-MinionRunSpeedEssence6;Minions have (25-27)% increased Movement Speed
-MinionRunSpeedEssence7;Minions have (28-30)% increased Movement Speed
-MinionLifeEssence2;Minions have (13-15)% increased maximum Life
-MinionLifeEssence3_;Minions have (16-18)% increased maximum Life
-MinionLifeEssence4;Minions have (19-21)% increased maximum Life
-MinionLifeEssence5;Minions have (22-24)% increased maximum Life
-MinionLifeEssence6;Minions have (25-27)% increased maximum Life
-MinionLifeEssence7;Minions have (28-30)% increased maximum Life
-MinionDamageEssence2;Minions deal (7-10)% increased Damage
-MinionDamageEssence3;Minions deal (11-14)% increased Damage
-MinionDamageEssence4_;Minions deal (15-18)% increased Damage
-MinionDamageEssence5;Minions deal (19-22)% increased Damage
-MinionDamageEssence6;Minions deal (23-26)% increased Damage
-MinionDamageEssence7;Minions deal (27-30)% increased Damage
-MinionAccuracyEssence2_;(13-15)% increased Minion Accuracy Rating
-MinionAccuracyEssence3_;(16-18)% increased Minion Accuracy Rating
-MinionAccuracyEssence4___;(19-21)% increased Minion Accuracy Rating
-MinionAccuracyEssence5;(22-24)% increased Minion Accuracy Rating
-MinionAccuracyEssence6;(25-27)% increased Minion Accuracy Rating
-MinionAccuracyEssence7_;(28-30)% increased Minion Accuracy Rating
-MinionDamageGlovesEssence2;Minions deal (13-15)% increased Damage
-MinionDamageGlovesEssence3;Minions deal (16-18)% increased Damage
-MinionDamageGlovesEssence4;Minions deal (19-21)% increased Damage
-MinionDamageGlovesEssence5;Minions deal (22-24)% increased Damage
-MinionDamageGlovesEssence6___;Minions deal (25-27)% increased Damage
-MinionDamageGlovesEssence7;Minions deal (28-30)% increased Damage
-MinionDamageEssenceTwoHand2;Minions deal (10-15)% increased Damage
-MinionDamageEssenceTwoHand3_;Minions deal (16-21)% increased Damage
-MinionDamageEssenceTwoHand4;Minions deal (22-27)% increased Damage
-MinionDamageEssenceTwoHand5_;Minions deal (28-33)% increased Damage
-MinionDamageEssenceTwoHand6;Minions deal (34-39)% increased Damage
-MinionDamageEssenceTwoHand7_;Minions deal (40-45)% increased Damage
 BeltIncreasedFlaskChargesGained1;(5-10)% increased Flask Charges gained
 BeltIncreasedFlaskChargesGained2;(11-16)% increased Flask Charges gained
 BeltIncreasedFlaskChargesGained3_____;(17-22)% increased Flask Charges gained
@@ -1195,40 +857,16 @@ BeltFlaskLifeRecoveryRate3_;(17-22)% increased Flask Life Recovery rate
 BeltFlaskLifeRecoveryRate4;(23-28)% increased Flask Life Recovery rate
 BeltFlaskLifeRecoveryRate5;(29-34)% increased Flask Life Recovery rate
 BeltFlaskLifeRecoveryRate6;(35-40)% increased Flask Life Recovery rate
-BeltFlaskLifeRecoveryRateEssence1;(8-11)% increased Flask Life Recovery rate
-BeltFlaskLifeRecoveryRateEssence2;(12-15)% increased Flask Life Recovery rate
-BeltFlaskLifeRecoveryRateEssence3;(16-19)% increased Flask Life Recovery rate
-BeltFlaskLifeRecoveryRateEssence4;(20-23)% increased Flask Life Recovery rate
-BeltFlaskLifeRecoveryRateEssence5;(24-27)% increased Flask Life Recovery rate
-BeltFlaskLifeRecoveryRateEssence6;(28-31)% increased Flask Life Recovery rate
-BeltFlaskLifeRecoveryRateEssence7;(32-35)% increased Flask Life Recovery rate
 BeltFlaskManaRecoveryRate1_;(5-10)% increased Flask Mana Recovery rate
 BeltFlaskManaRecoveryRate2;(11-16)% increased Flask Mana Recovery rate
 BeltFlaskManaRecoveryRate3_;(17-22)% increased Flask Mana Recovery rate
 BeltFlaskManaRecoveryRate4__;(23-28)% increased Flask Mana Recovery rate
 BeltFlaskManaRecoveryRate5;(29-34)% increased Flask Mana Recovery rate
 BeltFlaskManaRecoveryRate6;(35-40)% increased Flask Mana Recovery rate
-BeltFlaskManaRecoveryRateEssence1;(11-15)% increased Flask Mana Recovery rate
-BeltFlaskManaRecoveryRateEssence2;(16-20)% increased Flask Mana Recovery rate
-BeltFlaskManaRecoveryRateEssence3;(21-25)% increased Flask Mana Recovery rate
-ChanceToAvoidShockEssence2_;(35-38)% chance to Avoid being Shocked
-ChanceToAvoidShockEssence3;(39-42)% chance to Avoid being Shocked
-ChanceToAvoidShockEssence4;(43-46)% chance to Avoid being Shocked
-ChanceToAvoidShockEssence5;(47-50)% chance to Avoid being Shocked
-ChanceToAvoidShockEssence6;(51-55)% chance to Avoid being Shocked
-ChanceToAvoidShockEssence7;(56-60)% chance to Avoid being Shocked
 AttackerTakesDamage1;Reflects (1-4) Physical Damage to Melee Attackers
 AttackerTakesDamage2;Reflects (5-10) Physical Damage to Melee Attackers
 AttackerTakesDamage3;Reflects (11-24) Physical Damage to Melee Attackers
 AttackerTakesDamage4;Reflects (25-50) Physical Damage to Melee Attackers
-AttackerTakesDamageEssence5;Reflects (51-100) Physical Damage to Melee Attackers
-AttackerTakesDamageEssence6;Reflects (101-150) Physical Damage to Melee Attackers
-AttackerTakesDamageEssence7;Reflects (151-200) Physical Damage to Melee Attackers
-ChanceToAvoidFreezeEssence3;(39-42)% chance to Avoid being Frozen
-ChanceToAvoidFreezeEssence4;(43-46)% chance to Avoid being Frozen
-ChanceToAvoidFreezeEssence5;(47-50)% chance to Avoid being Frozen
-ChanceToAvoidFreezeEssence6;(51-55)% chance to Avoid being Frozen
-ChanceToAvoidFreezeEssence7;(56-60)% chance to Avoid being Frozen
 AdditionalBlockChance1;+(1-3)% Chance to Block
 AdditionalBlockChance2;+(4-5)% Chance to Block
 AdditionalBlockChance3;+(6-7)% Chance to Block
@@ -1236,30 +874,6 @@ AdditionalBlockChance4_;+(8-9)% Chance to Block
 AdditionalBlockChance5;+(10-11)% Chance to Block
 AdditionalBlockChance6;+(12-13)% Chance to Block
 AdditionalBlockChance7;+(14-15)% Chance to Block
-AdditionalShieldBlockChance1;+(1-2)% Chance to Block
-AdditionalShieldBlockChance2;+(3-4)% Chance to Block
-AdditionalShieldBlockChance3;+(5-6)% Chance to Block
-AdditionalShieldBlockChance4;+(7-8)% Chance to Block
-PhysicalDamageTakenAsFirePercentWarbands;10% of Physical Damage from Hits taken as Fire Damage
-ChanceToAvoidIgniteEssence4;(43-46)% chance to Avoid being Ignited
-ChanceToAvoidIgniteEssence5;(47-50)% chance to Avoid being Ignited
-ChanceToAvoidIgniteEssence6;(51-55)% chance to Avoid being Ignited
-ChanceToAvoidIgniteEssence7_;(56-60)% chance to Avoid being Ignited
-ChanceToBlockProjectileAttacks1_;+(1-2)% chance to Block Projectile Attack Damage
-ChanceToBlockProjectileAttacks2;+(3-4)% chance to Block Projectile Attack Damage
-ChanceToBlockProjectileAttacks3;+(5-6)% chance to Block Projectile Attack Damage
-ChanceToBlockProjectileAttacks4;+(7-8)% chance to Block Projectile Attack Damage
-ChanceToBlockProjectileAttacks5_;+(9-10)% chance to Block Projectile Attack Damage
-ChanceToBlockProjectileAttacks6;+(11-12)% chance to Block Projectile Attack Damage
-AllDamageMasterVendorItem;(5-15)% increased Damage
-ReducedManaReservationCostEssence4;4% increased Mana Reservation Efficiency of Skills
-ReducedManaReservationCostEssence5;6% increased Mana Reservation Efficiency of Skills
-ReducedManaReservationCostEssence6;8% increased Mana Reservation Efficiency of Skills
-ReducedManaReservationCostEssence7;10% increased Mana Reservation Efficiency of Skills
-ManaReservationEfficiencyEssence4;(3-4)% increased Mana Reservation Efficiency of Skills
-ManaReservationEfficiencyEssence5__;(5-6)% increased Mana Reservation Efficiency of Skills
-ManaReservationEfficiencyEssence6_;(7-8)% increased Mana Reservation Efficiency of Skills
-ManaReservationEfficiencyEssence7;(9-10)% increased Mana Reservation Efficiency of Skills
 ReducedLocalAttributeRequirements1;18% reduced Attribute Requirements
 ReducedLocalAttributeRequirements2;32% reduced Attribute Requirements
 LightRadiusAndAccuracy1;+(10-20) to Accuracy Rating;5% increased Light Radius
@@ -1272,19 +886,12 @@ LocalLightRadiusAndAccuracy2;+(21-40) to Accuracy Rating;10% increased Light Rad
 LocalLightRadiusAndAccuracy3;(16-20)% increased Global Accuracy Rating;15% increased Light Radius
 LocalLightRadiusAndAccuracyNew1_;(9-11)% increased Global Accuracy Rating;5% increased Light Radius
 LocalLightRadiusAndAccuracyNew2;(12-15)% increased Global Accuracy Rating;10% increased Light Radius
-LocalIncreasedMeleeWeaponRangeEssence5;+1 to Weapon Range
-LocalIncreasedMeleeWeaponRangeEssence6;+2 to Weapon Range
-LocalIncreasedMeleeWeaponRangeEssence7;+3 to Weapon Range
 GainLifeOnBlock1;(5-15) Life gained when you Block
 GainLifeOnBlock2_;(16-25) Life gained when you Block
 GainLifeOnBlock3;(26-40) Life gained when you Block
 GainLifeOnBlock4;(41-60) Life gained when you Block
 GainLifeOnBlock5;(61-85) Life gained when you Block
 GainLifeOnBlock6_;(86-100) Life gained when you Block
-GainManaOnBlock1;(4-12) Mana gained when you Block
-GainManaOnBlock2;(13-21) Mana gained when you Block
-GainManaOnBlock3;(22-30) Mana gained when you Block
-GainManaOnBlock4;(31-39) Mana gained when you Block
 FishingLineStrength;(20-40)% increased Fishing Line Strength
 FishingPoolConsumption;(15-30)% reduced Fishing Pool Consumption
 FishingLureType;Rhoa Feather Lure
@@ -1292,20 +899,6 @@ FishingHookType;Karui Stone Hook
 FishingCastDistance;(30-50)% increased Fishing Range
 FishingQuantity;(15-20)% increased Quantity of Fish Caught
 FishingRarity;(25-40)% increased Rarity of Fish Caught
-ChanceToDodge1;+3% chance to Suppress Spell Damage
-ChanceToDodge2;+4% chance to Suppress Spell Damage
-ChanceToDodge3;+6% chance to Suppress Spell Damage
-ChanceToDodgeEssence4;+(4-6)% chance to Suppress Spell Damage
-ChanceToDodgeEssence5;+(8-9)% chance to Suppress Spell Damage
-ChanceToDodgeEssence6;+(10-12)% chance to Suppress Spell Damage
-ChanceToDodgeEssence7;+(14-15)% chance to Suppress Spell Damage
-ChanceToDodgeSpells1;+3% chance to Suppress Spell Damage
-ChanceToDodgeSpells2;+4% chance to Suppress Spell Damage
-ChanceToDodgeSpells3;+6% chance to Suppress Spell Damage
-ChanceToDodgeSpellsEssence5;+(4-6)% chance to Suppress Spell Damage
-ChanceToDodgeSpellsEssence6;+(8-9)% chance to Suppress Spell Damage
-ChanceToDodgeSpellsEssence7;+(10-12)% chance to Suppress Spell Damage
-ChaosResistanceWhileUsingFlaskEssence1;+50% to Chaos Resistance during any Flask Effect
 SpellBlockPercentage1__;(4-6)% Chance to Block Spell Damage
 SpellBlockPercentage2;(7-9)% Chance to Block Spell Damage
 SpellBlockPercentage3_;(10-12)% Chance to Block Spell Damage
@@ -1623,93 +1216,14 @@ V2IncreasedIntelligenceDexterityCorrupted;(4-6)% increased Dexterity;(4-6)% incr
 V2IncreasedDexterityStrengthCorrupted;(4-6)% increased Strength;(4-6)% increased Dexterity
 V2IncreasedStrengthIntelligenceCorrupted_;(4-6)% increased Strength;(4-6)% increased Intelligence
 V2AllResistancesCorrupted;+(14-16)% to all Elemental Resistances
-LocalIncreaseSocketedSupportGemLevelIntMasterVendorItem;+1 to Level of Socketed Support Gems
-IncreasedChaosDamageEssence5;(23-26)% increased Chaos Damage
-IncreasedChaosDamageEssence6;(27-30)% increased Chaos Damage
-IncreasedChaosDamageEssence7;(31-34)% increased Chaos Damage
-IncreasedLifeLeechRateEssence1;150% increased total Recovery per second from Life Leech
-ChaosLeechedAsLifeEssence1_;0.5% of Chaos Damage Leeched as Life
-ReduceGlobalFlatManaCostStrIntMasterVendor;-(8-4) to Total Mana Cost of Skills
-LifeLeechSpeedDexIntMasterVendorItem;(20-40)% increased total Recovery per second from Life Leech
-SocketedGemQualityStrMasterVendorItem;+(3-6)% to Quality of Socketed Support Gems
-BleedOnHitGainedDexMasterVendorItem;25% chance to cause Bleeding on Hit
-BleedOnHitGainedDexMasterVendorItemUpdated_;25% chance to cause Bleeding on Hit
-AlwaysHitsStrDexMasterVendorItem;Hits can't be Evaded
-MapInvasionBossMasterVendorItem;Area is inhabited by an additional Invasion Boss
-LightningPenetrationWarbands;Damage Penetrates (6-10)% Lightning Resistance
-LightningResistancePenetrationEssence1_;Damage Penetrates 5% Lightning Resistance
-LightningResistancePenetrationEssence2;Damage Penetrates 6% Lightning Resistance
-LightningResistancePenetrationEssence3;Damage Penetrates 7% Lightning Resistance
-LightningResistancePenetrationEssence4;Damage Penetrates 8% Lightning Resistance
-LightningResistancePenetrationTwoHandEssence1_;Damage Penetrates (9-10)% Lightning Resistance
-LightningResistancePenetrationTwoHandEssence2;Damage Penetrates (11-12)% Lightning Resistance
-LightningResistancePenetrationTwoHandEssence3_;Damage Penetrates (13-14)% Lightning Resistance
-LightningResistancePenetrationTwoHandEssence4;Damage Penetrates (15-16)% Lightning Resistance
-FireResistancePenetrationWarbands;Damage Penetrates (6-10)% Fire Resistance
-FireResistancePenetrationEssence1;Damage Penetrates 4% Fire Resistance
-FireResistancePenetrationEssence2;Damage Penetrates 5% Fire Resistance
-FireResistancePenetrationEssence3;Damage Penetrates 6% Fire Resistance
-FireResistancePenetrationEssence4___;Damage Penetrates 7% Fire Resistance
-FireResistancePenetrationEssence5;Damage Penetrates 8% Fire Resistance
-FireResistancePenetrationTwoHandEssence1;Damage Penetrates (7-8)% Fire Resistance
-FireResistancePenetrationTwoHandEssence2_;Damage Penetrates (9-10)% Fire Resistance
-FireResistancePenetrationTwoHandEssence3;Damage Penetrates (11-12)% Fire Resistance
-FireResistancePenetrationTwoHandEssence4;Damage Penetrates (13-14)% Fire Resistance
-FireResistancePenetrationTwoHandEssence5;Damage Penetrates (15-16)% Fire Resistance
-ColdResistancePenetrationWarbands;Damage Penetrates (6-10)% Cold Resistance
-ColdResistancePenetrationEssence1;Damage Penetrates 3% Cold Resistance
-ColdResistancePenetrationEssence2;Damage Penetrates 4% Cold Resistance
-ColdResistancePenetrationEssence3;Damage Penetrates 5% Cold Resistance
-ColdResistancePenetrationEssence4_;Damage Penetrates 6% Cold Resistance
-ColdResistancePenetrationEssence5;Damage Penetrates 7% Cold Resistance
-ColdResistancePenetrationEssence6_;Damage Penetrates 8% Cold Resistance
-ColdResistancePenetrationTwoHandEssence1;Damage Penetrates (5-6)% Cold Resistance
-ColdResistancePenetrationTwoHandEssence2;Damage Penetrates (7-8)% Cold Resistance
-ColdResistancePenetrationTwoHandEssence3;Damage Penetrates (9-10)% Cold Resistance
-ColdResistancePenetrationTwoHandEssence4;Damage Penetrates (11-12)% Cold Resistance
-ColdResistancePenetrationTwoHandEssence5;Damage Penetrates (13-14)% Cold Resistance
-ColdResistancePenetrationTwoHandEssence6__;Damage Penetrates (15-16)% Cold Resistance
 ChanceToAvoidElementalStatusAilments1;(16-20)% chance to Avoid Elemental Ailments
 ChanceToAvoidElementalStatusAilments2;(21-25)% chance to Avoid Elemental Ailments
 ChanceToAvoidElementalStatusAilments3__;(26-30)% chance to Avoid Elemental Ailments
 ChanceToAvoidElementalStatusAilments4;(31-35)% chance to Avoid Elemental Ailments
-ChanceToAvoidElementalStatusAilmentsEssence1;(16-20)% chance to Avoid Elemental Ailments
-ChanceToAvoidElementalStatusAilmentsEssence2;(21-25)% chance to Avoid Elemental Ailments
-ChanceToAvoidElementalStatusAilmentsEssence3;(26-30)% chance to Avoid Elemental Ailments
-ChanceToAvoidElementalStatusAilmentsEssence4;(31-35)% chance to Avoid Elemental Ailments
-AttackAndCastSpeed1;(3-4)% increased Attack and Cast Speed
-AttackAndCastSpeed2;(5-6)% increased Attack and Cast Speed
-AttackAndCastSpeed3;(7-8)% increased Attack and Cast Speed
 LifeLeechPermyriadLocal1;(0.2-0.4)% of Physical Attack Damage Leeched as Life
 LifeLeechPermyriadLocal2;(0.6-0.8)% of Physical Attack Damage Leeched as Life
 LifeLeechPermyriadLocal3;(1-1.2)% of Physical Attack Damage Leeched as Life
-LifeLeechPermyriadLocalEssence1;(0.5-0.7)% of Physical Attack Damage Leeched as Life
-LifeLeechPermyriadLocalEssence2;(0.6-0.8)% of Physical Attack Damage Leeched as Life
-LifeLeechPermyriadLocalEssence3;(0.7-0.9)% of Physical Attack Damage Leeched as Life
-LifeLeechPermyriadLocalEssence4;(0.8-1)% of Physical Attack Damage Leeched as Life
-LifeLeechPermyriadLocalEssence5;(0.9-1.1)% of Physical Attack Damage Leeched as Life
-LifeLeechPermyriadLocalEssence6;(1-1.2)% of Physical Attack Damage Leeched as Life
-LifeLeechPermyriadLocalEssence7;(1.1-1.3)% of Physical Attack Damage Leeched as Life
 ManaLeechPermyriadLocal1;(0.2-0.4)% of Physical Attack Damage Leeched as Mana
-AttackDamagePercent1;(4-8)% increased Attack Damage
-AttackDamagePercent2;(9-16)% increased Attack Damage
-AttackDamagePercent3;(17-24)% increased Attack Damage
-AttackDamagePercent4;(25-29)% increased Attack Damage
-AttackDamagePercent5;(30-34)% increased Attack Damage
-SummonTotemCastSpeedEssence1;(21-25)% increased Totem Placement speed
-SummonTotemCastSpeedEssence2;(26-30)% increased Totem Placement speed
-SummonTotemCastSpeedEssence3;(31-35)% increased Totem Placement speed
-SummonTotemCastSpeedEssence4;(36-45)% increased Totem Placement speed
-StunAvoidance1;(11-13)% chance to Avoid being Stunned
-StunAvoidance2;(14-16)% chance to Avoid being Stunned
-StunAvoidance3;(17-19)% chance to Avoid being Stunned
-StunAvoidance4;(20-22)% chance to Avoid being Stunned
-StunAvoidanceEssence5;(23-26)% chance to Avoid being Stunned
-StunAvoidanceEssence6;(27-30)% chance to Avoid being Stunned
-StunAvoidanceEssence7;(31-44)% chance to Avoid being Stunned
-IncreasedStunThresholdEssence5;(31-39)% increased Stun Threshold
-IncreasedStunThresholdEssence6;(40-45)% increased Stun Threshold
-IncreasedStunThresholdEssence7;(46-60)% increased Stun Threshold
 SpellAddedFireDamage1;Adds (1-2) to (3-4) Fire Damage to Spells
 SpellAddedFireDamage2_;Adds (6-8) to (12-14) Fire Damage to Spells
 SpellAddedFireDamage3;Adds (10-12) to (19-23) Fire Damage to Spells
@@ -1719,7 +1233,6 @@ SpellAddedFireDamage6;Adds (24-33) to (48-57) Fire Damage to Spells
 SpellAddedFireDamage7;Adds (31-42) to (64-73) Fire Damage to Spells
 SpellAddedFireDamage8;Adds (40-52) to (79-91) Fire Damage to Spells
 SpellAddedFireDamage9;Adds (49-66) to (98-115) Fire Damage to Spells
-SpellAddedFireDamageEssence7;Adds (45-54) to (80-90) Fire Damage to Spells
 SpellAddedColdDamage1;Adds 1 to (2-3) Cold Damage to Spells
 SpellAddedColdDamage2;Adds (5-7) to (10-12) Cold Damage to Spells
 SpellAddedColdDamage3;Adds (8-10) to (16-18) Cold Damage to Spells
@@ -1729,7 +1242,6 @@ SpellAddedColdDamage6_;Adds (20-26) to (40-46) Cold Damage to Spells
 SpellAddedColdDamage7;Adds (26-35) to (51-60) Cold Damage to Spells
 SpellAddedColdDamage8;Adds (33-43) to (64-75) Cold Damage to Spells
 SpellAddedColdDamage9;Adds (41-54) to (81-93) Cold Damage to Spells
-SpellAddedColdDamageEssence7;Adds (35-45) to (66-74) Cold Damage to Spells
 SpellAddedLightningDamage1;Adds 1 to (4-5) Lightning Damage to Spells
 SpellAddedLightningDamage2;Adds (1-2) to (21-22) Lightning Damage to Spells
 SpellAddedLightningDamage3;Adds (1-2) to (33-35) Lightning Damage to Spells
@@ -1739,7 +1251,6 @@ SpellAddedLightningDamage6;Adds (2-7) to (84-88) Lightning Damage to Spells
 SpellAddedLightningDamage7;Adds (2-9) to (109-115) Lightning Damage to Spells
 SpellAddedLightningDamage8;Adds (4-11) to (136-144) Lightning Damage to Spells
 SpellAddedLightningDamage9;Adds (4-14) to (170-179) Lightning Damage to Spells
-SpellAddedLightningDamageEssence7;Adds (4-11) to (134-144) Lightning Damage to Spells
 SpellAddedFireDamageTwoHand1;Adds (1-2) to (4-5) Fire Damage to Spells
 SpellAddedFireDamageTwoHand2;Adds (8-11) to (17-19) Fire Damage to Spells
 SpellAddedFireDamageTwoHand3;Adds (13-17) to (26-29) Fire Damage to Spells
@@ -1749,7 +1260,6 @@ SpellAddedFireDamageTwoHand6_;Adds (32-44) to (65-76) Fire Damage to Spells
 SpellAddedFireDamageTwoHand7;Adds (42-56) to (85-99) Fire Damage to Spells
 SpellAddedFireDamageTwoHand8;Adds (53-70) to (107-123) Fire Damage to Spells
 SpellAddedFireDamageTwoHand9;Adds (66-88) to (132-155) Fire Damage to Spells
-SpellAddedFireDamageTwoHandEssence7_;Adds (67-81) to (120-135) Fire Damage to Spells
 SpellAddedColdDamageTwoHand1_;Adds (1-2) to (3-4) Cold Damage to Spells
 SpellAddedColdDamageTwoHand2;Adds (8-10) to (15-18) Cold Damage to Spells
 SpellAddedColdDamageTwoHand3;Adds (12-15) to (23-28) Cold Damage to Spells
@@ -1759,7 +1269,6 @@ SpellAddedColdDamageTwoHand6;Adds (30-40) to (59-69) Cold Damage to Spells
 SpellAddedColdDamageTwoHand7;Adds (39-52) to (77-90) Cold Damage to Spells
 SpellAddedColdDamageTwoHand8;Adds (49-64) to (96-113) Cold Damage to Spells
 SpellAddedColdDamageTwoHand9;Adds (61-81) to (120-140) Cold Damage to Spells
-SpellAddedColdDamageTwoHandEssence7;Adds (57-66) to (100-111) Cold Damage to Spells
 SpellAddedLightningDamageTwoHand1;Adds 1 to (6-7) Lightning Damage to Spells
 SpellAddedLightningDamageTwoHand2;Adds (1-3) to (32-34) Lightning Damage to Spells
 SpellAddedLightningDamageTwoHand3;Adds (1-4) to (49-52) Lightning Damage to Spells
@@ -1769,92 +1278,10 @@ SpellAddedLightningDamageTwoHand6;Adds (3-10) to (126-133) Lightning Damage to S
 SpellAddedLightningDamageTwoHand7;Adds (5-12) to (164-173) Lightning Damage to Spells
 SpellAddedLightningDamageTwoHand8;Adds (5-17) to (204-216) Lightning Damage to Spells
 SpellAddedLightningDamageTwoHand9_;Adds (7-20) to (255-270) Lightning Damage to Spells
-SpellAddedLightningDamageTwoHandEssence7;Adds (6-16) to (201-216) Lightning Damage to Spells
 LocalAddedChaosDamage1;Adds (56-87) to (105-160) Chaos Damage
-LocalAddedChaosDamageEssence1_;Adds (37-59) to (79-103) Chaos Damage
-LocalAddedChaosDamageEssence2__;Adds (43-67) to (89-113) Chaos Damage
-LocalAddedChaosDamageEssence3;Adds (53-79) to (101-131) Chaos Damage
 LocalAddedChaosDamageTwoHand1;Adds (98-149) to (183-280) Chaos Damage
-LocalAddedChaosDamageTwoHandEssence1;Adds (61-103) to (149-193) Chaos Damage
-LocalAddedChaosDamageTwoHandEssence2;Adds (73-113) to (163-205) Chaos Damage
-LocalAddedChaosDamageTwoHandEssence3;Adds (89-131) to (181-229) Chaos Damage
-RarityDuringFlaskEffectWarbands;30% increased Rarity of Items found during any Flask Effect
-DamageDuringFlaskEffectWarbands;(20-25)% increased Damage during any Flask Effect
-PierceChanceEssence5;Projectiles Pierce an additional Target
-PierceChanceEssence6_;Projectiles Pierce an additional Target
-PierceChanceEssence7;Projectiles Pierce 2 additional Targets
-AdditionalPierceEssence5;Projectiles Pierce an additional Target
-AdditionalPierceEssence6_;Projectiles Pierce an additional Target
-AdditionalPierceEssence7;Projectiles Pierce 2 additional Targets
-CannotBePoisonedEssence1;Cannot be Poisoned
-ChanceToAvoidFireDamageEssence4;(6-7)% chance to Avoid Fire Damage from Hits
-ChanceToAvoidFireDamageEssence5;(7-8)% chance to Avoid Fire Damage from Hits
-ChanceToAvoidFireDamageEssence6;(8-9)% chance to Avoid Fire Damage from Hits
-ChanceToAvoidFireDamageEssence7;(9-10)% chance to Avoid Fire Damage from Hits
-ChanceToAvoidColdDamageEssence3;(5-6)% chance to Avoid Cold Damage from Hits
-ChanceToAvoidColdDamageEssence4;(6-7)% chance to Avoid Cold Damage from Hits
-ChanceToAvoidColdDamageEssence5;(7-8)% chance to Avoid Cold Damage from Hits
-ChanceToAvoidColdDamageEssence6;(8-9)% chance to Avoid Cold Damage from Hits
-ChanceToAvoidColdDamageEssence7;(9-10)% chance to Avoid Cold Damage from Hits
-ChanceToAvoidLightningDamageEssence2;(4-5)% chance to Avoid Lightning Damage from Hits
-ChanceToAvoidLightningDamageEssence3;(5-6)% chance to Avoid Lightning Damage from Hits
-ChanceToAvoidLightningDamageEssence4;(6-7)% chance to Avoid Lightning Damage from Hits
-ChanceToAvoidLightningDamageEssence5;(7-8)% chance to Avoid Lightning Damage from Hits
-ChanceToAvoidLightningDamageEssence6;(8-9)% chance to Avoid Lightning Damage from Hits
-ChanceToAvoidLightningDamageEssence7;(9-10)% chance to Avoid Lightning Damage from Hits
-QuiverAddedChaosEssence1_;Adds (11-15) to (27-33) Chaos Damage to Attacks
-QuiverAddedChaosEssence2_;Adds (17-21) to (37-43) Chaos Damage to Attacks
-QuiverAddedChaosEssence3__;Adds (23-37) to (49-61) Chaos Damage to Attacks
 PoisonDuration1;(8-12)% increased Poison Duration
 PoisonDuration2;(13-18)% increased Poison Duration
-PoisonDurationEnhancedMod;(26-30)% increased Chaos Damage;(13-18)% increased Poison Duration
-SocketedGemsDealAdditionalFireDamageEssence1;Socketed Gems deal 175 to 225 Added Fire Damage
-SocketedGemsHaveMoreAttackAndCastSpeedEssence1;Socketed Gems have 20% more Attack and Cast Speed
-SocketedGemsHaveMoreAttackAndCastSpeedEssenceNew1;Socketed Gems have 16% more Attack and Cast Speed
-SocketedGemsAddPercentageOfPhysicalAsLightningEssence1;Socketed Gems gain 50% of Physical Damage as extra Lightning Damage
-SocketedGemsDealMoreElementalDamageEssence1;Socketed Gems deal 30% more Elemental Damage
-ElementalDamageTakenWhileStationaryEssence1;5% reduced Elemental Damage Taken while stationary
-BurningGroundWhileMovingEssence1;Drops Burning Ground while moving, dealing 2500 Fire Damage per second for 4 seconds
-PhysicalDamageTakenAsColdEssence1;15% of Physical Damage from Hits taken as Cold Damage
-FireDamageAsPortionOfPhysicalDamageEssence1;Gain 10% of Physical Damage as Extra Fire Damage
-FireDamageAsPortionOfPhysicalDamageEssence2;Gain 15% of Physical Damage as Extra Fire Damage
-ChaosDamageOverTimeTakenEssence1;25% reduced Chaos Damage taken over time
-SocketedSkillsCriticalChanceEssence1;Socketed Gems have +3.5% Critical Strike Chance
-AttackAndCastSpeedDuringFlaskEffectEssence1;10% increased Attack and Cast Speed during any Flask Effect
-MovementVelocityDuringFlaskEffectEssence1;10% increased Movement Speed during any Flask Effect
-AddedColdDamagePerFrenzyChargeEssence1;4 to 7 Added Cold Damage per Frenzy Charge
-AddedColdDamagePerFrenzyChargeEssenceQuiver1;8 to 12 Added Cold Damage per Frenzy Charge
-AddedFireDamageIfBlockedRecentlyEssence1;Adds 60 to 100 Fire Damage if you've Blocked Recently
-SocketedSkillAlwaysIgniteEssence1;Socketed Gems have 50% chance to Ignite
-SocketedSkillDamageOnLowLifeEssence1__;Socketed Gems deal 30% more Damage while on Low Life
-ElementalPenetrationDuringFlaskEffectEssence1;Damage Penetrates 5% Elemental Resistances during any Flask Effect
-AdditionalPhysicalDamageReductionDuringFlaskEffectEssence1;5% additional Physical Damage Reduction during any Flask Effect
-ReflectDamageTakenEssence1;You and your Minions take 40% reduced Reflected Damage
-PowerChargeOnBlockEssence1;25% chance to gain a Power Charge when you Block
-NearbyEnemiesChilledOnBlockEssence1;Chill Nearby Enemies when you Block
-PoisonDamageEssence1;40% increased Damage with Poison
-ChanceToRecoverManaOnSkillUseEssence1;10% chance to Recover 10% of Mana when you use a Skill
-FortifyEffectEssence1;+3 to maximum Fortification
-CrushOnHitChanceEssence1;(15-25)% chance to Crush on Hit
-AlchemistsGeniusOnFlaskEssence1_;Gain Alchemist's Genius when you use a Flask
-PowerFrenzyOrEnduranceChargeOnKillEssence1;16% chance to gain a Power, Frenzy or Endurance Charge on Kill
-SocketedGemsNonCurseAuraEffectEssence1;Socketed Non-Curse Aura Gems have 20% increased Aura Effect
-SocketedAuraGemLevelsEssence1;+2 to Level of Socketed Aura Gems
-FireBurstOnHitEssence1;Cast Level 20 Fire Burst on Hit
-SpiritMinionEssence1;Triggers Level 20 Spectral Spirits when Equipped;+3 to maximum number of Spectral Spirits
-AreaOfEffectEssence1;25% increased Area of Effect
-OnslaughtWhenHitEssence1;Gain Onslaught for 3 seconds when Hit
-OnslaughtWhenHitNewEssence1;You gain Onslaught for 6 seconds when Hit
-SupportDamageOverTimeEssence1;Socketed Gems deal 30% more Damage over Time
-SpellBlockOnLowLifeEssence1;+15% Chance to Block Spell Damage while on Low Life
-MaximumDoomEssence1__;5% increased Effect of your Curses
-MaximumDoomAmuletEssence1;10% increased Effect of your Curses
-MarkEffectEssence1;25% increased Effect of your Marks
-DecayOnHitEssence1;Your Hits inflict Decay, dealing 700 Chaos Damage per second for 8 seconds
-SpellBlockAmuletEssence1;(6-7)% Chance to Block Spell Damage
-MovementSpeedOnBurningChilledShockedGroundEssence1;12% increased Movement speed while on Burning, Chilled or Shocked ground
-ManaRegenerationWhileShockedEssence1;70% increased Mana Regeneration Rate while Shocked
-ManaGainedOnBlockEssence1;Recover 5% of your maximum Mana when you Block
 BleedDuration1;(8-12)% increased Bleeding Duration
 BleedDuration2;(13-18)% increased Bleeding Duration
 ChanceToIgnite1;10% chance to Ignite
@@ -1869,7 +1296,6 @@ ChanceToBleed3;20% chance to cause Bleeding on Hit
 ChanceToPoison1;10% chance to Poison on Hit
 ChanceToPoison2;20% chance to Poison on Hit
 ChanceToPoison3_;30% chance to Poison on Hit
-ChanceToPoisonEnhancedMod;(26-30)% increased Chaos Damage;30% chance to Poison on Hit
 ChanceToFreeze1;10% chance to Freeze
 ChanceToFreeze2;15% chance to Freeze
 ChanceToFreeze3;20% chance to Freeze
@@ -1891,17 +1317,9 @@ TwoHandBurnDamage3;(51-60)% increased Burning Damage
 PoisonDamage1;(21-30)% increased Damage with Poison;20% chance to Poison on Hit
 PoisonDamage2;(31-40)% increased Damage with Poison;25% chance to Poison on Hit
 PoisonDamage3;(41-50)% increased Damage with Poison;30% chance to Poison on Hit
-PoisonDamageEnhancedAttacksMod;Adds (23-36) to (49-61) Chaos Damage;(31-35)% increased Damage with Poison
-PoisonDamageEnhancedSpellsMod;Adds (17-24) to (36-40) Chaos Damage to Spells;(31-35)% increased Damage with Poison
 BleedDamage1_;Attacks have 20% chance to cause Bleeding;(21-30)% increased Damage with Bleeding
 BleedDamage2;Attacks have 25% chance to cause Bleeding;(31-40)% increased Damage with Bleeding
 BleedDamage3;Attacks have 30% chance to cause Bleeding;(41-50)% increased Damage with Bleeding
-ReducedPhysicalDamageTaken1;2% additional Physical Damage Reduction
-ReducedPhysicalDamageTaken2_;(3-4)% additional Physical Damage Reduction
-ChanceToDodge1_;+(4-6)% chance to Suppress Spell Damage
-ChanceToDodge2__;+(8-9)% chance to Suppress Spell Damage
-EnergyShieldRegenerationPerMinute1;Regenerate 0.6% of Energy Shield per second
-EnergyShieldRegenerationPerMinute2;Regenerate 1% of Energy Shield per second
 LifeRegenerationRate1;(9-11)% increased Life Regeneration rate
 LifeRegenerationRate2;(12-14)% increased Life Regeneration rate
 LifeRegenerationRate3;(15-17)% increased Life Regeneration rate
@@ -1966,8 +1384,6 @@ DamageWithBowSkills3;(21-30)% increased Damage with Bow Skills
 DamageWithBowSkills4_;(31-36)% increased Damage with Bow Skills
 DamageWithBowSkills5;(37-42)% increased Damage with Bow Skills
 DamageWithBowSkills6_;(43-50)% increased Damage with Bow Skills
-DamageWithBowSkillsEssence3a;(21-25)% increased Damage with Bow Skills
-DamageWithBowSkillsEssence3b_;(26-30)% increased Damage with Bow Skills
 IncreasedDurationBootsUber1;Socketed Gems are Supported by Level 15 Increased Duration;(10-15)% increased Skill Effect Duration
 IncreasedCooldownRecoveryBootsUber1;(10-15)% increased Cooldown Recovery Rate
 SupportedByFortifyUber1;Socketed Gems are Supported by Level 20 Fortify
@@ -2665,10 +2081,6 @@ StunDurationAndThresholdUber1;(20-30)% reduced Enemy Stun Threshold;(20-30)% inc
 PhysicalDamageAddedAsRandomElementUber1;Gain (7-9)% of Physical Damage as Extra Damage of a random Element
 PhysicalDamageAddedAsRandomElementUber2;Gain (10-12)% of Physical Damage as Extra Damage of a random Element
 PhysicalDamageAddedAsRandomElementUber3;Gain (13-15)% of Physical Damage as Extra Damage of a random Element
-GrantsCatAspectCrafted;Grants Level 20 Aspect of the Cat Skill
-GrantsBirdAspectCrafted;Grants Level 20 Aspect of the Avian Skill
-GrantsSpiderAspectCrafted;Grants Level 20 Aspect of the Spider Skill
-GrantsCrabAspectCrafted;Grants Level 20 Aspect of the Crab Skill
 DoubleModSellPrice1;Item sells for much more to vendors
 DoubleModSellPrice2;Item sells for much more to vendors
 DoubleModSellPrice3_;Item sells for much more to vendors
@@ -2678,89 +2090,6 @@ DoubleModSellPrice6;Item sells for much more to vendors
 DoubleModSellPrice7;Item sells for much more to vendors
 DoubleModSellPrice8;Item sells for much more to vendors
 DoubleModSellPrice9;Item sells for much more to vendors
-LocalIncreaseSocketedMinionGemLevelDelve;+2 to Level of Socketed Minion Gems
-MaximumMinionCountZombieDelve;+1 to maximum number of Raised Zombies
-MaximumMinionCountSkeletonDelve;+1 to maximum number of Skeletons
-MaximumMinionCountSpectreDelve;+1 to maximum number of Spectres
-MinionDamageDelve;Minions deal (25-35)% increased Damage
-MaximumMinionCountAmuletZombieDelve;+1 to maximum number of Raised Zombies
-MaximumMinionCountAmuletSkeletonDelve__;+1 to maximum number of Skeletons
-ReducedManaReservationsCostDelve_;10% increased Mana Reservation Efficiency of Skills
-LocalIncreaseSocketedAuraLevelDelve;+2 to Level of Socketed Aura Gems
-ReducedPhysicalDamageTakenDelve;(3-5)% additional Physical Damage Reduction
-BleedingDamageChanceDelve__;Attacks have 25% chance to cause Bleeding;(30-50)% increased Damage with Bleeding
-CorruptedBloodImmunityDelve;Corrupted Blood cannot be inflicted on you
-DoubleDamageChanceDelve;10% chance to deal Double Damage
-SpellAddedPhysicalDamageHybridDelve;(20-40)% increased Global Physical Damage;Adds (11-15) to (23-26) Physical Damage to Spells
-SpellAddedPhysicalDamageHybridTwoHandDelve;(20-40)% increased Global Physical Damage;Adds (15-20) to (30-35) Physical Damage to Spells
-CurseOnHitLevelVulnerabilityDelve;Curse Enemies with Vulnerability on Hit
-PhysicalDamageLifeLeechDelve;0.4% of Physical Damage Leeched as Life
-PhysicalDamageTakenAsFireDelve;10% of Physical Damage from Hits taken as Fire Damage
-MaximumFireResistDelve;+3% to maximum Fire Resistance
-FireDamageTakenDelve;(4-6)% reduced Fire Damage taken
-LocalFireDamageHybridDelve;(20-40)% increased Fire Damage;Adds (18-24) to (36-42) Fire Damage
-LocalFireDamageHybridTwoHandDelve;(20-40)% increased Fire Damage;Adds (31-42) to (64-74) Fire Damage
-SpellAddedFireDamageHybridDelve;(20-40)% increased Fire Damage;Adds (14-20) to (29-34) Fire Damage to Spells
-SpellAddedFireDamageHybridTwoHandDelve;(20-40)% increased Fire Damage;Adds (20-26) to (39-46) Fire Damage to Spells
-CurseOnHitLevelFlammabilityDelve;Curse Enemies with Flammability on Hit
-FireDamageLifeLeechDelve;0.4% of Fire Damage Leeched as Life
-PhysicalDamageTakenAsColdDelve;10% of Physical Damage from Hits taken as Cold Damage
-MaximumColdResistDelve;+3% to maximum Cold Resistance
-ColdDamageTakenDelve;(4-6)% reduced Cold Damage taken
-LocalColdDamageHybridDelve;(20-40)% increased Cold Damage;Adds (15-20) to (30-35) Cold Damage
-LocalColdDamageHybridTwoHandDelve;(20-40)% increased Cold Damage;Adds (26-35) to (52-60) Cold Damage
-SpellAddedColdDamageHybridDelve_;(20-40)% increased Cold Damage;Adds (12-16) to (24-28) Cold Damage to Spells
-SpellAddedColdDamageHybridTwoHandDelve;(20-40)% increased Cold Damage;Adds (18-24) to (36-42) Cold Damage to Spells
-CurseOnHitLevelFrostbiteDelve;Curse Enemies with Frostbite on Hit
-ColdDamageLifeLeechDelve;0.4% of Cold Damage Leeched as Life
-PhysicalDamageTakenAsLightningDelve_;10% of Physical Damage from Hits taken as Lightning Damage
-MaximumLightningResistDelve;+3% to maximum Lightning Resistance
-LightningDamageTakenDelve;(4-6)% reduced Lightning Damage taken
-LocalLightningDamageHybridDelve;(20-40)% increased Lightning Damage;Adds (2-5) to (63-66) Lightning Damage
-LocalLightningDamageHybridTwoHandDelve;(20-40)% increased Lightning Damage;Adds (2-9) to (110-116) Lightning Damage
-SpellAddedLightningDamageHybridDelve;(20-40)% increased Lightning Damage;Adds (1-4) to (50-53) Lightning Damage to Spells
-SpellAddedLightningDamageHybridTwoHandDelve;(20-40)% increased Lightning Damage;Adds (2-6) to (76-80) Lightning Damage to Spells
-CurseOnHitLevelConductivityDelve;Curse Enemies with Conductivity on Hit
-LightningDamageLifeLeechDelve__;0.4% of Lightning Damage Leeched as Life
-PhysicalDamageTakenAsChaosDelve;10% of Physical Damage from Hits taken as Chaos Damage
-MaximumChaosResistDelve;+3% to maximum Chaos Resistance
-ChaosDamageTakenDelve;(4-6)% reduced Chaos Damage taken
-LocalChaosDamageHybridDelve;(15-30)% increased Chaos Damage;Adds (18-28) to (39-49) Chaos Damage
-LocalChaosDamageHybridTwoHandDelve;(15-30)% increased Chaos Damage;Adds (32-50) to (68-86) Chaos Damage
-SpellAddedChaosDamageHybridDelve;(15-30)% increased Chaos Damage;Adds (11-15) to (23-26) Chaos Damage to Spells
-SpellAddedChaosDamageHybridTwoHandDelve;(15-30)% increased Chaos Damage;Adds (15-20) to (30-35) Chaos Damage to Spells
-CurseOnHitLevelDespairDelve;Curse Enemies with Despair on Hit
-ChaosDamageLifeLeechDelve;0.4% of Chaos Damage Leeched as Life
-CurseEffectivenessDelve;(10-15)% increased Effect of your Curses
-AdditionalCurseOnEnemiesDelve;You can apply an additional Curse
-IncreaseSocketedCurseGemLevelDelve_;+2 to Level of Socketed Curse Gems
-CurseAreaOfEffectDelve;(25-40)% increased Area of Effect of Hex Skills
-CurseDurationDelve;Curse Skills have (25-40)% increased Skill Effect Duration
-IncreasedDamagePerCurseDelve;(8-10)% increased Damage with Hits and Ailments per Curse on Enemy
-ManaRegenerationDelve;(30-50)% increased Mana Regeneration Rate
-PercentDamageGoesToManaDelve;(5-8)% of Damage taken Recouped as Mana
-AddedManaRegenerationDelve;Regenerate (3-5) Mana per second
-MaximumManaIncreasePercentDelve_;(10-15)% increased maximum Mana
-ImpaleChanceDelve__;(5-10)% chance to Impale Enemies on Hit with Attacks
-FasterBleedDelve;Bleeding you inflict deals Damage (5-10)% faster
-AddedPhysicalSpellDamageDelve___;Adds (11-22) to (34-46) Physical Damage to Spells
-LightningAilmentEffectDelve;(15-25)% increased Effect of Lightning Ailments
-PhysicalDamageConvertedToLightningDelve;10% of Physical Damage Converted to Lightning Damage
-ColdAilmentDurationDelve;(15-25)% increased Duration of Cold Ailments
-PhysicalDamageConvertedToColdDelve;10% of Physical Damage Converted to Cold Damage
-FasterIgniteDelve_;Ignites you inflict deal Damage (5-10)% faster
-PhysicalDamageConvertedToFireDelve;10% of Physical Damage Converted to Fire Damage
-FasterPoisonDelve_;Poisons you inflict deal Damage (5-10)% faster
-ZeroChaosResistanceDelve;Chaos Resistance is Zero
-MinionCriticalStrikeMultiplierDelve;Minions have +(30-38)% to Critical Strike Multiplier
-MinionLargerAggroRadiusDelve;Minions are Aggressive
-MinionAreaOfEffectDelve;Minions have (20-30)% increased Area of Effect
-MinionLeechDelve___;Minions Leech 1% of Damage as Life
-SpiritAndPhantasmRefreshOnUniqueDelve;Summoned Phantasms have 5% chance to refresh their Duration when they Hit a Unique Enemy;Summoned Raging Spirits have 5% chance to refresh their Duration when they Hit a Unique Enemy
-AuraEffectOnEnemiesDelve_____;(12-18)% increased Effect of Non-Curse Auras from your Skills on Enemies
-LifeReservationEfficiencyDelve;10% increased Life Reservation Efficiency of Skills
-DoomGainRateDelve;(40-60)% increased Damage with Hits and Ailments against Cursed Enemies
-MarkEffectDelve;(15-25)% increased Effect of your Marks
 DelveWeaponFirePenetration1h1_;Damage Penetrates (5-7)% Fire Resistance
 DelveWeaponFirePenetration2h1;Damage Penetrates (12-15)% Fire Resistance
 DelveJewelFirePenetration1;Damage Penetrates 1% Fire Resistance
@@ -2935,52 +2264,12 @@ DelveGlovesVaalSkillCriticalChance1;(80-120)% increased Vaal Skill Critical Stri
 DelveAmuletVaalSkillDuration1;(15-25)% increased Vaal Skill Effect Duration
 DelveJewelryVaalSkillDamage1;(20-40)% increased Damage with Vaal Skills
 DelveMapMonsterPacksVaalMapWorlds1;Found Items have 10% chance to drop Corrupted in Area;Area is inhabited by the Vaal
-ChaosNonAilmentDamageOverTimeMultiplier2h1;+(26-35)% to Chaos Damage over Time Multiplier
-ChaosNonAilmentDamageOverTimeMultiplier2h2;+(36-45)% to Chaos Damage over Time Multiplier
-ChaosNonAilmentDamageOverTimeMultiplier2h3;+(46-55)% to Chaos Damage over Time Multiplier
-ChaosNonAilmentDamageOverTimeMultiplier2h4;+(56-65)% to Chaos Damage over Time Multiplier
-ChaosNonAilmentDamageOverTimeMultiplier2h5;+(66-75)% to Chaos Damage over Time Multiplier
-ChaosNonAilmentDamageOverTimeMultiplier1h1;+(14-18)% to Chaos Damage over Time Multiplier
-ChaosNonAilmentDamageOverTimeMultiplier1h2;+(19-23)% to Chaos Damage over Time Multiplier
-ChaosNonAilmentDamageOverTimeMultiplier1h3___;+(24-28)% to Chaos Damage over Time Multiplier
-ChaosNonAilmentDamageOverTimeMultiplier1h4;+(29-33)% to Chaos Damage over Time Multiplier
-ChaosNonAilmentDamageOverTimeMultiplier1h5;+(34-38)% to Chaos Damage over Time Multiplier
 ChaosNonAilmentDamageOverTimeMultiplierUber1;+(11-15)% to Chaos Damage over Time Multiplier
 ChaosNonAilmentDamageOverTimeMultiplierUber2;+(16-20)% to Chaos Damage over Time Multiplier
-ColdDamageOverTimeMultiplier2h1_;+(26-35)% to Cold Damage over Time Multiplier
-ColdDamageOverTimeMultiplier2h2_;+(36-45)% to Cold Damage over Time Multiplier
-ColdDamageOverTimeMultiplier2h3;+(46-55)% to Cold Damage over Time Multiplier
-ColdDamageOverTimeMultiplier2h4;+(56-65)% to Cold Damage over Time Multiplier
-ColdDamageOverTimeMultiplier2h5;+(66-75)% to Cold Damage over Time Multiplier
-ColdDamageOverTimeMultiplier1h1;+(14-18)% to Cold Damage over Time Multiplier
-ColdDamageOverTimeMultiplier1h2;+(19-23)% to Cold Damage over Time Multiplier
-ColdDamageOverTimeMultiplier1h3;+(24-28)% to Cold Damage over Time Multiplier
-ColdDamageOverTimeMultiplier1h4;+(29-33)% to Cold Damage over Time Multiplier
-ColdDamageOverTimeMultiplier1h5;+(34-38)% to Cold Damage over Time Multiplier
 ColdDamageOverTimeMultiplierUber1;+(11-15)% to Cold Damage over Time Multiplier
 ColdDamageOverTimeMultiplierUber2_;+(16-20)% to Cold Damage over Time Multiplier
-FireDamageOverTimeMultiplier2h1;+(26-35)% to Fire Damage over Time Multiplier
-FireDamageOverTimeMultiplier2h2;+(36-45)% to Fire Damage over Time Multiplier
-FireDamageOverTimeMultiplier2h3;+(46-55)% to Fire Damage over Time Multiplier
-FireDamageOverTimeMultiplier2h4;+(56-65)% to Fire Damage over Time Multiplier
-FireDamageOverTimeMultiplier2h5__;+(66-75)% to Fire Damage over Time Multiplier
-FireDamageOverTimeMultiplier1h1;+(14-18)% to Fire Damage over Time Multiplier
-FireDamageOverTimeMultiplier1h2;+(19-23)% to Fire Damage over Time Multiplier
-FireDamageOverTimeMultiplier1h3;+(24-28)% to Fire Damage over Time Multiplier
-FireDamageOverTimeMultiplier1h4;+(29-33)% to Fire Damage over Time Multiplier
-FireDamageOverTimeMultiplier1h5;+(34-38)% to Fire Damage over Time Multiplier
 FireDamageOverTimeMultiplierUber1___;+(11-15)% to Fire Damage over Time Multiplier
 FireDamageOverTimeMultiplierUber2;+(16-20)% to Fire Damage over Time Multiplier
-PhysicalDamageOverTimeMultiplier2h1;+(26-35)% to Physical Damage over Time Multiplier
-PhysicalDamageOverTimeMultiplier2h2_;+(36-45)% to Physical Damage over Time Multiplier
-PhysicalDamageOverTimeMultiplier2h3;+(46-55)% to Physical Damage over Time Multiplier
-PhysicalDamageOverTimeMultiplier2h4;+(56-65)% to Physical Damage over Time Multiplier
-PhysicalDamageOverTimeMultiplier2h5;+(66-75)% to Physical Damage over Time Multiplier
-PhysicalDamageOverTimeMultiplier1h1;+(14-18)% to Physical Damage over Time Multiplier
-PhysicalDamageOverTimeMultiplier1h2_;+(19-23)% to Physical Damage over Time Multiplier
-PhysicalDamageOverTimeMultiplier1h3;+(24-28)% to Physical Damage over Time Multiplier
-PhysicalDamageOverTimeMultiplier1h4_;+(29-33)% to Physical Damage over Time Multiplier
-PhysicalDamageOverTimeMultiplier1h5;+(34-38)% to Physical Damage over Time Multiplier
 PhysicalDamageOverTimeMultiplierUber1;+(11-15)% to Physical Damage over Time Multiplier
 PhysicalDamageOverTimeMultiplierUber2__;+(16-20)% to Physical Damage over Time Multiplier
 GlobalDamageOverTimeMultiplier1h1;+(7-11)% to Damage over Time Multiplier
@@ -2993,8 +2282,6 @@ GlobalDamageOverTimeMultiplier2h2;+(24-29)% to Damage over Time Multiplier
 GlobalDamageOverTimeMultiplier2h3___;+(31-35)% to Damage over Time Multiplier
 GlobalDamageOverTimeMultiplier2h4_;+(36-40)% to Damage over Time Multiplier
 GlobalDamageOverTimeMultiplier2h5____;+(41-45)% to Damage over Time Multiplier
-GlobalDamageOverTimeMultiplierEssence1_;+10% to Damage over Time Multiplier
-GlobalDamageOverTimeMultiplierRingEssence1;+(12-15)% to Damage over Time Multiplier
 GlobalDamageOverTimeMultiplierWithAttacks1h1;+(7-11)% to Damage over Time Multiplier with Attack Skills
 GlobalDamageOverTimeMultiplierWithAttacks1h2___;+(12-15)% to Damage over Time Multiplier with Attack Skills
 GlobalDamageOverTimeMultiplierWithAttacks1h3;+(16-19)% to Damage over Time Multiplier with Attack Skills
@@ -3040,82 +2327,6 @@ PhysicalDamageOverTimeMultiplier2;+(19-23)% to Physical Damage over Time Multipl
 PhysicalDamageOverTimeMultiplier3__;+(24-28)% to Physical Damage over Time Multiplier
 PhysicalDamageOverTimeMultiplier4;+(29-33)% to Physical Damage over Time Multiplier
 PhysicalDamageOverTimeMultiplier5;+(34-38)% to Physical Damage over Time Multiplier
-IncreasedLifeEnhancedLevel50Mod_;+(70-79) to maximum Life;2% increased maximum Life
-IncreasedLifeEnhancedLevel50BodyMod;+(110-119) to maximum Life;(8-10)% increased maximum Life
-IncreasedManaEnhancedLevel50ModPercent;+(69-73) to maximum Mana;(7-10)% increased maximum Mana
-IncreasedManaEnhancedLevel50ModOnHit;+(74-78) to maximum Mana;Gain (2-3) Mana per Enemy Hit with Attacks
-IncreasedManaEnhancedLevel50ModRegen;+(74-78) to maximum Mana;Regenerate (5-7) Mana per second
-IncreasedManaEnhancedLevel50ModReservation_;+(69-73) to maximum Mana;(6-10)% increased Mana Reservation Efficiency of Skills
-IncreasedManaEnhancedLevel50ModCost;+(74-78) to maximum Mana;-(8-6) to Total Mana Cost of Skills
-IncreasedManaEnhancedLevel50ModCostNew;+(74-78) to maximum Mana;Non-Channelling Skills have -(8-6) to Total Mana Cost
-IncreasedEnergyShieldEnhancedLevel50ModES_;+(44-47) to maximum Energy Shield;3% increased maximum Energy Shield
-IncreasedEnergyShieldEnhancedLevel50ModRegen;+(44-47) to maximum Energy Shield;Regenerate 0.4% of Energy Shield per second
-AddedFireDamageEnhancedLevel50Mod;Adds (5-7) to (11-13) Fire Damage to Attacks;25% of Physical Damage Converted to Fire Damage
-AddedColdDamageEnhancedLevel50Mod_;Adds (5-7) to (10-12) Cold Damage to Attacks;25% of Physical Damage Converted to Cold Damage
-AddedLightningDamageEnhancedLevel50Mod;Adds (1-2) to (22-23) Lightning Damage to Attacks;25% of Physical Damage Converted to Lightning Damage
-LocalIncreasedPhysicalDamageEnhancedLevel50Mod;(155-169)% increased Physical Damage;Gain (3-5)% of Physical Damage as Extra Chaos Damage
-LocalAddedFireDamageEnhancedLevel50Mod;Adds (45-61) to (91-106) Fire Damage;Attacks with this Weapon Penetrate (5-7)% Fire Resistance
-LocalAddedFireDamageEnhancedLevel50TwoHandMod;Adds (79-106) to (159-186) Fire Damage;Attacks with this Weapon Penetrate (5-7)% Fire Resistance
-LocalAddedColdDamageEnhancedLevel50Mod;Adds (37-50) to (74-87) Cold Damage;Attacks with this Weapon Penetrate (5-7)% Cold Resistance
-LocalAddedColdDamageEnhancedLevel50TwoHandMod;Adds (65-87) to (130-152) Cold Damage;Attacks with this Weapon Penetrate (5-7)% Cold Resistance
-LocalAddedLightningDamageEnhancedLevel50Mod;Adds (4-13) to (158-166) Lightning Damage;Attacks with this Weapon Penetrate (5-7)% Lightning Resistance
-LocalAddedLightningDamageEnhancedLevel50TwoHandMod;Adds (7-22) to (275-290) Lightning Damage;Attacks with this Weapon Penetrate (5-7)% Lightning Resistance
-MovementVelocityEnhancedLevel50ModSpeed;30% increased Movement Speed;5% increased Movement Speed if you haven't been Hit Recently
-MovementVelocityEnhancedLevel50ModDodge;30% increased Movement Speed;(10-15)% chance to Avoid Bleeding
-MovementVelocityEnhancedLevel50ModSpellDodge__;30% increased Movement Speed;(10-15)% chance to Avoid being Poisoned
-SpellDamageOnWeaponEnhancedLevel50Mod;(70-74)% increased Spell Damage;Gain 5% of Non-Chaos Damage as extra Chaos Damage
-SpellDamageOnTwoHandWeaponEnhancedLevel50Mod;(105-110)% increased Spell Damage;Gain 5% of Non-Chaos Damage as extra Chaos Damage
-TrapDamageOnWeaponEnhancedLevel50Mod;(90-95)% increased Trap Damage
-TrapDamageOnTwoHandWeaponEnhancedLevel50Mod;(133-138)% increased Trap Damage
-MineDamageOnWeaponEnhancedLevel50Mod;(90-95)% increased Mine Damage
-MineDamageOnTwoHandWeaponEnhancedLevel50Mod;(133-138)% increased Mine Damage
-TrapThrowSpeedEnhancedLevel50Mod;(20-22)% increased Trap Throwing Speed
-TrapThrowSpeedTwoHandEnhancedLevel50Mod;(30-33)% increased Trap Throwing Speed
-MineThrowSpeedEnhancedLevel50Mod;(20-22)% increased Mine Throwing Speed
-MineThrowSpeedTwoHandEnhancedLevel50Mod;(30-33)% increased Mine Throwing Speed
-TrapCooldownRecoveryAndDurationEnhancedLevel50Mod__;(17-20)% increased Trap Duration;(14-15)% increased Cooldown Recovery Rate for throwing Traps
-TrapCooldownRecoveryAndDurationTwoHandEnhancedLevel50Mod;(26-30)% increased Trap Duration;(21-22)% increased Cooldown Recovery Rate for throwing Traps
-MineDetonationSpeedAndDurationEnhancedLevel50Mod_;(17-20)% increased Mine Duration;Mines have (14-15)% increased Detonation Speed
-MineDetonationSpeedAndDurationTwoHandEnhancedLevel50Mod;(26-30)% increased Mine Duration;Mines have (21-22)% increased Detonation Speed
-TrapAreaOfEffectEnhancedLevel50Mod;Skills used by Traps have (22-25)% increased Area of Effect
-TrapAreaOfEffectTwoHandEnhancedLevel50Mod_;Skills used by Traps have (33-37)% increased Area of Effect
-MineAreaOfEffectEnhancedLevel50Mod;Skills used by Mines have (22-25)% increased Area of Effect
-MineAreaOfEffectTwoHandEnhancedLevel50Mod_;Skills used by Mines have (33-37)% increased Area of Effect
-LocalIncreaseSocketedTrapGemLevelEnhancedLevel50Mod_;+2 to Level of Socketed Trap or Mine Gems
-MinionDamageOnWeaponEnhancedLevel50Mod;Minions deal (90-95)% increased Damage
-MinionDamageOnTwoHandWeaponEnhancedLevel50Mod_;Minions deal (133-138)% increased Damage
-MinionDamageOnWeaponEnhancedLevel50ModNew;Minions deal (50-66)% increased Damage;Minions have 5% chance to deal Double Damage
-MinionDamageOnTwoHandWeaponEnhancedLevel50ModNew;Minions deal (85-94)% increased Damage;Minions have 5% chance to deal Double Damage
-MinionAttackAndCastSpeedEnhancedLevel50Mod_;Minions have (25-28)% increased Attack Speed;Minions have (25-28)% increased Cast Speed
-MinionAttackAndCastSpeedTwoHandEnhancedLevel50Mod_;Minions have (36-40)% increased Attack Speed;Minions have (36-40)% increased Cast Speed
-MinionDurationEnhancedLevel50Mod_;(17-20)% increased Minion Duration
-MinionDurationTwoHandedEnhancedLevel50Mod_;(27-30)% increased Minion Duration
-LocalIncreaseSocketedMinionGemLevelEnhancedLevel50Mod;+2 to Level of Socketed Minion Gems
-FireDamagePrefixOnWeaponEnhancedLevel50Mod;(75-79)% increased Fire Damage;Adds (15-20) to (30-35) Fire Damage to Spells
-FireDamagePrefixOnTwoHandWeaponEnhancedLevel50Mod__;(111-115)% increased Fire Damage;Adds (20-27) to (41-48) Fire Damage to Spells
-ColdDamagePrefixOnWeaponEnhancedLevel50Mod;(75-79)% increased Cold Damage;Adds (12-16) to (25-29) Cold Damage to Spells
-ColdDamagePrefixOnTwoHandWeaponEnhancedLevel50Mod;(111-115)% increased Cold Damage;Adds (19-25) to (37-44) Cold Damage to Spells
-LightningDamagePrefixOnWeaponEnhancedLevel50Mod_;(75-79)% increased Lightning Damage;Adds (1-4) to (53-56) Lightning Damage to Spells
-LightningDamagePrefixOnTwoHandWeaponEnhancedLevel50Mod;(111-115)% increased Lightning Damage;Adds (2-6) to (79-84) Lightning Damage to Spells
-IncreasedCastSpeedEnhancedLevel50Mod;Adds (17-24) to (36-40) Chaos Damage to Spells;(29-32)% increased Cast Speed
-IncreasedCastSpeedTwoHandEnhancedLevel50Mod;Adds (24-32) to (49-57) Chaos Damage to Spells;(44-49)% increased Cast Speed
-LocalIncreasedAttackSpeedEnhancedLevel50Mod;Adds (23-36) to (49-61) Chaos Damage;(26-27)% increased Attack Speed
-LocalIncreasedAttackSpeedRangedEnhancedLevel50Mod;Adds (23-36) to (49-61) Chaos Damage;(14-16)% increased Attack Speed
-LifeRegenerationEnhancedLevel50Mod;Regenerate (32-40) Life per second;Regenerate 0.4% of Life per second
-FireResistEnhancedLevel50ModPhys;+(46-48)% to Fire Resistance;(3-5)% of Physical Damage from Hits taken as Fire Damage
-ColdResistEnhancedLevel50ModPhys_;+(46-48)% to Cold Resistance;(3-5)% of Physical Damage from Hits taken as Cold Damage
-LightningResistEnhancedLevel50ModPhys;+(46-48)% to Lightning Resistance;(3-5)% of Physical Damage from Hits taken as Lightning Damage
-FireResistEnhancedLevel50ModLeech;+(46-48)% to Fire Resistance;0.4% of Fire Damage Leeched as Life
-ColdResistEnhancedLevel50ModLeech;+(46-48)% to Cold Resistance;0.4% of Cold Damage Leeched as Life
-LightningResistEnhancedLevel50ModLeech;+(46-48)% to Lightning Resistance;0.4% of Lightning Damage Leeched as Life
-FireResistEnhancedLevel50ModAilments_;+(46-48)% to Fire Resistance;(45-52) to (75-78) added Fire Damage against Burning Enemies
-ColdResistEnhancedLevel50ModAilments;+(46-48)% to Cold Resistance;(30-50)% increased Damage with Hits against Chilled Enemies
-LightningResistEnhancedLevel50ModAilments;+(46-48)% to Lightning Resistance;(40-60)% increased Critical Strike Chance against Shocked Enemies
-ChaosResistEnhancedLevel50Mod;+(31-35)% to Chaos Resistance;(5-7)% reduced Chaos Damage taken over time
-PoisonDurationEnhancedLevel50Mod;(26-30)% increased Chaos Damage;(13-18)% increased Poison Duration
-ChanceToPoisonEnhancedLevel50Mod;(26-30)% increased Chaos Damage;30% chance to Poison on Hit
-PoisonDamageEnhancedLevel50AttacksMod_;Adds (23-36) to (49-61) Chaos Damage;(31-35)% increased Damage with Poison
-PoisonDamageEnhancedLevel50SpellsMod;Adds (17-24) to (36-40) Chaos Damage to Spells;(31-35)% increased Damage with Poison
 SynthesisImplicitLife1;+(8-10) to maximum Life
 SynthesisImplicitLife2;+(11-14) to maximum Life
 SynthesisImplicitLife3;+(15-19) to maximum Life
@@ -4457,30 +3668,6 @@ SynthesisImplicitDamageVSAbyssMonsters2;(21-25)% increased Damage with Hits and 
 SynthesisImplicitReducedPhysicalDamageTakenVsAbyssMonsters1;(2-3)% additional Physical Damage Reduction against Abyssal Monsters
 SynthesisImplicitReducedPhysicalDamageTakenVsAbyssMonsters2;(4-5)% additional Physical Damage Reduction against Abyssal Monsters
 SynthesisImplicitAbyssJewelEffect1;25% increased Effect of Socketed Abyss Jewels
-WeaponFireAddedAsChaos1h1;Gain (5-7)% of Fire Damage as Extra Chaos Damage
-WeaponFireAddedAsChaos1h2;Gain (8-10)% of Fire Damage as Extra Chaos Damage
-WeaponFireAddedAsChaos1h3_;Gain (11-13)% of Fire Damage as Extra Chaos Damage
-WeaponColdAddedAsChaos1h1;Gain (5-7)% of Cold Damage as Extra Chaos Damage
-WeaponColdAddedAsChaos1h2;Gain (8-10)% of Cold Damage as Extra Chaos Damage
-WeaponColdAddedAsChaos1h3_;Gain (11-13)% of Cold Damage as Extra Chaos Damage
-WeaponLightningAddedAsChaos1h1;Gain (5-7)% of Lightning Damage as Extra Chaos Damage
-WeaponLightningAddedAsChaos1h2;Gain (8-10)% of Lightning Damage as Extra Chaos Damage
-WeaponLightningAddedAsChaos1h3_;Gain (11-13)% of Lightning Damage as Extra Chaos Damage
-WeaponPhysicalAddedAsChaos1h1____;Gain (5-7)% of Physical Damage as Extra Chaos Damage
-WeaponPhysicalAddedAsChaos1h2;Gain (8-10)% of Physical Damage as Extra Chaos Damage
-WeaponPhysicalAddedAsChaos1h3_;Gain (11-13)% of Physical Damage as Extra Chaos Damage
-WeaponFireAddedAsChaos2h1_;Gain (10-14)% of Fire Damage as Extra Chaos Damage
-WeaponFireAddedAsChaos2h2;Gain (15-20)% of Fire Damage as Extra Chaos Damage
-WeaponFireAddedAsChaos2h3_;Gain (21-26)% of Fire Damage as Extra Chaos Damage
-WeaponColdAddedAsChaos2h1;Gain (10-14)% of Cold Damage as Extra Chaos Damage
-WeaponColdAddedAsChaos2h2;Gain (15-20)% of Cold Damage as Extra Chaos Damage
-WeaponColdAddedAsChaos2h3;Gain (21-26)% of Cold Damage as Extra Chaos Damage
-WeaponLightningAddedAsChaos2h1;Gain (10-14)% of Lightning Damage as Extra Chaos Damage
-WeaponLightningAddedAsChaos2h2;Gain (15-20)% of Lightning Damage as Extra Chaos Damage
-WeaponLightningAddedAsChaos2h3;Gain (21-26)% of Lightning Damage as Extra Chaos Damage
-WeaponPhysicalAddedAsChaos2h1;Gain (10-14)% of Physical Damage as Extra Chaos Damage
-WeaponPhysicalAddedAsChaos2h2;Gain (15-20)% of Physical Damage as Extra Chaos Damage
-WeaponPhysicalAddedAsChaos2h3;Gain (21-26)% of Physical Damage as Extra Chaos Damage
 MinionDamageOnWeapon1;Minions deal (10-19)% increased Damage
 MinionDamageOnWeapon2;Minions deal (20-29)% increased Damage
 MinionDamageOnWeapon3;Minions deal (30-39)% increased Damage
@@ -4489,16 +3676,6 @@ MinionDamageOnWeapon5;Minions deal (55-69)% increased Damage
 MinionDamageOnWeapon6;Minions deal (70-84)% increased Damage
 MinionDamageOnWeapon7;Minions deal (85-99)% increased Damage
 MinionDamageOnWeapon8;Minions deal (100-109)% increased Damage
-MinionDamageOnWeaponEssence5;Minions deal (50-66)% increased Damage
-MinionDamageOnWeaponEssence6;Minions deal (67-82)% increased Damage
-MinionDamageOnWeaponEssence7;Minions deal (83-94)% increased Damage
-MinionDamageOnTwoHandWeapon1;Minions deal (15-29)% increased Damage
-MinionDamageOnTwoHandWeapon2;Minions deal (30-44)% increased Damage
-MinionDamageOnTwoHandWeapon3;Minions deal (45-59)% increased Damage
-MinionDamageOnTwoHandWeapon4;Minions deal (60-84)% increased Damage
-MinionDamageOnTwoHandWeaponEssence5;Minions deal (85-106)% increased Damage
-MinionDamageOnTwoHandWeaponEssence6;Minions deal (107-122)% increased Damage
-MinionDamageOnTwoHandWeaponEssence7;Minions deal (123-144)% increased Damage
 MinionDamageAndManaOnWeapon1;+(17-20) to maximum Mana;Minions deal (5-9)% increased Damage
 MinionDamageAndManaOnWeapon2_;+(21-24) to maximum Mana;Minions deal (10-14)% increased Damage
 MinionDamageAndManaOnWeapon3;+(25-28) to maximum Mana;Minions deal (15-19)% increased Damage
@@ -4559,10 +3736,6 @@ MinionCriticalStrikeMultiplier3;Minions have +(20-24)% to Critical Strike Multip
 MinionCriticalStrikeMultiplier4;Minions have +(25-29)% to Critical Strike Multiplier
 MinionCriticalStrikeMultiplier5;Minions have +(30-34)% to Critical Strike Multiplier
 MinionCriticalStrikeMultiplier6;Minions have +(35-38)% to Critical Strike Multiplier
-TrapAndMineThrowSpeedEssence1;(7-10)% increased Trap and Mine Throwing Speed
-TrapAndMineThrowSpeedEssence2_;(11-13)% increased Trap and Mine Throwing Speed
-TrapAndMineThrowSpeedEssence3_;(14-17)% increased Trap and Mine Throwing Speed
-TrapAndMineThrowSpeedEssence4;(18-21)% increased Trap and Mine Throwing Speed
 UnaffectedByShockedGroundInfluence1;Unaffected by Shocked Ground
 SocketedLightningGemLevelInfluence1_;+2 to Level of Socketed Lightning Gems
 MaximumFireResistanceInfluence1;+1% to maximum Fire Resistance
@@ -4840,9 +4013,6 @@ AdditionalCritWithSpellsInfluence1;+(0.5-1)% to Spell Critical Strike Chance
 AdditionalCritWithSpellsInfluence2;+(1.1-1.5)% to Spell Critical Strike Chance
 LifeRegenerationPercentBodyInfluence1;Regenerate (1-1.5)% of Life per second
 LifeRegenerationPercentBodyInfluence2;Regenerate (1.6-2)% of Life per second
-MaximumLightningResistanceHighInfluence1;+1% to maximum Lightning Resistance
-MaximumLightningResistanceHighInfluence2;+2% to maximum Lightning Resistance
-MaximumLightningResistanceHighInfluence3_;+3% to maximum Lightning Resistance
 DamagePerBlockChanceInfluence1;1% increased Damage per 1% Chance to Block Attack Damage
 MinimumPowerChargeInfluence1;+1 to Minimum Power Charges
 MinimumPowerChargeInfluence2;+2 to Minimum Power Charges
@@ -4856,9 +4026,6 @@ SpellBlockIfBlockedSpellsInfluence1_;+(7-9)% Chance to Block Spell Damage if you
 SpellBlockIfBlockedSpellsInfluence2;+(10-12)% Chance to Block Spell Damage if you have Blocked Spell Damage Recently
 WarcryBuffEffectInfluence1;(18-21)% increased Warcry Buff Effect
 WarcryBuffEffectInfluence2;(22-25)% increased Warcry Buff Effect
-MaximumFireResistanceHighInfluence1__;+1% to maximum Fire Resistance
-MaximumFireResistanceHighInfluence2__;+2% to maximum Fire Resistance
-MaximumFireResistanceHighInfluence3;+3% to maximum Fire Resistance
 AreaOfEffectInfluence1;(7-9)% increased Area of Effect
 AreaOfEffectInfluence2;(10-12)% increased Area of Effect
 AreaOfEffectInfluence3;(13-15)% increased Area of Effect
@@ -4868,9 +4035,6 @@ RecoverLifePercentOnBlockInfluence1__;Recover (3-5)% of Life when you Block
 AttackBlockIfBlockedAttacksInfluence1;+(5-6)% Chance to Block Attack Damage if you have Blocked Attack Damage Recently
 AttackBlockIfBlockedAttacksInfluence2;+(7-8)% Chance to Block Attack Damage if you have Blocked Attack Damage Recently
 AdditionalPhysicalDamageReductionHighInfluence1;(3-5)% additional Physical Damage Reduction
-MaximumColdResistanceHighInfluence1;+1% to maximum Cold Resistance
-MaximumColdResistanceHighInfluence2;+2% to maximum Cold Resistance
-MaximumColdResistanceHighInfluence3__;+3% to maximum Cold Resistance
 EnergyShieldDelayHighInfluence1__;(16-20)% faster start of Energy Shield Recharge
 EnergyShieldDelayHighInfluence2;(21-25)% faster start of Energy Shield Recharge
 EnergyShieldDelayHighInfluence3;(26-30)% faster start of Energy Shield Recharge
@@ -4891,9 +4055,6 @@ IncreasedAilmentEffectLowInfluence1;(15-20)% increased Effect of Non-Damaging Ai
 IncreasedAilmentEffectLowInfluence2_;(21-25)% increased Effect of Non-Damaging Ailments
 MaximumResistancesInfluence1;+1% to all maximum Resistances
 MaximumResistancesInfluence2;+2% to all maximum Resistances
-MaximumChaosResistanceHighInfluence1;+1% to maximum Chaos Resistance
-MaximumChaosResistanceHighInfluence2;+2% to maximum Chaos Resistance
-MaximumChaosResistanceHighInfluence3;+3% to maximum Chaos Resistance
 MaximumLifeInfluence1;(3-6)% increased maximum Life
 MaximumLifeInfluence2;(7-10)% increased maximum Life
 NoExtraDamageFromBleedMovingInfluence1;Moving while Bleeding doesn't cause you to take extra Damage
@@ -5127,10 +4288,6 @@ PurityOfIceReservationEfficiencyInfluence1;Purity of Ice has (50-60)% increased 
 WarcrySpeedInfluence1;(21-25)% increased Warcry Speed
 WarcrySpeedInfluence2_;(26-30)% increased Warcry Speed
 WarcrySpeedInfluence3;(31-35)% increased Warcry Speed
-WarcrySpeedEssence1;(15-20)% increased Warcry Speed
-WarcrySpeedEssence2;(21-25)% increased Warcry Speed
-WarcrySpeedEssence3;(26-30)% increased Warcry Speed
-WarcrySpeedEssence4_;(31-35)% increased Warcry Speed
 DoubleDamageStunnedRecentlyInfluence1;(5-7)% chance to deal Double Damage if you have Stunned an Enemy Recently
 DoubleDamageStunnedRecentlyInfluence2;(8-10)% chance to deal Double Damage if you have Stunned an Enemy Recently
 PhysicalDamageLifeLeechInfluence1;(0.3-0.5)% of Physical Damage Leeched as Life
@@ -5533,38 +4690,6 @@ CurseOnHitFlammabilityWeaponInfluence1;Curse Enemies with Flammability on Hit
 CurseOnHitFrostbiteWeaponInfluence1;Curse Enemies with Frostbite on Hit
 CurseOnHitConductivityWeaponInfluence1;Curse Enemies with Conductivity on Hit
 CurseOnHitDespairWeaponInfluence1;Curse Enemies with Despair on Hit
-ImpaleEffectEssence1;(12-16)% increased Impale Effect
-ImpaleEffectEssence2__;(17-21)% increased Impale Effect
-ImpaleEffectEssence3;(22-25)% increased Impale Effect
-ImpaleEffectTwoHandEssence1;(25-29)% increased Impale Effect
-ImpaleEffectTwoHandEssence2_;(30-34)% increased Impale Effect
-ImpaleEffectTwoHandEssence3_;(35-38)% increased Impale Effect
-BreachBodyChaosDamageAsPortionOfFireDamage1_;Gain 10% of Fire Damage as Extra Chaos Damage
-BreachBodyChaosDamageAsPortionOfColdDamage1;Gain 10% of Cold Damage as Extra Chaos Damage
-BreachBodyChaosDamageAsPortionOfLightningDamage1;Gain 10% of Lightning Damage as Extra Chaos Damage
-BreachBodyAllDefences1;50% increased Global Defences
-BreachBodyLifeGainedOnHittingIgnitedEnemies1;Gain (20-30) Life for each Ignited Enemy hit with Attacks
-BreachBodyNoExtraBleedDamageWhileMoving1_;Moving while Bleeding doesn't cause you to take extra Damage
-BreachBodyAddedColdDamagePerPowerCharge1;Adds 10 to 15 Cold Damage to Spells per Power Charge
-BreachBodyGainPowerChargeOnKillingFrozenEnemy1;25% chance to gain a Power Charge on Killing a Frozen Enemy
-BreachBodyIncreasedAttackSpeedPerDexterity1;1% increased Attack Speed per 25 Dexterity
-BreachBodyPhysicalDamageReductionWhileNotMoving1;6% additional Physical Damage Reduction while stationary
-BreachBodyAddedLightningDamagePerShockedEnemyKilled1;Adds 1 to 5 Lightning Damage for each Shocked Enemy you've Killed Recently
-BreachBodyReflectsShocks1;Shock Reflection
-BreachBodyChaosDamageDoesNotBypassESNotLowLifeOrMana1_;Chaos Damage taken does not bypass Energy Shield while not on Low Life
-BreachBodyOnHitBlindChilledEnemies1;Blind Chilled Enemies on Hit
-BreachBodyVulnerabilityOnHit1;25% chance to Curse Enemies with Vulnerability on Hit
-BreachBodyGrantsEnvy1;Grants Level 15 Envy Skill
-BreachBodyEnemiesBlockedAreIntimidated1;Permanently Intimidate Enemies on Block
-BreachBodyMinionsPoisonEnemiesOnHit1_;Minions have 60% chance to Poison Enemies on Hit
-BreachBodyArmourIncreasedByUncappedFireResistance1____;Armour is increased by Overcapped Fire Resistance
-BreachBodyEvasionIncreasedByUncappedColdResistance1;Evasion Rating is increased by Overcapped Cold Resistance
-BreachBodyCriticalChanceIncreasedByUncappedLightningResistance1;Critical Strike Chance is increased by Overcapped Lightning Resistance
-BreachBodyCoverInAshWhenHit1__;Cover Enemies in Ash when they Hit you
-BreachBodyChillEnemiesWhenHit1;Chill Enemy for 1 second when Hit, reducing their Action Speed by 30%
-BreachBodyArcticArmourReservationCost1;Arctic Armour has 100% increased Mana Reservation Efficiency
-BreachBodyArcticArmourReservationEfficiency1;Arctic Armour has 100% increased Mana Reservation Efficiency
-BreachBodyMaximumLifeConvertedToEnergyShield1___;10% of Maximum Life Converted to Energy Shield
 LocalIncreaseSocketedActiveGemLevelUberMaven;+1 to Level of Socketed Active Skill Gems;+(5-10)% to Quality of Socketed Active Skill Gems
 LocalIncreaseSocketedSupportGemLevelUberMaven___;+1 to Level of Socketed Support Gems;+(5-10)% to Quality of Socketed Support Gems
 PhysicalDamageTakenAsFirePercentUberMaven;(16-18)% of Physical Damage from Hits taken as Fire Damage;(7-10)% of Fire Damage taken Recouped as Life
@@ -11053,127 +10178,3 @@ SkillEffectDurationPinnaclePresence3;(23-24)% increased Skill Effect Duration
 SkillEffectDurationPinnaclePresence4;(25-26)% increased Skill Effect Duration
 SkillEffectDurationPinnaclePresence5;(27-28)% increased Skill Effect Duration
 SkillEffectDurationPinnaclePresence6;(29-30)% increased Skill Effect Duration
-RecombinatorSpecialMaximumEnduranceCharge;+1 to Maximum Endurance Charges
-RecombinatorSpecialMaximumFrenzyCharge;+1 to Maximum Frenzy Charges
-RecombinatorSpecialMaximumPowerCharge;+1 to Maximum Power Charges
-RecombinatorSpecialKeystoneMinionInstability;Minion Instability
-RecombinatorSpecialKeystoneResoluteTechnique;Resolute Technique
-RecombinatorSpecialKeystoneBloodMagic;Blood Magic
-RecombinatorSpecialKeystonePainAttunement;Pain Attunement
-RecombinatorSpecialKeystoneElementalEquilibrium;Elemental Equilibrium
-RecombinatorSpecialKeystoneIronGrip;Iron Grip
-RecombinatorSpecialKeystonePointBlank;Point Blank
-RecombinatorSpecialKeystoneAcrobatics;Acrobatics
-RecombinatorSpecialKeystoneGhostReaver;Ghost Reaver
-RecombinatorSpecialKeystoneVaalPact;Vaal Pact
-RecombinatorSpecialKeystoneElementalOverload;Elemental Overload
-RecombinatorSpecialKeystoneAvatarOfFire;Avatar of Fire
-RecombinatorSpecialKeystoneEldritchBattery;Eldritch Battery
-RecombinatorSpecialKeystoneAncestralBond;Ancestral Bond
-RecombinatorSpecialKeystoneCrimsonDance;Crimson Dance
-RecombinatorSpecialKeystonePerfectAgony;Perfect Agony
-RecombinatorSpecialKeystoneRunebinder;Runebinder
-RecombinatorSpecialKeystoneMortalConviction;Blood Magic
-RecombinatorSpecialKeystoneCallToArms;Call to Arms
-RecombinatorSpecialKeystoneTheAgnostic;The Agnostic
-RecombinatorSpecialKeystoneSupremeEgo;Supreme Ego
-RecombinatorSpecialKeystoneTheImpaler;The Impaler
-RecombinatorSpecialKeystoneDoomsday;Hex Master
-RecombinatorSpecialKeystoneLetheShade1;Lethe Shade
-RecombinatorSpecialKeystoneGhostDance;Ghost Dance
-RecombinatorSpecialKeystoneVersatileCombatant;Versatile Combatant
-RecombinatorSpecialKeystoneMagebane;Magebane
-RecombinatorSpecialKeystoneSolipsism;Solipsism
-RecombinatorSpecialKeystoneDivineShield;Divine Shield
-RecombinatorSpecialKeystoneIronWill;Iron Will
-RecombinatorSpecialMagicUtilityFlaskEffect;Magic Utility Flasks applied to you have (20-25)% increased Effect
-RecombinatorSpecialAuraEffect;(15-20)% increased effect of Non-Curse Auras from your Skills
-RecombinatorSpecialFireDamageToAttacksPerStrength;Adds 2 to 4 Fire Damage to Attacks per 10 Strength
-RecombinatorSpecialColdDamageToAttacksPerDexterity;Adds 2 to 4 Cold Damage to Attacks per 10 Dexterity
-RecombinatorSpecialLightningDamageToAttacksPerIntelligence;Adds 1 to 5 Lightning Damage to Attacks per 10 Intelligence
-RecombinatorSpecialAllFireDamageCanShock;Your Fire Damage can Shock
-RecombinatorSpecialAllColdDamageCanIgnite;Your Cold Damage can Ignite
-RecombinatorSpecialAllLightningDamageCanFreeze;Your Lightning Damage can Freeze
-RecombinatorSpecialMarkEffect;(30-40)% increased Effect of your Marks
-RecombinatorSpecialArcaneSurgeEffect1H;(30-40)% increased Effect of Arcane Surge on you
-RecombinatorSpecialArcaneSurgeEffect2H;(50-70)% increased Effect of Arcane Surge on you
-RecombinatorSpecialOnslaughtEffect1H;(30-40)% increased Effect of Onslaught on you
-RecombinatorSpecialOnslaughtEffect2H;(50-70)% increased Effect of Onslaught on you
-RecombinatorSpecialIncreasedDamageVsWarcryTauntedEnemies1H;Enemies Taunted by your Warcries take (10-15)% increased Damage
-RecombinatorSpecialIncreasedDamageVsWarcryTauntedEnemies2H;Enemies Taunted by your Warcries take (20-25)% increased Damage
-RecombinatorSpecialSupportedByLevelFourEnlighten;Socketed Gems are Supported by Level 4 Enlighten
-RecombinatorSpecialSupportedByLevelFourEnhance;Socketed Gems are Supported by Level 4 Enhance
-RecombinatorSpecialSupportedByLevelFourEmpower;Socketed Gems are Supported by Level 4 Empower
-RecombinatorSpecialTriggerSkillsDoubleDamage;Socketed Triggered Skills deal Double Damage
-LifeRegeneration1Inverted;Lose (1-2) Life per second
-LifeRegeneration2Inverted;Lose (2.1-8) Life per second
-LifeRegeneration3Inverted;Lose (8.1-16) Life per second
-LifeRegeneration4Inverted;Lose (16.1-24) Life per second
-LifeRegeneration5Inverted;Lose (24.1-32) Life per second
-LifeRegeneration6Inverted;Lose (32.1-48) Life per second
-LifeRegeneration7Inverted;Lose (48.1-64) Life per second
-LifeRegeneration8Inverted;Lose (64.1-96) Life per second
-AddedPhysicalDamage1Inverted;Adds 1 to 2 Physical Damage to Attacks against you
-AddedPhysicalDamage2Inverted;Adds (2-3) to (4-5) Physical Damage to Attacks against you
-AddedPhysicalDamage3Inverted;Adds (3-4) to (6-7) Physical Damage to Attacks against you
-AddedPhysicalDamage4Inverted;Adds (4-6) to (9-10) Physical Damage to Attacks against you
-AddedPhysicalDamage5Inverted;Adds (5-7) to (11-12) Physical Damage to Attacks against you
-AddedPhysicalDamage6Inverted;Adds (6-9) to (13-15) Physical Damage to Attacks against you
-AddedPhysicalDamage7Inverted;Adds (7-10) to (15-18) Physical Damage to Attacks against you
-AddedPhysicalDamage8Inverted;Adds (9-12) to (19-22) Physical Damage to Attacks against you
-AddedPhysicalDamage9Inverted;Adds (11-15) to (22-26) Physical Damage to Attacks against you
-AddedFireDamage1Inverted;Adds 1 to 2 Fire Damage to Attacks against you
-AddedFireDamage2Inverted;Adds (3-5) to (7-8) Fire Damage to Attacks against you
-AddedFireDamage3Inverted;Adds (5-7) to (11-13) Fire Damage to Attacks against you
-AddedFireDamage4Inverted;Adds (7-10) to (15-18) Fire Damage to Attacks against you
-AddedFireDamage5Inverted;Adds (9-12) to (19-22) Fire Damage to Attacks against you
-AddedFireDamage6Inverted;Adds (11-15) to (23-27) Fire Damage to Attacks against you
-AddedFireDamage7Inverted;Adds (13-18) to (27-31) Fire Damage to Attacks against you
-AddedFireDamage8Inverted;Adds (16-22) to (32-38) Fire Damage to Attacks against you
-AddedFireDamage9Inverted;Adds (19-25) to (39-45) Fire Damage to Attacks against you
-AddedColdDamage1Inverted;Adds 1 to 2 Cold Damage to Attacks against you
-AddedColdDamage2Inverted;Adds (3-4) to (7-8) Cold Damage to Attacks against you
-AddedColdDamage3Inverted;Adds (5-7) to (10-12) Cold Damage to Attacks against you
-AddedColdDamage4Inverted;Adds (6-9) to (13-16) Cold Damage to Attacks against you
-AddedColdDamage5Inverted;Adds (8-11) to (16-19) Cold Damage to Attacks against you
-AddedColdDamage6Inverted;Adds (10-13) to (20-24) Cold Damage to Attacks against you
-AddedColdDamage7Inverted;Adds (12-16) to (24-28) Cold Damage to Attacks against you
-AddedColdDamage8Inverted;Adds (14-19) to (29-34) Cold Damage to Attacks against you
-AddedColdDamage9Inverted;Adds (17-22) to (34-40) Cold Damage to Attacks against you
-AddedLightningDamage1Inverted;Adds 1 to 5 Lightning Damage to Attacks against you
-AddedLightningDamage2Inverted;Adds 1 to (14-15) Lightning Damage to Attacks against you
-AddedLightningDamage3Inverted;Adds (1-2) to (22-23) Lightning Damage to Attacks against you
-AddedLightningDamage4Inverted;Adds (1-2) to (27-28) Lightning Damage to Attacks against you
-AddedLightningDamage5Inverted;Adds (1-3) to (33-34) Lightning Damage to Attacks against you
-AddedLightningDamage6Inverted;Adds (1-4) to (40-43) Lightning Damage to Attacks against you
-AddedLightningDamage7Inverted;Adds (2-5) to (47-50) Lightning Damage to Attacks against you
-AddedLightningDamage8Inverted;Adds (3-6) to (57-61) Lightning Damage to Attacks against you
-AddedLightningDamage9Inverted;Adds (3-7) to (68-72) Lightning Damage to Attacks against you
-LifeLeechPermyriad1Inverted;(0.2-0.4)% of Physical Attack Damage Leeched by Enemy as Life
-LifeLeechPermyriad2Inverted;(0.6-0.8)% of Physical Attack Damage Leeched by Enemy as Life
-LifeLeechPermyriad3Inverted;(1-1.2)% of Physical Attack Damage Leeched by Enemy as Life
-ManaLeechPermyriad1Inverted;(0.2-0.4)% of Physical Attack Damage Leeched by Enemy as Mana
-ManaLeechPermyriad2Inverted;(0.6-0.8)% of Physical Attack Damage Leeched by Enemy as Mana
-LifeRegenerationEnhancedLevel50ModInverted;Lose (32-40) Life per second;Lose 0.4% of Life per second
-IncreasedEnergyShieldEnhancedLevel50ModRegenInverted;+(44-47) to maximum Energy Shield;Lose 0.4% of Energy Shield per second
-FireResistEnhancedLevel50ModLeechInverted;+(46-48)% to Fire Resistance;0.4% of Fire Damage Leeched by Enemy as Life
-ColdResistEnhancedLevel50ModLeechInverted;+(46-48)% to Cold Resistance;0.4% of Cold Damage Leeched by Enemy as Life
-LightningResistEnhancedLevel50ModLeechInverted;+(46-48)% to Lightning Resistance;0.4% of Lightning Damage Leeched by Enemy as Life
-IncreasedManaEnhancedLevel50ModRegenInverted;+(74-78) to maximum Mana;Lose (5-7) Mana per second
-IncreasedManaEnhancedLevel50ModCostNewInverted;+(74-78) to maximum Mana;Non-Channelling Skills Cost -(8-6) Mana
-AddedPhysicalDamageEssenceAmulet7Inverted;Adds (16-18) to (27-30) Physical Damage to Attacks against you
-AddedPhysicalDamageEssenceRing5Inverted;Adds (6-8) to (12-13) Physical Damage to Attacks against you
-AddedPhysicalDamageEssenceRing6Inverted;Adds (7-9) to (13-15) Physical Damage to Attacks against you
-AddedPhysicalDamageEssenceRing7Inverted;Adds (10-11) to (16-17) Physical Damage to Attacks against you
-AddedFireDamageEssence7Inverted;Adds (23-27) to (43-48) Fire Damage to Attacks against you
-AddedColdDamageEssence7Inverted;Adds (20-24) to (38-44) Cold Damage to Attacks against you
-AddedLightningDamageEssence7Inverted;Adds (4-8) to (71-76) Lightning Damage to Attacks against you
-FireDamageAsPortionOfPhysicalDamageEssence1Inverted;Hits against you gain 10% of Physical Damage as Extra Fire Damage
-AddedColdDamagePerFrenzyChargeEssence1Inverted;Adds 4 to 7 Cold Damage to Hits against you per Frenzy Charge
-ChanceToRecoverManaOnSkillUseEssence1Inverted;10% chance to lose 10% of Mana when you use a Skill
-PhysicalDamageLifeLeechDelveInverted;0.4% of Physical Damage Leeched by Enemy as Life
-FireDamageLifeLeechDelveInverted;0.4% of Fire Damage Leeched by Enemy as Life
-ColdDamageLifeLeechDelveInverted;0.4% of Cold Damage Leeched by Enemy as Life
-LightningDamageLifeLeechDelveInverted;0.4% of Lightning Damage Leeched by Enemy as Life
-ChaosDamageLifeLeechDelveInverted;0.4% of Chaos Damage Leeched by Enemy as Life
-AddedManaRegenerationDelveInverted;Lose (3-5) Mana per second
