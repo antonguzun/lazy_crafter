@@ -12,12 +12,24 @@ pub fn handle_stat_value(index_handler: &str, value: f64) -> String {
         "60%_of_value" => return sixty_percent_of_value(value),
         "30%_of_value" => return thirty_percent_of_value(value),
         "double" => return double(value),
+        "negate_and_double" => return double(value),
+        "per_minute_to_per_second_2dp_if_required" => {
+            return per_minute_to_per_second_2dp_if_required(value)
+        }
         _ => return value.to_string(),
     }
 }
 
+fn float_to_string(value: f64) -> String {
+    ((value * 10.0).round() / 10.0).to_string()
+}
+
 fn per_minute_to_per_second(value: f64) -> String {
-    (value / 60.0).to_string()
+    float_to_string(value / 60.0)
+}
+
+fn per_minute_to_per_second_2dp_if_required(value: f64) -> String {
+    float_to_string(value / 60.0)
 }
 
 fn divide_by_three(value: f64) -> String {

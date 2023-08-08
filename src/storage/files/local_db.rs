@@ -155,12 +155,16 @@ impl FileRepo {
                         None => String::from("pass"),
                     };
 
+                    let mut revert_sign = false;
+                    if stat_max < 0.0 {
+                        revert_sign = true;
+                    }
                     let to_str = match stat_max == stat_min {
                         true => format!("{}", handle_stat_value(&index_handler, stat_max.abs())),
                         false => format!(
                             "({}-{})",
-                            handle_stat_value(&index_handler, stat_min),
-                            handle_stat_value(&index_handler, stat_max)
+                            handle_stat_value(&index_handler, stat_min.abs()),
+                            handle_stat_value(&index_handler, stat_max.abs())
                         ),
                     };
                     let v = [
@@ -171,7 +175,15 @@ impl FileRepo {
                     let from = String::from_iter(v);
                     repr = repr.replace(&from, &to_str);
 
-                    let format = &i.format[stat_position.clone()];
+                    let mut format = i.clone().format[stat_position.clone()].clone();
+                    if revert_sign {
+                        if format.contains("-") {
+                            format = format.replace("-", "+");
+                        }
+                        if format.contains("+") {
+                            format = format.replace("+", "-");
+                        }
+                    }
                     if format.contains("#") {
                         repr = format.replace("#", repr.as_str());
                     }
@@ -614,6 +626,7 @@ mod tests {
     #[case("GainLifeOnBlock6_".to_string(), "(86-100) Life gained when you Block".to_string())]
     #[case("ReducedLocalAttributeRequirements2".to_string(), "32% reduced Attribute Requirements".to_string())]
     #[case("AdditionalArrowBow2_".to_string(), "Bow Attacks fire 2 additional Arrows".to_string())]
+    #[case("IncreasedManaEnhancedModCost".to_string(), "+(74-78) to maximum Mana\n-(8-6) to Total Mana Cost of Skills".to_string())]
     fn test_repr(repo: FileRepo, #[case] mod_id: String, #[case] expected: String) {
         let mod_item = repo.db.mods.get(&mod_id).unwrap();
         let repr = repo.get_mods_representation(mod_item).unwrap();
