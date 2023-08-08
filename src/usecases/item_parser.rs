@@ -160,7 +160,8 @@ fn fetch_mods(craft_repo: &impl CraftRepo, item_dto: ItemDTO) -> Result<Vec<RawM
                 let curr_mod_meta = ModMetaInfo {
                     generation_type: string_to_mod_gen_type(&c[1]),
                     tier: c[3].parse::<u32>().ok(),
-                    tags: c.get(5)
+                    tags: c
+                        .get(5)
                         .map_or("", |m| m.as_str())
                         .split(",")
                         .into_iter()
