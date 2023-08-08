@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 use crate::entities::craft_repo::{CraftRepo, ItemBase, ModItem, ModsQuery};
 
@@ -28,4 +28,8 @@ pub fn get_weight_of_target_and_better_mods(
 
 pub fn get_affected_weight_of_target_mod(repo: &impl CraftRepo, query: &ModsQuery) -> u32 {
     repo.get_affected_weight_of_target_mod(query)
+}
+
+pub fn get_set_of_better_mods(repo: &impl CraftRepo, mod_id: &str) -> HashSet<String> {
+    repo.get_subset_of_mods(mod_id)
 }
