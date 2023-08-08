@@ -16,6 +16,7 @@ pub fn handle_stat_value(index_handler: &str, value: f64) -> String {
         "per_minute_to_per_second_2dp_if_required" => {
             return per_minute_to_per_second_2dp_if_required(value)
         }
+        "times_one_point_five" => times_one_point_five(value),
         _ => return value.to_string(),
     }
 }
@@ -73,6 +74,10 @@ fn sixty_percent_of_value(value: f64) -> String {
 
 fn thirty_percent_of_value(value: f64) -> String {
     (value * 0.3).to_string()
+}
+
+fn times_one_point_five(value: f64) -> String {
+    (value * 1.5).floor().to_string()
 }
 
 /* TODO!
