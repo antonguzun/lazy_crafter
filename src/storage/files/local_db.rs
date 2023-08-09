@@ -544,10 +544,11 @@ impl CraftRepo for FileRepo {
         use regex::Regex;
 
         //  bring input mod text in representation form
-        //  "blalba +4(2-9) blabla" to "blalba (2-9) blabla"
-        let mod_template = Regex::new(r"((\+|\-)?\d+\()|((\+|\-)?\d+\.\d+\()")
+        //  "blalba +4(2-9) blabla" to "blalba +(2-9) blabla"
+
+        let mod_template = Regex::new(r#"([+-])?(\d+(\.\d+)?)(\(.*)"#)
             .unwrap()
-            .replace_all(mod_name.trim(), "(");
+            .replace_all(mod_name.trim(), "$1$4");
 
         let multiline_mod = mod_template.contains("\n");
         let res = mods
@@ -667,7 +668,6 @@ impl CraftRepo for FileRepo {
             .iter()
             .map(|mod_id| (mod_id, self.get_mod_by_id(mod_id).unwrap()))
             .filter(|(_, mod_body)| self.stats_are_equal_or_better(target_mod, mod_body))
-            // FIXME! filter mods by item
             .for_each(|(mod_id, _)| {
                 satisfying_mod_ids.insert(mod_id.to_owned());
             });
