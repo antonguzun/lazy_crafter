@@ -50,7 +50,7 @@ pub trait CraftRepo {
         target_mod_key: String,
     ) -> u32;
     fn get_affected_weight_of_target_mod(&self, query: &ModsQuery) -> u32;
-    fn get_subset_of_mods(&self, mod_id: &str) -> HashSet<String>;
+    fn get_subset_of_mods(&self, mod_id: &str, item_base: &str) -> Result<HashSet<String>, String>;
     fn representation_by_mod_id(&self, mod_id: &str) -> String;
 }
 

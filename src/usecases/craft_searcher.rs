@@ -30,6 +30,6 @@ pub fn get_affected_weight_of_target_mod(repo: &impl CraftRepo, query: &ModsQuer
     repo.get_affected_weight_of_target_mod(query)
 }
 
-pub fn get_set_of_better_mods(repo: &impl CraftRepo, mod_id: &str) -> HashSet<String> {
-    repo.get_subset_of_mods(mod_id)
+pub fn get_set_of_better_mods(repo: &impl CraftRepo, mod_id: &str, item_base: &str) -> Result<HashSet<String>, String> {
+    repo.get_subset_of_mods(mod_id, item_base)
 }
