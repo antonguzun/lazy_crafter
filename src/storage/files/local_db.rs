@@ -1,6 +1,7 @@
 use crate::entities::craft_repo::{CraftRepo, ItemBase, ModItem, ModsQuery};
 use crate::storage::files::representation::handle_stat_value;
 use crate::storage::files::schemas::{ItemBaseRich, Mod, Stat, StatTranslation};
+use itertools::Itertools;
 use log::{debug, error};
 use std::collections::{HashMap, HashSet};
 use std::fs::File;
@@ -33,6 +34,7 @@ where
 pub struct LocalDB {
     pub translations_by_stat_id: HashMap<String, StatTranslation>,
     pub mods: HashMap<String, Mod>,
+    pub representation_by_mod_id: HashMap<String, String>,
     // pub item_tags_by_item_class: HashMap<String, HashSet<String>>,
     pub base_items_by_name: HashMap<String, ItemBaseRich>,
     pub item_classes: HashSet<String>,
@@ -88,17 +90,61 @@ impl FileRepo {
                 }
             })
         });
+        let representation_by_mod_id: HashMap<String, String> =
+            json_to_hashmap("data/mods_representation_pob.json");
         debug!(target: LOG_TARGET, "tags: {:?}", mod_id_by_tags.keys());
         Ok(Self {
             db: LocalDB {
                 translations_by_stat_id,
                 mods,
                 // item_tags_by_item_class,
+                representation_by_mod_id,
                 base_items_by_name,
                 item_classes,
                 mod_id_by_tags,
             },
         })
+    }
+
+    fn get_mod_by_id(&self, mod_id: &str) -> Option<&Mod> {
+        self.db.mods.get(mod_id)
+    }
+
+    fn get_item_base_by_item_base(&self, item_base: &str) -> Option<&ItemBaseRich> {
+        self.db
+            .base_items_by_name
+            .values()
+            .find(|i| i.name == item_base)
+    }
+
+    fn get_mod_ids_for_item(&self, item: &ItemBaseRich) -> HashSet<String> {
+        let mut mod_ids_to_check: HashSet<String> = HashSet::new();
+        for t in &item.tags {
+            let ms = self.db.mod_id_by_tags.get(t);
+            if let Some(mod_ids) = ms {
+                mod_ids_to_check.extend(mod_ids.clone());
+            }
+        }
+        mod_ids_to_check
+    }
+
+    fn stats_are_equal_or_better(&self, ref_mod: &Mod, comp_mod: &Mod) -> bool {
+        if ref_mod.stats.len() > comp_mod.stats.len() {
+            return false;
+        }
+        for r_stat in ref_mod.stats.iter() {
+            let mut pass = false;
+            for c_stat in comp_mod.stats.iter() {
+                if r_stat.id == c_stat.id && c_stat.min >= r_stat.min && c_stat.max >= r_stat.max {
+                    pass = true;
+                }
+            }
+            if !pass {
+                return false;
+            }
+        }
+
+        true
     }
 }
 
@@ -198,6 +244,15 @@ impl FileRepo {
         Err(())
     }
 
+    fn get_mods_representation_pob_source(
+        &self,
+        mod_id: &str,
+    ) -> Result<std::string::String, String> {
+        let res = self.db.representation_by_mod_id.get(mod_id).ok_or("asdf")?;
+        Ok(res.to_owned())
+    }
+
+    #[allow(dead_code)]
     fn get_mods_representation(&self, m: &Mod) -> Result<std::string::String, ()> {
         type Group = Vec<Stat>;
         let mut kk: HashMap<StatTranslation, Group> = HashMap::default();
@@ -265,7 +320,7 @@ impl FileRepo {
                     .unwrap()
                     .weight,
                 representation: self
-                    .get_mods_representation(m)
+                    .get_mods_representation_pob_source(m_id)
                     .unwrap_or_else(|_| format!("representation_err: {}", m_id)),
                 mod_key: m_id.clone(),
             };
@@ -596,10 +651,27 @@ impl CraftRepo for FileRepo {
         )
     }
 
-    fn get_subset_of_mods(&self, mod_id: &str) -> HashSet<String> {
-        let mut r = HashSet::new();
-        r.insert(mod_id.to_owned());
-        r
+    fn get_subset_of_mods(&self, mod_id: &str, item_base: &str) -> Result<HashSet<String>, String> {
+        let mut satisfying_mod_ids = HashSet::new();
+        satisfying_mod_ids.insert(mod_id.to_owned());
+
+        let target_mod = self
+            .get_mod_by_id(mod_id)
+            .ok_or("DB inconsistent Error. Mod picked but not exists in db")?;
+        let item = self
+            .get_item_base_by_item_base(item_base)
+            .ok_or("DB inconsistent Error. Can't find item by item_base name")?;
+        let mod_ids_to_check = self.get_mod_ids_for_item(item);
+        // we need to find another mods which meet the stats requeiremetns
+        mod_ids_to_check
+            .iter()
+            .map(|mod_id| (mod_id, self.get_mod_by_id(mod_id).unwrap()))
+            .filter(|(_, mod_body)| self.stats_are_equal_or_better(target_mod, mod_body))
+            // FIXME! filter mods by item
+            .for_each(|(mod_id, _)| {
+                satisfying_mod_ids.insert(mod_id.to_owned());
+            });
+        Ok(satisfying_mod_ids)
     }
 
     fn representation_by_mod_id(&self, mod_id: &str) -> String {
@@ -650,12 +722,19 @@ mod tests {
     }
 
     #[rstest]
-    #[case("LifeRegeneration7".to_string(), vec!["LifeRegeneration7".to_string(), "LifeRegeneration9".to_string()])]
-    #[case("LifeRegeneration7".to_string(), vec!["LifeRegeneration7".to_string(), "LifeRegeneration9".to_string()])]
-    fn get_subset_of_mods(repo: FileRepo, #[case] mod_id: String, #[case] expected: Vec<String>) {
-        let set = repo.get_subset_of_mods(&mod_id);
+    #[case("LifeRegeneration7".to_string(),
+         vec!["LifeRegeneration7".to_string(),
+             "LifeRegeneration9".to_string(),
+             "LifeRegeneration8_".to_string(),
+             "LifeRegeneration11____".to_string(),
+             "LifeRegeneration10__".to_string()])]
+    fn test_get_subset_of_mods(
+        repo: FileRepo,
+        #[case] mod_id: String,
+        #[case] expected: Vec<String>,
+    ) {
+        let set = repo.get_subset_of_mods(&mod_id, "War Plate").unwrap();
         let expected_set: HashSet<String> = HashSet::from_iter(expected);
-        assert!(set.is_subset(&expected_set));
-        assert!(expected_set.is_subset(&set));
+        assert_eq!(set, expected_set);
     }
 }
