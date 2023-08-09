@@ -1,5 +1,6 @@
 use crate::entities::craft_repo::{BackEvents, CraftRepo, UiStates};
 use crate::storage::files::local_db::FileRepo;
+use crate::usecases::matcher::{check_matching, ModMatcher};
 use chrono::{DateTime, Utc};
 use log::{debug, info};
 use rdev::{listen, simulate, EventType, Key};
@@ -34,6 +35,7 @@ fn send(event_type: &EventType) {
     }
     thread::sleep(delay);
 }
+
 #[cfg(target_os = "windows")]
 fn run_craft(craft_repo: &impl CraftRepo, ui_states: Arc<Mutex<UiStates>>) -> Result<(), String> {
     use crate::usecases::item_parser;
@@ -96,7 +98,10 @@ fn run_craft(craft_repo: &impl CraftRepo, ui_states: Arc<Mutex<UiStates>>) -> Re
         };
         println!("parsed {:#?}", &parsed_craft);
         let crafted_mod_keys: HashSet<String> = HashSet::from_iter(parsed_craft.mods);
-        if selected_mod_keys.is_subset(&crafted_mod_keys) {
+        // FIXME! create mathcer only once!
+        let matcher = ModMatcher::new(selected_mod_keys, &parsed_craft.item_base_name, craft_repo)?;
+
+        if check_matching(matcher, crafted_mod_keys) {
             info!("Crafted all target mods successfully");
             send(&EventType::KeyRelease(Key::ShiftLeft));
             send(&EventType::KeyRelease(Key::Alt));
