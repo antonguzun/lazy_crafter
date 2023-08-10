@@ -84,25 +84,30 @@ pub fn show_combobox_with_classes(
 }
 
 fn handle_events(ui: &mut Ui, text: &mut String) {
-    let events = ui.input().events.clone();
-    for event in events {
-        match event {
-            Event::Text(text_to_insert) => text.push_str(text_to_insert.to_lowercase().as_str()),
-            Event::Key {
-                key: Key::Backspace,
-                pressed: true,
-                modifiers: _,
-            } => {
-                text.pop();
+    ui.input(|i| {
+        for event in &i.events {
+            match event {
+                Event::Text(text_to_insert) => {
+                    text.push_str(text_to_insert.to_lowercase().as_str())
+                }
+                Event::Key {
+                    key: Key::Backspace,
+                    pressed: true,
+                    modifiers: _,
+                    repeat: _,
+                } => {
+                    text.pop();
+                }
+                Event::Key {
+                    key: Key::Escape | Key::Delete,
+                    pressed: true,
+                    modifiers: _,
+                    repeat: _,
+                } => {
+                    text.clear();
+                }
+                _ => {}
             }
-            Event::Key {
-                key: Key::Escape | Key::Delete,
-                pressed: true,
-                modifiers: _,
-            } => {
-                text.clear();
-            }
-            _ => {}
         }
-    }
+    });
 }
