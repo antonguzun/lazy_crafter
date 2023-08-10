@@ -128,7 +128,23 @@ fn run_craft(_repo: &impl CraftRepo, _ui_states: Arc<Mutex<UiStates>>) -> Result
 }
 
 pub fn run_listener_in_background(sender: Sender<BackEvents>, ui_states: Arc<Mutex<UiStates>>) {
-    let craft_repo = FileRepo::new().unwrap(); // !TODO use common instance between threads
+    // !TODO use common instance between threads
+    let craft_repo: FileRepo;
+    match FileRepo::new() {
+        Ok(repo) => {
+            craft_repo = repo;
+        }
+        Err(e) => {
+            sender
+                .send(BackEvents::Error(format!(
+                    "Autocrafter process initialization error. {}",
+                    e
+                )))
+                .expect("Could not send crafting error event");
+
+            return ();
+        }
+    }
 
     let (schan, rchan) = channel();
     thread::spawn(move || {
