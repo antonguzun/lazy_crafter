@@ -5,6 +5,7 @@ use crate::ui::{buttons, comboboxes, errors, inputs, tables};
 // use anyhow::Result;
 use chrono;
 use eframe::egui;
+use egui::{Visuals, Style};
 use std::sync::{mpsc, Arc, Mutex};
 use std::thread;
 
@@ -41,7 +42,15 @@ pub fn run_ui_in_main_thread(
     eframe::run_native(
         APP_NAME,
         native_options,
-        Box::new(|cc| Box::new(EguiApp::new(cc, ui_states, data, sender))),
+        Box::new(|cc| {
+            let style: Style = Style {
+                visuals: Visuals::dark(),
+                ..Style::default()
+            };
+            cc.egui_ctx.set_style(style);
+            Box::new(
+            EguiApp::new(cc, ui_states, data, sender))}
+        ),
     );
 }
 

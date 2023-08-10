@@ -40,6 +40,7 @@ fn send(event_type: &EventType) {
 fn run_craft(craft_repo: &impl CraftRepo, ui_states: Arc<Mutex<UiStates>>) -> Result<(), String> {
     use crate::usecases::item_parser;
     use clipboard_win::{formats, Clipboard, Getter, Setter};
+    use log::error;
     use rdev::Button;
 
     println!("run crafting");
@@ -99,7 +100,17 @@ fn run_craft(craft_repo: &impl CraftRepo, ui_states: Arc<Mutex<UiStates>>) -> Re
         println!("parsed {:#?}", &parsed_craft);
         let crafted_mod_keys: HashSet<String> = HashSet::from_iter(parsed_craft.mods);
         // FIXME! create mathcer only once!
-        let matcher = ModMatcher::new(selected_mod_keys, &parsed_craft.item_base_name, craft_repo)?;
+        let matcher = match ModMatcher::new(selected_mod_keys.clone(), &parsed_craft.item_base_name, craft_repo){
+            Ok(m) => m,
+            Err(e) => {
+                error!("stop crafting: {}", e);
+                send(&EventType::KeyRelease(Key::ShiftLeft));
+                send(&EventType::KeyRelease(Key::Alt));
+                output.clear();
+                break;
+            },
+        };
+        
 
         if check_matching(matcher, crafted_mod_keys) {
             info!("Crafted all target mods successfully");
