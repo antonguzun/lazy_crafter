@@ -2,6 +2,7 @@ use crate::entities::craft_repo::{BackEvents, Data, Message, UiEvents, UiStates}
 
 use crate::input_schemas::{parse_item_level, parse_max_tries};
 use crate::ui::{buttons, comboboxes, errors, inputs, tables};
+// use anyhow::Result;
 use chrono;
 use eframe::egui;
 use std::sync::{mpsc, Arc, Mutex};
