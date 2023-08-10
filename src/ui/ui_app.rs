@@ -15,7 +15,7 @@ pub fn run_ui_in_main_thread(
     ui_states: Arc<Mutex<UiStates>>,
     data: Arc<Mutex<Data>>,
 ) {
-    sender.send(UiEvents::Started).unwrap();
+    sender.send(UiEvents::Started);
     let mut native_options = eframe::NativeOptions::default();
     native_options.initial_window_size = Some(egui::Vec2 {
         x: 1100.0,

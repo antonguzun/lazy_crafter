@@ -1,6 +1,7 @@
 use crate::entities::craft_repo::{CraftRepo, ItemBase, ModItem, ModsQuery};
 use crate::storage::files::representation::handle_stat_value;
 use crate::storage::files::schemas::{ItemBaseRich, Mod, Stat, StatTranslation};
+use anyhow::{bail, Error, Result, Context};
 use itertools::Itertools;
 use log::{debug, error};
 use std::collections::{HashMap, HashSet};
@@ -9,26 +10,26 @@ use std::io::Read;
 
 const LOG_TARGET: &str = "file_db";
 
-fn load_from_json<T>(path: &str) -> Vec<T>
+fn load_from_json<T>(path: &str) -> Result<Vec<T>, Error>
 where
     T: Default + serde::de::DeserializeOwned,
 {
-    let mut file = File::open(path).unwrap();
+    let mut file = File::open(path).map_err(Error::from).with_context(|| format!("Failed to open file {}", path))?;
     let mut contents = String::new();
-    file.read_to_string(&mut contents).unwrap();
+    file.read_to_string(&mut contents).with_context(|| format!("Failed to read file {}", path))?;
 
-    serde_json::from_str(&contents).unwrap()
+    serde_json::from_str(&contents).map_err(Error::from).with_context(|| format!("Wrong file's format {}", path))
 }
 
-fn json_to_hashmap<T>(path: &str) -> HashMap<String, T>
+fn json_to_hashmap<T>(path: &str) -> Result<HashMap<String, T>>
 where
     T: Default + serde::de::DeserializeOwned,
 {
-    let mut file = File::open(path).unwrap();
+    let mut file = File::open(path).map_err(Error::from).with_context(|| format!("Failed to open file {}", path))?;
     let mut contents = String::new();
-    file.read_to_string(&mut contents).unwrap();
+    file.read_to_string(&mut contents).with_context(|| format!("Failed to read file {}", path))?;
 
-    serde_json::from_str(&contents).unwrap()
+    serde_json::from_str(&contents).map_err(Error::from).with_context(|| format!("Wrong file's format {}", path))
 }
 
 pub struct LocalDB {
@@ -46,8 +47,8 @@ pub struct FileRepo {
 }
 
 impl FileRepo {
-    pub fn new() -> Result<FileRepo, String> {
-        let translations: Vec<StatTranslation> = load_from_json("data/stat_translations.min.json");
+    pub fn new() -> Result<FileRepo> {
+        let translations: Vec<StatTranslation> = load_from_json("data/stat_translations.min.json")?;
         let mut translations_by_stat_id: HashMap<String, StatTranslation> = HashMap::new();
         for t in translations {
             for id in &t.ids {
@@ -55,9 +56,9 @@ impl FileRepo {
             }
         }
 
-        let mods: HashMap<String, Mod> = json_to_hashmap("data/mods.min.json");
+        let mods: HashMap<String, Mod> = json_to_hashmap("data/mods.min.json")?;
         let raw_base_items: HashMap<String, ItemBaseRich> =
-            json_to_hashmap("data/base_items.min.json");
+            json_to_hashmap("data/base_items.min.json")?;
         let base_items_by_name: HashMap<String, ItemBaseRich> = raw_base_items
             .iter()
             .map(|(_k, v)| (v.name.clone(), v.clone()))
@@ -91,7 +92,7 @@ impl FileRepo {
             })
         });
         let representation_by_mod_id: HashMap<String, String> =
-            json_to_hashmap("data/mods_representation_pob.json");
+            json_to_hashmap("data/mods_representation_pob.json")?;
         debug!(target: LOG_TARGET, "tags: {:?}", mod_id_by_tags.keys());
         Ok(Self {
             db: LocalDB {
@@ -149,7 +150,7 @@ impl FileRepo {
 }
 
 impl FileRepo {
-    fn get_stats_representation(&self, t: StatTranslation, stats: Vec<Stat>) -> Result<String, ()> {
+    fn get_stats_representation(&self, t: StatTranslation, stats: Vec<Stat>) -> Result<String> {
         let mut stats_positions_by_id: HashMap<String, usize> = HashMap::default();
 
         for (pos, t_id) in t.ids.iter().enumerate() {
@@ -241,7 +242,7 @@ impl FileRepo {
             target: LOG_TARGET,
             "No english representation found for stats {:?}", stats
         );
-        Err(())
+        bail!("Lost english representation")
     }
 
     fn get_mods_representation_pob_source(
@@ -299,7 +300,7 @@ impl FileRepo {
         let target_gen_types = ["suffix", "prefix"];
         let mut res = vec![];
         for m_id in mod_ids {
-            let m = self.db.mods.get(m_id).unwrap();
+            let m = self.get_mod_by_id(m_id).unwrap();
 
             if m.required_level > max_item_level
                 || m.stats.is_empty()
@@ -338,9 +339,10 @@ impl FileRepo {
     ) -> u32 {
         let target_gen_types = ["suffix", "prefix"];
         let mut res = vec![];
-        let target_mod = self.db.mods.get(target_mod_key).unwrap();
+
+        let target_mod = self.get_mod_by_id(target_mod_key).unwrap();
         for m_id in mod_ids {
-            let m = self.db.mods.get(m_id).unwrap();
+            let m = self.get_mod_by_id(m_id).unwrap();
             if m.type_field != target_mod.type_field
                 || m.required_level > max_item_level
                 || m.stats.is_empty()
@@ -391,7 +393,7 @@ impl FileRepo {
             .collect::<Vec<&str>>();
         let mut res = vec![];
         for m_id in mod_ids {
-            let m = self.db.mods.get(m_id).unwrap();
+            let m = self.get_mod_by_id(m_id).unwrap();
             if m.required_level > max_item_level
                 || m.stats.is_empty()
                 || m.domain != item.domain
@@ -464,7 +466,7 @@ impl CraftRepo for FileRepo {
             search
                 .selected_mods
                 .iter()
-                .map(|m| self.db.mods.get(&m.mod_key).unwrap())
+                .map(|m| self.get_mod_by_id(&m.mod_key).unwrap())
                 .flat_map(|m| m.groups.clone()),
         );
 
@@ -635,7 +637,7 @@ impl CraftRepo for FileRepo {
             query
                 .selected_mods
                 .iter()
-                .map(|m| self.db.mods.get(&m.mod_key).unwrap())
+                .map(|m| self.get_mod_by_id(&m.mod_key).unwrap())
                 .flat_map(|m| m.groups.clone()),
         );
         let affixes_types = query
@@ -675,7 +677,7 @@ impl CraftRepo for FileRepo {
     }
 
     fn representation_by_mod_id(&self, mod_id: &str) -> String {
-        let mod_item = self.db.mods.get(mod_id).unwrap();
+        let mod_item = self.get_mod_by_id(mod_id).unwrap();
         self.get_mods_representation(mod_item).unwrap()
     }
 }
@@ -700,7 +702,7 @@ mod tests {
     #[case("AdditionalArrowBow2_".to_string(), "Bow Attacks fire 2 additional Arrows".to_string())]
     #[case("IncreasedManaEnhancedModCost".to_string(), "+(74-78) to maximum Mana\n-(8-6) to Total Mana Cost of Skills".to_string())]
     fn test_repr(repo: FileRepo, #[case] mod_id: String, #[case] expected: String) {
-        let mod_item = repo.db.mods.get(&mod_id).unwrap();
+        let mod_item = repo.get_mod_by_id(&mod_id).unwrap();
         let repr = repo.get_mods_representation(mod_item).unwrap();
         assert_eq!(repr, expected);
     }

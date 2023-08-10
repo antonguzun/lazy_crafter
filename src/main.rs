@@ -1,3 +1,4 @@
+use lazy_crafter::entities::craft_repo::Message;
 use lazy_crafter::entities::craft_repo::{BackEvents, Data, ModsQuery, UiEvents, UiStates};
 use log::{debug, error, info};
 extern crate x11_clipboard;
@@ -15,7 +16,23 @@ fn run_db_in_background(
     ui_states: Arc<Mutex<UiStates>>,
     data: Arc<Mutex<Data>>,
 ) {
-    let craft_repo = FileRepo::new().unwrap();
+    let craft_repo: FileRepo;
+    match FileRepo::new() {
+        Ok(repo) => {
+            craft_repo = repo;
+        }
+        Err(e) => {
+            error!(target: "db thread", "Database initialization error! {}", e);
+            let ui_states = &mut ui_states.lock().unwrap();
+            let message = Message {
+                text: format!("Database initialization error! {}", e),
+                created_at: chrono::Local::now().timestamp(),
+            };
+
+            ui_states.messages.push(message);
+            return ();
+        }
+    }
 
     thread::spawn(move || loop {
         for event in &receiver {
