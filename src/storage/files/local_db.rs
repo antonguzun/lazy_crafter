@@ -548,7 +548,7 @@ impl CraftRepo for FileRepo {
         //  bring input mod text in representation form
         //  "blalba +4(2-9) blabla" to "blalba +(2-9) blabla"
 
-        let mod_template = Regex::new(r#"([+-])?(\d+(\.\d+)?)(\(.*)"#)
+        let mod_template = Regex::new(r#"([+-])?(\d+(\.\d+)?)(\([aA-zZ]*)"#)
             .unwrap()
             .replace_all(mod_name.trim(), "$1$4");
 
@@ -720,6 +720,14 @@ mod tests {
     #[case("Bow Attacks fire 2 additional Arrows".to_string(), "AdditionalArrowBow2_".to_string())]
     fn test_string_to_mod_bow(repo: FileRepo, #[case] mod_name: String, #[case] expected: String) {
         let repr = repo.string_to_mod("asd", "Spine Bow", &mod_name).unwrap();
+        assert_eq!(repr, expected);
+    }
+    
+
+    #[rstest]
+    #[case("Adds 17(16-22) to 33(32-38) Fire Damage to Attacks".to_string(), "AddedFireDamage8".to_string())]
+    fn test_string_to_mod_amulet(repo: FileRepo, #[case] mod_name: String, #[case] expected: String) {
+        let repr = repo.string_to_mod("asd", "Seaglass Amulet", &mod_name).unwrap();
         assert_eq!(repr, expected);
     }
 
