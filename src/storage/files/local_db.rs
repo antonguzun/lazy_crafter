@@ -324,18 +324,42 @@ impl FileRepo {
                         None => String::from("pass"),
                     };
 
-                    let mut revert_sign = false;
-                    if stat_max < 0.0 {
-                        revert_sign = true;
+                    let revert_sign = stat_max < 0.0;
+                    let mut format = i.clone().format[stat_position.clone()].clone();
+                    if revert_sign {
+                        format = format
+                            .chars()
+                            .map(|c| match c {
+                                '+' => '-',
+                                '-' => '+',
+                                c => c,
+                            })
+                            .collect();
                     }
-                    let to_str = match stat_max == stat_min {
+
+                    // a negative range keeps its raw order when the sign is
+                    // factored out in front of it - -75..-50 reads as
+                    // "-(75-50)" - but turns into ascending magnitudes when no
+                    // sign is printed: "(10-20)% reduced"
+                    let signed = format.contains("+") || format.contains("-");
+                    let (low, high) = match revert_sign && !signed {
+                        true => (stat_max.abs(), stat_min.abs()),
+                        false => (stat_min.abs(), stat_max.abs()),
+                    };
+                    let mut to_str = match stat_max == stat_min {
                         true => format!("{}", handle_stat_value(&index_handler, stat_max.abs())),
                         false => format!(
                             "({}-{})",
-                            handle_stat_value(&index_handler, stat_min.abs()),
-                            handle_stat_value(&index_handler, stat_max.abs())
+                            handle_stat_value(&index_handler, low),
+                            handle_stat_value(&index_handler, high)
                         ),
                     };
+                    // the format decorates the value, not the whole sentence:
+                    // "Attacks have +(0.5-0.8)%", never "+Attacks have (0.5-0.8)%"
+                    if format.contains("#") {
+                        to_str = format.replace("#", &to_str);
+                    }
+
                     let v = [
                         '{',
                         std::char::from_digit(stat_position.try_into().unwrap(), 10).unwrap(),
@@ -343,19 +367,6 @@ impl FileRepo {
                     ];
                     let from = String::from_iter(v);
                     repr = repr.replace(&from, &to_str);
-
-                    let mut format = i.clone().format[stat_position.clone()].clone();
-                    if revert_sign {
-                        if format.contains("-") {
-                            format = format.replace("-", "+");
-                        }
-                        if format.contains("+") {
-                            format = format.replace("+", "-");
-                        }
-                    }
-                    if format.contains("#") {
-                        repr = format.replace("#", repr.as_str());
-                    }
                 }
                 return Ok(repr);
             }
