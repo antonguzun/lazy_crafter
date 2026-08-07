@@ -36,7 +36,8 @@ Item Level: 87
     item_base_name: "Gripped Gloves".to_string(),
     item_name: "Remora's Gripped Gloves of the Seal".to_string(),
     mods: vec!["LifeLeechPermyriad1".to_string(), "ColdResist2".to_string()],
-    raw_mods: vec![],
+    raw_mods: vec!["0.26(0.2-0.4)% of Physical Attack Damage Leeched as Life".to_string(),
+             "+12(12-17)% to Cold Resistance".to_string()],
 })]
 #[case("Item Class: Body Armours
 Rarity: Rare
@@ -70,7 +71,11 @@ Regenerate 1.2(1-2) Life per second
     item_name: "Battle Lamellar".to_string(),
 
     mods: vec!["LocalBaseArmourAndEvasionRating3".to_string(), "LifeRegeneration1".to_string(), "ColdResist3".to_string(), "ChaosResist3".to_string()],
-    raw_mods: vec![],
+    // hybrid mods keep both of their lines, joined with "; "
+    raw_mods: vec!["+45(28-48) to Armour; +28(28-48) to Evasion Rating".to_string(),
+             "Regenerate 1.2(1-2) Life per second".to_string(),
+             "+21(18-23)% to Cold Resistance".to_string(),
+             "+16(16-20)% to Chaos Resistance".to_string()],
 })]
 #[case("Item Class: Boots
 Rarity: Rare
@@ -112,7 +117,11 @@ Item Level: 74
              "IncreasedMana9".to_string(),
              "ChaosResist4".to_string(),
              "FireResist2".to_string()],
-    raw_mods: vec![],
+    raw_mods: vec!["32(27-32)% increased Evasion and Energy Shield; 12(12-13)% increased Stun and Block Recovery".to_string(),
+             "+3(3-9) to maximum Life".to_string(),
+             "+59(55-59) to maximum Mana".to_string(),
+             "+23(21-25)% to Chaos Resistance".to_string(),
+             "+12(12-17)% to Fire Resistance".to_string()],
 })]
 #[case("Item Class: Gloves
 Rarity: Magic
@@ -143,7 +152,10 @@ Item Level: 87
     item_name: "Fawn's Gripped Gloves of Revoking".to_string(),
     mods: vec!["LocalBaseEvasionRatingAndLife2".to_string(),
              "ChanceToSuppressSpells3".to_string(),],
-    raw_mods: vec![],
+    // the trailing "(50% of Damage from Suppressed Hits ...)" line is a
+    // description, not part of the mod text
+    raw_mods: vec!["+35(21-42) to Evasion Rating; +24(24-28) to maximum Life".to_string(),
+             "+9(9-10)% chance to Suppress Spell Damage".to_string()],
 })]
 #[case("Item Class: Gloves
 Rarity: Magic
@@ -173,7 +185,8 @@ Item Level: 87
     item_name: "Sanguine Gripped Gloves of the Apt".to_string(),
     mods: vec!["IncreasedLife2".to_string(),
              "ReducedLocalAttributeRequirements2".to_string()],
-    raw_mods: vec![],
+    raw_mods: vec!["+28(20-29) to maximum Life".to_string(),
+             "32% reduced Attribute Requirements".to_string()],
 })]
 fn test_parse_raw_item32(repo: impl CraftRepo, #[case] input: &str, #[case] expected: ParsedItem) {
     assert_eq!(parse_raw_item(&repo, &input), Ok(expected));
