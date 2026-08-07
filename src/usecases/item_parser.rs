@@ -56,7 +56,18 @@ fn fetch_item_base<'a>(
         )
         .ok_or("No item base found".to_string())?;
 
-    let last_part = match raw_item.split("--------").last() {
+    // the mods block is not always the last "--------" section: flags like
+    // "Fractured Item" / "Corrupted" are appended after it. Prefer the last
+    // section that contains explicit mod meta lines; fall back to the legacy
+    // behaviour for copies without advanced descriptions.
+    let explicit_meta_re = Regex::new(r"(Prefix|Suffix)\s+Modifier")
+        .expect("regexp error during mods section lookup");
+    let last_part = match raw_item
+        .split("--------")
+        .filter(|part| explicit_meta_re.is_match(part))
+        .last()
+        .or_else(|| raw_item.split("--------").last())
+    {
         Some(last_part) => last_part,
         None => return Err("No mods found".to_string()),
     };
@@ -123,9 +134,12 @@ struct ModMetaInfo {
 }
 
 fn create_meta_mods_regexp_patter() -> Result<Regex, String> {
-    let meta_mod_line_re =
-        Regex::new(r"\{\s+(\w+)\s+Modifier\s+(.*?)\s+\(Tier:\s+(\d+)\)\s+(—\s+(.*?)(?:\s+\})|$)?")
-            .expect("regexp error during item class fetching");
+    // `(?:\w+\s+)*?` skips qualifiers before the generation type, e.g.
+    // "{ Fractured Suffix Modifier ... }"
+    let meta_mod_line_re = Regex::new(
+        r"\{\s+(?:\w+\s+)*?(\w+)\s+Modifier\s+(.*?)\s+\(Tier:\s+(\d+)\)\s+(—\s+(.*?)(?:\s+\})|$)?",
+    )
+    .expect("regexp error during item class fetching");
     Ok(meta_mod_line_re)
 }
 
@@ -211,7 +225,7 @@ pub fn parse_raw_item(craft_repo: &impl CraftRepo, raw_item: &str) -> Result<Par
         item_base_name: item_dto.item_base_name,
         item_name: item_dto.item_name,
         mods: mods_dto.iter().map(|m| m.mod_id.to_owned()).collect(),
-        raw_mods: vec![],
+        raw_mods: mods_dto.iter().map(|m| m.mod_text.join("; ")).collect(),
     })
 }
 
@@ -229,6 +243,7 @@ mod tests {
     #[case("{ Prefix Modifier \"Remora\'s\" (Tier: 1) — Life, Physical, Attack }".to_string(), vec!["Prefix", "\"Remora\'s\"", "1", "Life, Physical, Attack"])]
     #[case("{ Suffix Modifier \"of the Seal\" (Tier: 7) — Elemental, Cold, Resistance }".to_string(), vec!["Suffix", "\"of the Seal\"", "7", "Elemental, Cold, Resistance" ])]
     #[case("{ Suffix Modifier \"of the Seal\" (Tier: 7) }".to_string(), vec!["Suffix", "\"of the Seal\"", "7", ""])]
+    #[case("{ Fractured Suffix Modifier \"of Flexure\" (Tier: 1) — Evasion }".to_string(), vec!["Suffix", "\"of Flexure\"", "1", "Evasion"])]
     fn test_meta_mod_patten(#[case] row: String, #[case] expected: Vec<&str>) {
         let re = create_meta_mods_regexp_patter().unwrap();
         assert_eq!(re.is_match(&row), true);
@@ -247,6 +262,23 @@ mod tests {
         // assert_eq!(re.is_match(&row), false);
         let cap: Option<regex::Captures> = re.captures(&row);
         assert_eq!(cap.is_none(), true)
+    }
+
+    #[test]
+    fn test_parse_fractured_poe2_item() {
+        use crate::entities::craft_repo::GameVersion;
+        use crate::storage::files::local_db::data_dir_for;
+        // mods must come from the section before the trailing "Fractured Item"
+        // flag, and the fractured mod's meta line must be recognized
+        if !std::path::Path::new(&data_dir_for(GameVersion::Poe2)).exists() {
+            return;
+        }
+        let repo = FileRepo::new_for_version(GameVersion::Poe2).unwrap();
+        let raw = "Item Class: Boots\nRarity: Rare\nBramble Stride\nDaggerfoot Shoes\n--------\nEvasion Rating: 140\nEnergy Shield: 43\n--------\nRequires: Level 80, 59 Dex, 59 Int\n--------\nSockets: S S \n--------\nItem Level: 82\n--------\n{ Fractured Suffix Modifier \"of Flexure\" (Tier: 1) — Evasion }\nGain Deflection Rating equal to 23(21-23)% of Evasion Rating\n{ Suffix Modifier \"of Bameth\" (Tier: 1) — Chaos, Resistance }\n+27(24-27)% to Chaos Resistance\n--------\nFractured Item\n";
+        let parsed = parse_raw_item(&repo, raw).unwrap();
+        assert_eq!(parsed.mods.len(), 2);
+        assert!(parsed.mods.contains(&"EvasionGrantsDeflection5".to_string()));
+        assert!(parsed.mods.contains(&"ChaosResist6".to_string()));
     }
 
     #[rstest]

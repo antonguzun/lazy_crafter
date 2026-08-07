@@ -65,7 +65,9 @@ pub fn show_item_input(
     let str = ui_states.lock().unwrap().item_string.clone();
     let states = &mut ui_states.lock().unwrap();
 
-    if ui.code_editor(&mut states.item_string).lost_focus() {
+    let editor_done = ui.code_editor(&mut states.item_string).lost_focus();
+    let load_clicked = ui.button("Load item").clicked();
+    if editor_done || load_clicked {
         match parse_item_level_from_string(&str) {
             Some(n) => {
                 states.item_level = n.to_string();

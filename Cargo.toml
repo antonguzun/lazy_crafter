@@ -2,6 +2,8 @@
 name = "lazy_crafter"
 version = "0.4.2"
 edition = "2021"
+# `cargo run` launches the GUI; the data fetcher is `cargo run --bin fetch_data`.
+default-run = "lazy_crafter"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

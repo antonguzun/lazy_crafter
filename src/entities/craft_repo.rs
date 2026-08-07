@@ -21,6 +21,10 @@ pub struct ModsQuery {
     pub item_level: u64,
     pub item_base: String,
     pub selected_mods: Vec<ModItem>,
+    /// How the already selected mods are combined. Decides whether mods
+    /// conflicting with the selection are still offered in the list, see
+    /// `find_mods`.
+    pub match_mode: ModsMatchMode,
 }
 
 #[derive(Debug, Clone)]
@@ -79,6 +83,41 @@ pub struct Message {
     pub created_at: i64,
 }
 
+/// Which game's dataset the app is working with. Switched at runtime from the
+/// UI; the db thread reloads the repository when it changes.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum GameVersion {
+    Poe1,
+    Poe2,
+}
+
+impl GameVersion {
+    pub fn label(&self) -> &'static str {
+        match self {
+            GameVersion::Poe1 => "PoE 1",
+            GameVersion::Poe2 => "PoE 2",
+        }
+    }
+}
+
+/// How selected mods are combined when checking a crafted item:
+/// `All` — every selected mod must be present (AND),
+/// `Any` — at least one selected mod is enough (OR).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ModsMatchMode {
+    All,
+    Any,
+}
+
+impl ModsMatchMode {
+    pub fn label(&self) -> &'static str {
+        match self {
+            ModsMatchMode::All => "AND",
+            ModsMatchMode::Any => "OR",
+        }
+    }
+}
+
 #[derive(Debug)]
 pub struct UiStates {
     pub filter_string: String,
@@ -86,10 +125,12 @@ pub struct UiStates {
     pub item_level: String,
     pub max_autocraft_tries: String,
     pub selected: Vec<ModItem>,
+    pub selected_mods_match_mode: ModsMatchMode,
     pub selected_item_class_as_filter: String,
     pub selected_item_base_as_filter: String,
     pub selected_item_level_as_filter: u64,
     pub selected_max_autocraft_tries: u64,
+    pub selected_game_version: GameVersion,
     pub messages: Vec<Message>,
 }
 
@@ -102,10 +143,12 @@ impl Default for UiStates {
             max_autocraft_tries: "5".to_string(),
 
             selected: vec![],
+            selected_mods_match_mode: ModsMatchMode::Any,
             selected_item_class_as_filter: "Helmet".to_string(),
             selected_item_base_as_filter: "Iron Hat".to_string(),
             selected_item_level_as_filter: 100,
             selected_max_autocraft_tries: 5,
+            selected_game_version: GameVersion::Poe2,
             messages: vec![],
         }
     }
@@ -123,6 +166,7 @@ pub enum UiEvents {
     AddToSelectedMods,
     CleanSelectedMods,
     InsertionItemData,
+    ChangeGameVersion,
 }
 
 #[derive(PartialEq)]

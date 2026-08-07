@@ -2,50 +2,45 @@ use crate::entities::craft_repo::{BackEvents, CraftRepo, UiStates};
 use crate::storage::files::local_db::FileRepo;
 use crate::usecases::matcher::{check_matching, ModMatcher};
 use chrono::{DateTime, Utc};
-use log::{debug, info};
+use log::{debug, error, info};
 use rdev::{listen, simulate, EventType, Key};
 use std::collections::HashSet;
 use std::sync::mpsc::{channel, Sender};
-use std::sync::{Arc, Mutex};
+use std::sync::{Arc, Mutex, RwLock};
 use std::thread;
 use std::time::{Duration, SystemTime};
-
-fn hash_event_type(event_type: EventType) -> String {
-    format!("{:?}", &event_type)
-}
-
-fn create_target_hash_set() -> HashSet<String> {
-    let mut target_events = HashSet::new();
-    // target_events.insert(hash_event_type(EventType::KeyPress(Key::ControlLeft)));
-    target_events.insert(hash_event_type(EventType::KeyRelease(Key::ControlLeft)));
-    // target_events.insert(hash_event_type(EventType::KeyPress(Key::ShiftLeft)));
-    target_events.insert(hash_event_type(EventType::KeyRelease(Key::ShiftLeft)));
-    // target_events.insert(hash_event_type(EventType::KeyPress(Key::KeyD)));
-    target_events.insert(hash_event_type(EventType::KeyRelease(Key::KeyE)));
-    target_events
-}
 
 fn send(event_type: &EventType) {
     let delay = Duration::from_millis(20);
     match simulate(event_type) {
         Ok(()) => (),
         Err(_) => {
-            println!("We could not send {:?}", event_type);
+            error!("We could not send {:?}", event_type);
         }
     }
     thread::sleep(delay);
+}
+
+/// Crafting holds Shift+Alt down via simulated input. If the app is closed
+/// mid-craft the release events are never sent and the keys stay logically
+/// pressed system-wide (breaking Ctrl+C and other shortcuts). Called on app
+/// shutdown to unstick them.
+pub fn release_all_modifiers() {
+    for key in [Key::ShiftLeft, Key::Alt, Key::ControlLeft] {
+        send(&EventType::KeyRelease(key));
+    }
 }
 
 #[cfg(target_os = "windows")]
 fn run_craft(craft_repo: &impl CraftRepo, ui_states: Arc<Mutex<UiStates>>) -> Result<(), String> {
     use crate::usecases::item_parser;
     use clipboard_win::{formats, Clipboard, Getter, Setter};
-    use log::error;
     use rdev::Button;
 
-    println!("run crafting");
+    info!("run crafting");
 
     let selected_mods = ui_states.lock().unwrap().selected.clone();
+    let match_mode = ui_states.lock().unwrap().selected_mods_match_mode;
     let selected_mod_keys: HashSet<String> =
         HashSet::from_iter(selected_mods.iter().map(|m| m.mod_key.clone()));
     let max_tries = ui_states
@@ -55,9 +50,13 @@ fn run_craft(craft_repo: &impl CraftRepo, ui_states: Arc<Mutex<UiStates>>) -> Re
         .clone();
     send(&EventType::KeyPress(Key::ShiftLeft));
     send(&EventType::KeyPress(Key::Alt));
+    // give the game a moment to register the modifiers before the first copy
+    thread::sleep(Duration::from_millis(300));
 
     let mut prev_output = String::new();
     let mut down_counter = max_tries;
+    // what the item under the cursor is, logged once and again if it changes
+    let mut logged_item = String::new();
 
     let mut no_changes_in_clipboard_counter: u32 = 0;
     while down_counter > 0 {
@@ -66,20 +65,27 @@ fn run_craft(craft_repo: &impl CraftRepo, ui_states: Arc<Mutex<UiStates>>) -> Re
         send(&EventType::KeyRelease(Key::ControlLeft));
         send(&EventType::KeyRelease(Key::KeyC));
         let _clip = Clipboard::new_attempts(10).expect("Open clipboard");
-        println!("##### try {} #####", down_counter);
 
         let mut output = String::new();
         formats::Unicode
             .read_clipboard(&mut output)
             .expect("Read sample");
-        println!("copied {}", output);
-        if no_changes_in_clipboard_counter == 5 {
-            break;
-        }
+        debug!("try {}: copied {}", down_counter, output);
         if output == prev_output {
-            info!("No change in clipboard, skipping");
             no_changes_in_clipboard_counter = no_changes_in_clipboard_counter.saturating_add(1);
-            let delay = Duration::from_millis(40);
+            if no_changes_in_clipboard_counter >= 5 {
+                send(&EventType::KeyRelease(Key::ShiftLeft));
+                send(&EventType::KeyRelease(Key::Alt));
+                output.clear();
+                return Err(String::from(
+                    "Crafting stopped: clipboard did not change after 5 copy attempts. \
+                     Is the game window focused and the cursor over the item?",
+                ));
+            }
+            // usually the game UI just hasn't refreshed the item yet, so back
+            // off progressively: 80, 160, 320, 640 ms before each retry
+            let delay = Duration::from_millis(40u64 << no_changes_in_clipboard_counter.min(4));
+            info!("No change in clipboard, retrying in {:?}", delay);
             thread::sleep(delay);
             continue;
         } else {
@@ -97,7 +103,20 @@ fn run_craft(craft_repo: &impl CraftRepo, ui_states: Arc<Mutex<UiStates>>) -> Re
                 return Err(err_message);
             }
         };
-        println!("parsed {:#?}", &parsed_craft);
+        debug!("parsed {:#?}", &parsed_craft);
+        let item = format!(
+            "item: {} | class: {} | base: {}",
+            parsed_craft.item_name, parsed_craft.item_class, parsed_craft.item_base_name
+        );
+        if item != logged_item {
+            info!("{}", item);
+            logged_item = item;
+        }
+        info!(
+            "try {}: [{}]",
+            down_counter,
+            parsed_craft.raw_mods.join(" | ")
+        );
         let crafted_mod_keys: HashSet<String> = HashSet::from_iter(parsed_craft.mods);
         // FIXME! create mathcer only once!
         let matcher = match ModMatcher::new(selected_mod_keys.clone(), &parsed_craft.item_base_name, craft_repo){
@@ -112,8 +131,8 @@ fn run_craft(craft_repo: &impl CraftRepo, ui_states: Arc<Mutex<UiStates>>) -> Re
         };
         
 
-        if check_matching(matcher, crafted_mod_keys) {
-            info!("Crafted all target mods successfully");
+        if check_matching(matcher, crafted_mod_keys, match_mode) {
+            info!("-> matched ({} mode), stopping", match_mode.label());
             send(&EventType::KeyRelease(Key::ShiftLeft));
             send(&EventType::KeyRelease(Key::Alt));
             output.clear();
@@ -125,9 +144,11 @@ fn run_craft(craft_repo: &impl CraftRepo, ui_states: Arc<Mutex<UiStates>>) -> Re
         send(&EventType::ButtonPress(Button::Left));
         send(&EventType::ButtonRelease(Button::Left));
         down_counter -= 1;
-        info!("Mod changed");
+        info!("-> no match, rolling again");
     }
-    info!("All attempts were exhausted");
+    if down_counter == 0 {
+        info!("All attempts were exhausted");
+    }
     send(&EventType::KeyRelease(Key::ShiftLeft));
     send(&EventType::KeyRelease(Key::Alt));
     Ok(())
@@ -138,63 +159,47 @@ fn run_craft(_repo: &impl CraftRepo, _ui_states: Arc<Mutex<UiStates>>) -> Result
     Err(String::from("Auto crafting is not supported on linux yet"))
 }
 
-pub fn run_listener_in_background(sender: Sender<BackEvents>, ui_states: Arc<Mutex<UiStates>>) {
-    // !TODO use common instance between threads
-    let craft_repo: FileRepo;
-    match FileRepo::new() {
-        Ok(repo) => {
-            craft_repo = repo;
-        }
-        Err(e) => {
-            sender
-                .send(BackEvents::Error(format!(
-                    "Autocrafter process initialization error. {}",
-                    e
-                )))
-                .expect("Could not send crafting error event");
-
-            return ();
-        }
-    }
-
+pub fn run_listener_in_background(
+    sender: Sender<BackEvents>,
+    ui_states: Arc<Mutex<UiStates>>,
+    craft_repo: Arc<RwLock<FileRepo>>,
+) {
     let (schan, rchan) = channel();
     thread::spawn(move || {
         listen(move |event| {
             schan
                 .send(event)
-                .unwrap_or_else(|e| println!("Could not send event {:?}", e));
+                .unwrap_or_else(|e| error!("Could not send event {:?}", e));
         })
         .expect("Could not listen");
     });
     thread::spawn(move || {
-        let keypress_bandwidth = Duration::from_millis(1000);
-        let mut events = Vec::new();
-        let target_events = create_target_hash_set();
-        // println!("target_events {:?}", target_events);
+        let debounce = Duration::from_millis(1000);
+        let mut ctrl_held = false;
         let mut last_combo = SystemTime::now() - Duration::from_secs(500);
         for event in rchan.iter() {
-            events.push(event);
-            events.retain(|e| e.time > SystemTime::now() - keypress_bandwidth);
-            let current_events =
-                HashSet::from_iter(events.iter().map(|e| hash_event_type(e.event_type)));
-            if target_events.is_subset(&current_events)
-                && last_combo < SystemTime::now() - keypress_bandwidth
-            {
-                let t: DateTime<Utc> = last_combo.clone().into();
-                println!("You pressed combo! prev combo at {}", t.to_rfc3339());
-                last_combo = SystemTime::now();
-                events.clear();
-                match run_craft(&craft_repo, Arc::clone(&ui_states)) {
-                    Ok(_) => {}
-                    Err(e) => {
+            match event.event_type {
+                EventType::KeyPress(Key::ControlLeft) => ctrl_held = true,
+                EventType::KeyRelease(Key::ControlLeft) => ctrl_held = false,
+                EventType::KeyPress(Key::KeyN)
+                    if ctrl_held && last_combo < SystemTime::now() - debounce =>
+                {
+                    let t: DateTime<Utc> = last_combo.into();
+                    info!("You pressed combo! prev combo at {}", t.to_rfc3339());
+                    last_combo = SystemTime::now();
+                    if let Err(e) = run_craft(&*craft_repo.read().unwrap(), Arc::clone(&ui_states))
+                    {
                         sender
                             .send(BackEvents::Error(e))
                             .expect("Could not send crafting error event");
                     }
-                    Err(_) => {}
+                    // run_craft simulates Ctrl+C and mouse input; the global hook
+                    // queued those events while this thread was busy — drop them
+                    // so our own input can't re-arm the combo
+                    while rchan.try_recv().is_ok() {}
+                    ctrl_held = false;
                 }
-                let delay = Duration::from_millis(100);
-                thread::sleep(delay);
+                _ => {}
             }
         }
     });
