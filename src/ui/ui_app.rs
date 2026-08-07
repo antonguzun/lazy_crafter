@@ -1,4 +1,6 @@
-use crate::entities::craft_repo::{BackEvents, Data, Message, UiEvents, UiStates};
+use crate::entities::craft_repo::{
+    BackEvents, Data, GameVersion, Message, ModsMatchMode, UiEvents, UiStates,
+};
 
 use crate::input_schemas::{parse_item_level, parse_max_tries};
 use crate::ui::{buttons, comboboxes, errors, inputs, tables};
@@ -100,6 +102,33 @@ impl eframe::App for EguiApp {
             ui.heading("Input");
             ui.set_min_width(200.0);
 
+            ui.horizontal(|ui| {
+                ui.label("game:");
+                let changed = {
+                    let state = &mut self.ui_states.lock().unwrap();
+                    let poe1 = ui.selectable_value(
+                        &mut state.selected_game_version,
+                        GameVersion::Poe1,
+                        GameVersion::Poe1.label(),
+                    );
+                    let poe2 = ui.selectable_value(
+                        &mut state.selected_game_version,
+                        GameVersion::Poe2,
+                        GameVersion::Poe2.label(),
+                    );
+                    let changed = poe1.changed() || poe2.changed();
+                    if changed {
+                        // selected mods belong to the previous dataset
+                        state.selected.clear();
+                    }
+                    changed
+                };
+                if changed {
+                    self.event_tx.send(UiEvents::ChangeGameVersion).unwrap();
+                }
+            });
+            ui.separator();
+
             let item_classes = self.data.lock().unwrap().item_classes.clone();
             comboboxes::show_combobox_with_classes(
                 ui,
@@ -164,6 +193,24 @@ impl eframe::App for EguiApp {
             });
 
             ui.heading("Selected");
+            ui.horizontal(|ui| {
+                ui.label("match:");
+                // the mode decides which mods stay offered in the table (in OR
+                // mode conflicting alternatives do), so refilter on change
+                let changed = {
+                    let mode = &mut self.ui_states.lock().unwrap().selected_mods_match_mode;
+                    let all = ui
+                        .selectable_value(mode, ModsMatchMode::All, ModsMatchMode::All.label())
+                        .on_hover_text("stop when the item has ALL selected mods");
+                    let any = ui
+                        .selectable_value(mode, ModsMatchMode::Any, ModsMatchMode::Any.label())
+                        .on_hover_text("stop when the item has ANY of the selected mods");
+                    all.changed() || any.changed()
+                };
+                if changed {
+                    self.event_tx.send(UiEvents::ChangeModFilter).unwrap();
+                }
+            });
             let selected_mods = self.ui_states.lock().unwrap().selected.clone();
 
             // estimations removed from ui while it not ready

@@ -1,6 +1,8 @@
 use log::debug;
 
-use crate::entities::craft_repo::{CraftRepo, Estimation, ItemBase, ModItem, ModsQuery};
+use crate::entities::craft_repo::{
+    CraftRepo, Estimation, ItemBase, ModItem, ModsMatchMode, ModsQuery,
+};
 use crate::usecases::craft_searcher::{
     get_affected_weight_of_target_mod, get_weight_of_target_and_better_mods,
 };
@@ -76,6 +78,9 @@ fn probability_for_variant(
                         .unwrap()
                         .0
                         .clone()],
+                    // weights of a single target mod: the group exclusion is
+                    // what this asks for, regardless of the UI match mode
+                    match_mode: ModsMatchMode::All,
                 };
                 affected_weight = get_affected_weight_of_target_mod(repo, &q);
             }
@@ -133,6 +138,7 @@ pub fn calculate_estimation_for_craft(
         item_base: query.item_base.clone(),
         item_level: query.item_level,
         selected_mods: vec![],
+        match_mode: ModsMatchMode::All,
     };
     let available_mods = repo.find_mods(&available_mods_query);
 

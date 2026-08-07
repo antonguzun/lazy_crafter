@@ -1,14 +1,85 @@
-use crate::entities::craft_repo::{CraftRepo, ItemBase, ModItem, ModsQuery};
+use crate::entities::craft_repo::{
+    CraftRepo, GameVersion, ItemBase, ModItem, ModsMatchMode, ModsQuery,
+};
 use crate::storage::files::representation::handle_stat_value;
-use crate::storage::files::schemas::{ItemBaseRich, Mod, Stat, StatTranslation};
-use anyhow::{bail, Error, Result, Context};
+use crate::storage::files::schemas::{
+    ItemBaseRich, Manifest, Mod, RepresentationSource, Stat, StatTranslation,
+};
+use anyhow::{bail, Context, Error, Result};
 use itertools::Itertools;
-use log::{debug, error};
+use log::{debug, error, info};
 use std::collections::{HashMap, HashSet};
 use std::fs::File;
 use std::io::Read;
+use std::path::Path;
 
 const LOG_TARGET: &str = "file_db";
+
+/// Directory a game's dataset is loaded from: `data` for poe1, `data_poe2`
+/// for poe2. Overridable with `LAZY_CRAFTER_DATA_DIR` (poe1) and
+/// `LAZY_CRAFTER_DATA_DIR_POE2` (poe2) without rebuilding.
+pub fn data_dir_for(version: GameVersion) -> String {
+    match version {
+        GameVersion::Poe1 => {
+            std::env::var("LAZY_CRAFTER_DATA_DIR").unwrap_or_else(|_| "data".to_string())
+        }
+        GameVersion::Poe2 => {
+            std::env::var("LAZY_CRAFTER_DATA_DIR_POE2").unwrap_or_else(|_| "data_poe2".to_string())
+        }
+    }
+}
+
+/// Read the optional `manifest.json` describing the dataset. A missing or
+/// invalid manifest falls back to the legacy poe1 defaults so existing data
+/// directories keep working untouched.
+fn load_manifest(dir: &str) -> Manifest {
+    let path = format!("{}/manifest.json", dir);
+    if !Path::new(&path).exists() {
+        debug!(target: LOG_TARGET, "no {}, assuming legacy poe1 dataset", path);
+        return Manifest::default();
+    }
+    match load_struct_from_json::<Manifest>(&path) {
+        Ok(m) => {
+            info!(target: LOG_TARGET, "loaded dataset manifest {}: {:?}", path, m);
+            m
+        }
+        Err(e) => {
+            error!(target: LOG_TARGET, "invalid {} ({}), using poe1 defaults", path, e);
+            Manifest::default()
+        }
+    }
+}
+
+/// poe2 inline `text` carries GGG markup tokens: `[Evasion]` (display the
+/// content) and `[ElementalDamage|Elemental Damage]` (display the part after
+/// the `|`). Strip them so a representation matches the plain text the game
+/// puts on the clipboard — needed both for the UI and for `string_to_mod`
+/// matching of pasted items. Newlines in multi-stat mods are preserved.
+fn strip_inline_markup(re: &regex::Regex, text: &str) -> String {
+    re.replace_all(text, |caps: &regex::Captures| {
+        let inner = &caps[1];
+        match inner.rsplit_once('|') {
+            Some((_, display)) => display.to_string(),
+            None => inner.to_string(),
+        }
+    })
+    .into_owned()
+}
+
+fn load_struct_from_json<T>(path: &str) -> Result<T, Error>
+where
+    T: serde::de::DeserializeOwned,
+{
+    let mut file = File::open(path)
+        .map_err(Error::from)
+        .with_context(|| format!("Failed to open file {}", path))?;
+    let mut contents = String::new();
+    file.read_to_string(&mut contents)
+        .with_context(|| format!("Failed to read file {}", path))?;
+    serde_json::from_str(&contents)
+        .map_err(Error::from)
+        .with_context(|| format!("Wrong file's format {}", path))
+}
 
 fn load_from_json<T>(path: &str) -> Result<Vec<T>, Error>
 where
@@ -48,7 +119,25 @@ pub struct FileRepo {
 
 impl FileRepo {
     pub fn new() -> Result<FileRepo> {
-        let translations: Vec<StatTranslation> = load_from_json("data/stat_translations.min.json")?;
+        Self::new_for_version(GameVersion::Poe1)
+    }
+
+    pub fn new_for_version(version: GameVersion) -> Result<FileRepo> {
+        Self::new_from_dir(&data_dir_for(version))
+    }
+
+    fn new_from_dir(dir: &str) -> Result<FileRepo> {
+        let manifest = load_manifest(dir);
+
+        // stat_translations only ship with the legacy poe1 dump; the poe2
+        // dataset resolves representations from each mod's inline `text`, so
+        // this file is optional and an empty map is fine when absent.
+        let translations_path = format!("{}/stat_translations.min.json", dir);
+        let translations: Vec<StatTranslation> = if Path::new(&translations_path).exists() {
+            load_from_json(&translations_path)?
+        } else {
+            Vec::new()
+        };
         let mut translations_by_stat_id: HashMap<String, StatTranslation> = HashMap::new();
         for t in translations {
             for id in &t.ids {
@@ -56,9 +145,9 @@ impl FileRepo {
             }
         }
 
-        let mods: HashMap<String, Mod> = json_to_hashmap("data/mods.min.json")?;
+        let mods: HashMap<String, Mod> = json_to_hashmap(&format!("{}/mods.min.json", dir))?;
         let raw_base_items: HashMap<String, ItemBaseRich> =
-            json_to_hashmap("data/base_items.min.json")?;
+            json_to_hashmap(&format!("{}/base_items.min.json", dir))?;
         let base_items_by_name: HashMap<String, ItemBaseRich> = raw_base_items
             .iter()
             .map(|(_k, v)| (v.name.clone(), v.clone()))
@@ -91,8 +180,29 @@ impl FileRepo {
                 }
             })
         });
-        let representation_by_mod_id: HashMap<String, String> =
-            json_to_hashmap("data/mods_representation_pob.json")?;
+        let representation_by_mod_id: HashMap<String, String> = match manifest.representation {
+            // poe2 / RePoE-fork: representation is shipped inline on each mod.
+            RepresentationSource::InlineText => {
+                let markup = regex::Regex::new(r"\[([^\[\]]+)\]").unwrap();
+                let map: HashMap<String, String> = mods
+                    .iter()
+                    .filter_map(|(id, m)| {
+                        m.text
+                            .as_ref()
+                            .map(|t| (id.clone(), strip_inline_markup(&markup, t)))
+                    })
+                    .collect();
+                info!(
+                    target: LOG_TARGET,
+                    "resolved {} mod representations from inline text", map.len()
+                );
+                map
+            }
+            // legacy poe1: representation lives in a separate, mod-id keyed file.
+            RepresentationSource::PobFile => {
+                json_to_hashmap(&format!("{}/mods_representation_pob.json", dir))?
+            }
+        };
         debug!(target: LOG_TARGET, "tags: {:?}", mod_id_by_tags.keys());
         Ok(Self {
             db: LocalDB {
@@ -127,6 +237,18 @@ impl FileRepo {
             }
         }
         mod_ids_to_check
+    }
+
+    /// Spawn weights are ordered: the first entry whose tag the item has
+    /// decides the mod's weight for that item, and 0 means the mod cannot
+    /// roll there. E.g. `[{boots: 0}, {dex_int_armour: 1}]` — a boots base
+    /// has both tags, but `boots: 0` comes first, so the mod is body-armour
+    /// only. Returns None when no tag matches.
+    fn effective_spawn_weight(m: &Mod, item: &ItemBaseRich) -> Option<u32> {
+        m.spawn_weights
+            .iter()
+            .find(|sw| item.tags.contains(&sw.tag))
+            .map(|sw| sw.weight)
     }
 
     fn stats_are_equal_or_better(&self, ref_mod: &Mod, comp_mod: &Mod) -> bool {
@@ -310,16 +432,14 @@ impl FileRepo {
             {
                 continue;
             }
+            let weight = match Self::effective_spawn_weight(m, item) {
+                Some(w) if w > 0 => w,
+                _ => continue,
+            };
             let mod_item = ModItem {
                 required_level: m.required_level,
                 generation_type: m.generation_type.clone(),
-                weight: m
-                    .spawn_weights
-                    .iter()
-                    .filter(|sw| sw.weight > 0 && item.tags.contains(&sw.tag))
-                    .next()
-                    .unwrap()
-                    .weight,
+                weight,
                 representation: self
                     .get_mods_representation_pob_source(m_id)
                     .unwrap_or_else(|_| format!("representation_err: {}", m_id)),
@@ -363,17 +483,10 @@ impl FileRepo {
             if filter_by_stats {
                 continue;
             }
-            let weight = m // todo! move to trait
-                .spawn_weights
-                .iter()
-                .find_map(|sw| {
-                    if sw.weight > 0 && item.tags.contains(&sw.tag) {
-                        Some(sw.weight)
-                    } else {
-                        None
-                    }
-                })
-                .unwrap();
+            let weight = match Self::effective_spawn_weight(m, item) {
+                Some(w) if w > 0 => w,
+                _ => continue,
+            };
             res.push(weight)
         }
         res.iter().sum()
@@ -402,17 +515,10 @@ impl FileRepo {
             {
                 continue;
             }
-            let weight = m // todo! move to trait
-                .spawn_weights
-                .iter()
-                .find_map(|sw| {
-                    if sw.weight > 0 && item.tags.contains(&sw.tag) {
-                        Some(sw.weight)
-                    } else {
-                        None
-                    }
-                })
-                .unwrap();
+            let weight = match Self::effective_spawn_weight(m, item) {
+                Some(w) if w > 0 => w,
+                _ => continue,
+            };
             res.push(weight)
         }
         res.iter().sum()
@@ -442,15 +548,25 @@ impl CraftRepo for FileRepo {
     ///         domain by selected item class
     ///         generation_type: "prefix" or "suffix"
     ///     excludes:
-    ///         groups by selected mods
+    ///         already selected mods
+    ///         groups by selected mods, in AND mode only
     ///     order by mod_key filtered by contains
     fn find_mods(&self, search: &ModsQuery) -> std::vec::Vec<ModItem> {
-        let item = self
+        let item = match self
             .db
             .base_items_by_name
             .values()
             .find(|i| i.name == search.item_base)
-            .unwrap();
+        {
+            Some(item) => item,
+            None => {
+                error!(
+                    target: LOG_TARGET,
+                    "item base {:?} not found in dataset", search.item_base
+                );
+                return vec![];
+            }
+        };
         debug!(
             target: LOG_TARGET,
             "tags for {}: {:?}", search.item_base, item.tags
@@ -462,15 +578,32 @@ impl CraftRepo for FileRepo {
                 mod_ids.extend(ms.unwrap().clone());
             }
         }
-        let selected_groups: HashSet<std::string::String> = HashSet::from_iter(
-            search
-                .selected_mods
-                .iter()
-                .map(|m| self.get_mod_by_id(&m.mod_key).unwrap())
-                .flat_map(|m| m.groups.clone()),
-        );
+        // Mods of one group are mutually exclusive on a real item, so in AND
+        // mode ("wait for all of them") the rest of the group is unreachable
+        // once one is picked and is hidden. In OR mode the selection is a list
+        // of alternatives, and mutually exclusive mods are exactly what belongs
+        // there — e.g. +N to Level of all Fire / Cold / Lightning / all Spell
+        // Skills on a wand all share the `IncreaseSocketedGemLevel` group, and
+        // hunting for "any of them" must stay possible.
+        let selected_groups: HashSet<std::string::String> = match search.match_mode {
+            ModsMatchMode::All => HashSet::from_iter(
+                search
+                    .selected_mods
+                    .iter()
+                    .filter_map(|m| self.get_mod_by_id(&m.mod_key))
+                    .flat_map(|m| m.groups.clone()),
+            ),
+            ModsMatchMode::Any => HashSet::new(),
+        };
 
         let mut res = self.create_mod_items(&mod_ids, item, selected_groups, search.item_level);
+        // an already selected mod is never worth offering again
+        let selected_keys: HashSet<&str> = search
+            .selected_mods
+            .iter()
+            .map(|m| m.mod_key.as_str())
+            .collect();
+        res.retain(|m| !selected_keys.contains(m.mod_key.as_str()));
         res.sort_by(|a, b| a.mod_key.to_lowercase().cmp(&b.mod_key.to_lowercase()));
         filter_mods_by_text(&mut res, search.string_query.clone())
     }
@@ -513,7 +646,6 @@ impl CraftRepo for FileRepo {
     }
 
     fn item_class_if_exists(&self, item_class: &str) -> bool {
-        print!("{:#?}", self.db.item_classes);
         self.db.item_classes.contains(item_class)
     }
 
@@ -540,6 +672,7 @@ impl CraftRepo for FileRepo {
             item_level: 100,
             string_query: "".to_string(),
             selected_mods: vec![],
+            match_mode: ModsMatchMode::All,
         };
         let mods = self.find_mods(&query);
 
@@ -594,12 +727,21 @@ impl CraftRepo for FileRepo {
         query: &ModsQuery,
         target_mod_key: String,
     ) -> u32 {
-        let item = self
+        let item = match self
             .db
             .base_items_by_name
             .values()
             .find(|i| i.name == query.item_base)
-            .unwrap();
+        {
+            Some(item) => item,
+            None => {
+                error!(
+                    target: LOG_TARGET,
+                    "item base {:?} not found in dataset", query.item_base
+                );
+                return 0;
+            }
+        };
         debug!(
             target: LOG_TARGET,
             "tags for {}: {:?}", query.item_base, item.tags
@@ -616,12 +758,21 @@ impl CraftRepo for FileRepo {
     }
 
     fn get_affected_weight_of_target_mod(&self, query: &ModsQuery) -> u32 {
-        let item = self
+        let item = match self
             .db
             .base_items_by_name
             .values()
             .find(|i| i.name == query.item_base)
-            .unwrap();
+        {
+            Some(item) => item,
+            None => {
+                error!(
+                    target: LOG_TARGET,
+                    "item base {:?} not found in dataset", query.item_base
+                );
+                return 0;
+            }
+        };
         debug!(
             target: LOG_TARGET,
             "tags for {}: {:?}", query.item_base, item.tags
@@ -677,8 +828,21 @@ impl CraftRepo for FileRepo {
     }
 
     fn representation_by_mod_id(&self, mod_id: &str) -> String {
-        let mod_item = self.get_mod_by_id(mod_id).unwrap();
-        self.get_mods_representation(mod_item).unwrap()
+        // poe1: compute from stat_translations (what the autogenerated test
+        // fixtures expect). poe2 has no stat_translations, so that errors and we
+        // fall back to the resolved map (inline text). Neither path panics.
+        match self.get_mod_by_id(mod_id) {
+            Some(m) => match self.get_mods_representation(m) {
+                Ok(repr) => repr,
+                Err(_) => self
+                    .db
+                    .representation_by_mod_id
+                    .get(mod_id)
+                    .cloned()
+                    .unwrap_or_else(|| format!("representation_err: {}", mod_id)),
+            },
+            None => format!("unknown mod: {}", mod_id),
+        }
     }
 }
 
@@ -690,6 +854,114 @@ mod tests {
     #[fixture]
     fn repo() -> FileRepo {
         FileRepo::new().unwrap()
+    }
+
+    #[test]
+    fn test_new_for_version_poe2() {
+        // the poe2 dataset is fetched separately (`fetch_data --game poe2
+        // --out data_poe2`); skip when it is not present
+        if !Path::new(&data_dir_for(GameVersion::Poe2)).exists() {
+            return;
+        }
+        let repo = FileRepo::new_for_version(GameVersion::Poe2).unwrap();
+        assert!(!repo.get_item_classes().is_empty());
+        assert!(!repo.db.representation_by_mod_id.is_empty());
+    }
+
+    #[test]
+    fn test_poe2_spawn_weight_order_respected() {
+        // spawn weights are ordered: `[{boots: 0}, {dex_int_armour: 1}, ...]`
+        // means the mod can NOT roll on boots even though boots have the
+        // dex_int_armour tag. Tiers 5-8 of the hybrid evasion/ES prefix are
+        // body-armour-only and must not show up for boots.
+        if !Path::new(&data_dir_for(GameVersion::Poe2)).exists() {
+            return;
+        }
+        let repo = FileRepo::new_for_version(GameVersion::Poe2).unwrap();
+        let query = ModsQuery {
+            string_query: "".to_string(),
+            item_level: 100,
+            item_base: "Daggerfoot Shoes".to_string(),
+            selected_mods: vec![],
+            match_mode: ModsMatchMode::All,
+        };
+        let keys: HashSet<String> = repo
+            .find_mods(&query)
+            .into_iter()
+            .map(|m| m.mod_key)
+            .collect();
+        assert!(keys.contains("LocalBaseEvasionRatingAndEnergyShield4"));
+        assert!(!keys.contains("LocalBaseEvasionRatingAndEnergyShield5_"));
+        assert!(!keys.contains("LocalBaseEvasionRatingAndEnergyShield8___"));
+    }
+
+    /// All `+N to Level of ... Spell Skills` wand suffixes share one mod group.
+    /// Only one can roll, so AND mode hides the rest once one is selected, but
+    /// OR mode ("stop on any of these") must keep offering the alternatives.
+    #[test]
+    fn test_poe2_conflicting_group_offered_in_any_mode() {
+        if !Path::new(&data_dir_for(GameVersion::Poe2)).exists() {
+            return;
+        }
+        let repo = FileRepo::new_for_version(GameVersion::Poe2).unwrap();
+        let base = "Dueling Wand";
+        let query = |selected: Vec<ModItem>, match_mode| ModsQuery {
+            string_query: "to Level of all".to_string(),
+            item_level: 82,
+            item_base: base.to_string(),
+            selected_mods: selected,
+            match_mode,
+        };
+        let keys = |q: &ModsQuery| -> HashSet<String> {
+            repo.find_mods(q).into_iter().map(|m| m.mod_key).collect()
+        };
+
+        let unselected = keys(&query(vec![], ModsMatchMode::Any));
+        let fire = repo
+            .find_mods(&query(vec![], ModsMatchMode::Any))
+            .into_iter()
+            .find(|m| m.mod_key == "GlobalFireSpellGemsLevelWeapon4")
+            .expect("fire spell level suffix rolls on a wand");
+        assert!(unselected.contains("GlobalColdSpellGemsLevelWeapon4"));
+
+        // OR: the other elements stay available, only the pick itself drops out
+        let any = keys(&query(vec![fire.clone()], ModsMatchMode::Any));
+        assert!(any.contains("GlobalColdSpellGemsLevelWeapon4"));
+        assert!(any.contains("GlobalSpellGemsLevelWeapon4"));
+        assert!(!any.contains("GlobalFireSpellGemsLevelWeapon4"));
+
+        // AND: the whole group becomes unreachable and is hidden
+        let all = keys(&query(vec![fire], ModsMatchMode::All));
+        assert!(!all.contains("GlobalColdSpellGemsLevelWeapon4"));
+        assert!(!all.contains("GlobalFireSpellGemsLevelWeapon4"));
+    }
+
+    #[test]
+    fn test_strip_inline_markup() {
+        let re = regex::Regex::new(r"\[([^\[\]]+)\]").unwrap();
+        // plain text is untouched
+        assert_eq!(
+            strip_inline_markup(&re, "+(10-19) to maximum Life"),
+            "+(10-19) to maximum Life"
+        );
+        // [a|b] -> b, repeated in one line
+        assert_eq!(
+            strip_inline_markup(
+                &re,
+                "+(14-19)% of [Armour|Armour] also applies to [ElementalDamage|Elemental Damage]"
+            ),
+            "+(14-19)% of Armour also applies to Elemental Damage"
+        );
+        // [a] -> a
+        assert_eq!(
+            strip_inline_markup(&re, "+(6-10) to [Evasion] Rating"),
+            "+(6-10) to Evasion Rating"
+        );
+        // newlines in multi-stat mods are preserved
+        assert_eq!(
+            strip_inline_markup(&re, "+(9-16) to [Armour|Armour]\n+(6-10) to [Evasion] Rating"),
+            "+(9-16) to Armour\n+(6-10) to Evasion Rating"
+        );
     }
 
     #[rstest]

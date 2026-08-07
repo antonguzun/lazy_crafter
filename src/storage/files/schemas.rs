@@ -41,6 +41,11 @@ pub struct Mod {
     pub groups: Vec<String>,
     #[serde(rename = "type")]
     pub type_field: String,
+    /// Human-readable representation shipped inline with the mod.
+    /// Present in the RePoE-fork exports (both poe1 and poe2), absent in the
+    /// legacy RePoE poe1 dump (which ships representations in a separate file).
+    #[serde(default)]
+    pub text: Option<String>,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize, Hash, Eq)]
@@ -77,4 +82,44 @@ pub struct Condition {
     pub min: Option<f64>,
     pub max: Option<f64>,
     pub negated: Option<bool>,
+}
+
+/// Where the loader should take a mod's human-readable representation from.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+pub enum RepresentationSource {
+    /// Read each mod's representation from its inline `text` field
+    /// (RePoE-fork exports, including the poe2 export).
+    #[serde(rename = "inline_text")]
+    InlineText,
+    /// Read representations from a separate `mods_representation_pob.json`
+    /// keyed by mod id (legacy RePoE poe1 dump).
+    #[serde(rename = "pob_file")]
+    PobFile,
+}
+
+impl Default for RepresentationSource {
+    fn default() -> Self {
+        // Backwards compatible: a data directory without a manifest is assumed
+        // to be the legacy poe1 dump that ships a separate representation file.
+        RepresentationSource::PobFile
+    }
+}
+
+/// Optional `manifest.json` placed next to the data files. It tells the loader
+/// which game the dataset belongs to and how to parse it, so the same binary
+/// can consume either a poe1 or a poe2 dataset by just swapping the `data`
+/// directory. Every field is optional and falls back to the legacy poe1
+/// behaviour, so old data directories keep working without a manifest.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct Manifest {
+    /// Free-form game id, e.g. "poe1" or "poe2". Used only for diagnostics and
+    /// to pick sensible UI defaults; parsing does not depend on it.
+    #[serde(default)]
+    pub game: Option<String>,
+    /// How to resolve mod representations.
+    #[serde(default)]
+    pub representation: RepresentationSource,
+    /// Where the dataset was produced from (diagnostics only).
+    #[serde(default)]
+    pub source: Option<String>,
 }
