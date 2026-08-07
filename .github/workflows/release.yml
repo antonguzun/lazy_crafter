@@ -1,0 +1,70 @@
+name: release
+
+on:
+  push:
+    # tags in this repo are bare versions, e.g. 0.4.2
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+  # build a zip without publishing anything, e.g. to test the packaging
+  workflow_dispatch:
+
+permissions:
+  contents: write # creating the release
+
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # windows-latest ships stable-x86_64-pc-windows-msvc as the default
+      # toolchain, which is the one that links (the GNU one misses libshlwapi).
+      - name: Show toolchain
+        run: rustc -Vv
+
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: cargo-${{ runner.os }}-${{ hashFiles('Cargo.toml') }}
+          restore-keys: cargo-${{ runner.os }}-
+
+      - name: Check the tag matches Cargo.toml
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          $tag = '${{ github.ref_name }}'
+          $match = Select-String -Path 'Cargo.toml' -Pattern '^version\s*=\s*"([^"]+)"' |
+              Select-Object -First 1
+          $version = $match.Matches[0].Groups[1].Value
+          if ($tag -ne $version) {
+              throw "Tag $tag does not match the Cargo.toml version $version"
+          }
+
+      - name: Build and package
+        run: ./tools/package_release.ps1
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lazy_crafter-windows-x86_64
+          path: dist/*.zip
+          if-no-files-found: error
+
+      # Created as a draft on purpose: check the archive, then publish it from
+      # the GitHub UI. Drop --draft here to publish straight from the tag push.
+      - name: Create draft release
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $zip = (Get-Item dist/*.zip).FullName
+          gh release create '${{ github.ref_name }}' $zip `
+              --draft `
+              --title '${{ github.ref_name }}' `
+              --generate-notes
