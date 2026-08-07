@@ -192,8 +192,10 @@ fn fetch_mods(craft_repo: &impl CraftRepo, item_dto: ItemDTO) -> Result<Vec<RawM
                 if trimmed_row.starts_with("(") & trimmed_row.ends_with(")") {
                     // row contains desctiption
                     descr = Some(trimmed_row.to_owned());
-                } else {
-                    // row contains mod info
+                } else if !trimmed_row.is_empty() {
+                    // row contains mod info; blank rows (the copied text ends
+                    // with a newline) would otherwise become empty parts and
+                    // leave a dangling separator in the joined representation
                     mod_text.push(trimmed_row.to_owned());
                 }
             }
