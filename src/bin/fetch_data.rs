@@ -49,7 +49,11 @@ fn download(url: &str, dest: &Path) -> Result<(), String> {
         .status()
         .map_err(|e| format!("failed to run curl (is it installed and on PATH?): {}", e))?;
     if !status.success() {
-        return Err(format!("curl failed for {} (exit {:?})", url, status.code()));
+        return Err(format!(
+            "curl failed for {} (exit {:?})",
+            url,
+            status.code()
+        ));
     }
     Ok(())
 }
@@ -156,7 +160,10 @@ fn main() {
     println!("Wrote {}", manifest_path.display());
 
     if out == "data" {
-        println!("Done. Start the app normally to use the {} dataset.", spec.id);
+        println!(
+            "Done. Start the app normally to use the {} dataset.",
+            spec.id
+        );
     } else {
         println!(
             "Done. Run the app with LAZY_CRAFTER_DATA_DIR={} to use this dataset.",

@@ -118,6 +118,15 @@ impl ModsMatchMode {
     }
 }
 
+/// A zero threshold preserves tier-only matching. The OR exception counts
+/// distinct crafted mods, not selected alternatives that match the same mod.
+#[derive(Debug, Clone, Copy, Default)]
+pub struct RollRequirements {
+    pub min_percent: u8,
+    /// Zero disables the exception; it never applies in AND mode.
+    pub ignore_roll_at_or_count: usize,
+}
+
 #[derive(Debug)]
 pub struct UiStates {
     pub filter_string: String,
@@ -126,6 +135,7 @@ pub struct UiStates {
     pub max_autocraft_tries: String,
     pub selected: Vec<ModItem>,
     pub selected_mods_match_mode: ModsMatchMode,
+    pub roll_requirements: RollRequirements,
     pub selected_item_class_as_filter: String,
     pub selected_item_base_as_filter: String,
     pub selected_item_level_as_filter: u64,
@@ -144,6 +154,7 @@ impl Default for UiStates {
 
             selected: vec![],
             selected_mods_match_mode: ModsMatchMode::Any,
+            roll_requirements: RollRequirements::default(),
             selected_item_class_as_filter: "Helmet".to_string(),
             selected_item_base_as_filter: "Iron Hat".to_string(),
             selected_item_level_as_filter: 100,

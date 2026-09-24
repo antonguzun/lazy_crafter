@@ -6,10 +6,8 @@ use std::path::PathBuf;
 
 #[test]
 fn records_land_in_a_log_file() {
-    let dir: PathBuf = std::env::temp_dir().join(format!(
-        "lazy_crafter_log_e2e_{}",
-        std::process::id()
-    ));
+    let dir: PathBuf =
+        std::env::temp_dir().join(format!("lazy_crafter_log_e2e_{}", std::process::id()));
     let _ = fs::remove_dir_all(&dir);
 
     std::env::set_var("LAZY_CRAFTER_LOG_DIR", &dir);
@@ -33,7 +31,10 @@ fn records_land_in_a_log_file() {
     assert!(!body.contains("filtered out"), "body was {:?}", body);
     // the writer announces where it logs, and the file must be plain text
     assert!(body.contains("logging to"), "body was {:?}", body);
-    assert!(!body.contains('\u{1b}'), "ansi escapes leaked into the file");
+    assert!(
+        !body.contains('\u{1b}'),
+        "ansi escapes leaked into the file"
+    );
 
     fs::remove_dir_all(&dir).unwrap();
 }

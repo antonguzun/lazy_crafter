@@ -27,6 +27,8 @@ pub struct ItemBaseRich {
     pub domain: String,
     pub release_state: String,
     pub requirements: Option<Requirements>,
+    #[serde(default)]
+    pub drop_level: Option<u64>,
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -49,6 +51,7 @@ pub struct Mod {
 }
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize, Hash, Eq)]
+#[allow(non_snake_case)] // RePoE's serialized key and existing public field name.
 pub struct StatTranslation {
     pub English: Vec<LanguageInstance>,
     pub ids: Vec<String>,
@@ -112,8 +115,8 @@ impl Default for RepresentationSource {
 /// behaviour, so old data directories keep working without a manifest.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct Manifest {
-    /// Free-form game id, e.g. "poe1" or "poe2". Used only for diagnostics and
-    /// to pick sensible UI defaults; parsing does not depend on it.
+    /// Free-form game id, e.g. "poe1" or "poe2". Also enables game-specific
+    /// base categories, such as PoE2 jewels in the `misc` domain.
     #[serde(default)]
     pub game: Option<String>,
     /// How to resolve mod representations.

@@ -1,6 +1,6 @@
 use crate::entities::craft_repo::{UiEvents, UiStates};
-use egui::{Color32, RichText, Ui};
-use log::{debug, error};
+use egui::Ui;
+use log::debug;
 use std::sync::{Arc, Mutex};
 use std::{collections::HashMap, sync::mpsc};
 

@@ -1,8 +1,6 @@
 use log::debug;
 
-use crate::entities::craft_repo::{
-    CraftRepo, Estimation, ItemBase, ModItem, ModsMatchMode, ModsQuery,
-};
+use crate::entities::craft_repo::{CraftRepo, Estimation, ModItem, ModsMatchMode, ModsQuery};
 use crate::usecases::craft_searcher::{
     get_affected_weight_of_target_mod, get_weight_of_target_and_better_mods,
 };

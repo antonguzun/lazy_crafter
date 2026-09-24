@@ -15,7 +15,7 @@
 //     item_base: "Carnal Boots".to_string(),
 //     item_level: 100,
 //     selected_mods: vec![
-//             ModItem { required_level: 24, weight: 1000, generation_type: "prefix".to_string(), representation: "(40-49) to maximum Life".to_string(), mod_key: "IncreasedLife4".to_string() }, 
+//             ModItem { required_level: 24, weight: 1000, generation_type: "prefix".to_string(), representation: "(40-49) to maximum Life".to_string(), mod_key: "IncreasedLife4".to_string() },
 //             ModItem { required_level: 30, weight: 1000, generation_type: "prefix".to_string(), representation: "20% increased Movement Speed".to_string(), mod_key: "MovementVelocity3".to_string() }
 //         ],
 // }, Estimation { probability: 0.02665 })]

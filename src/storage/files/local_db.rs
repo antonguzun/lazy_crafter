@@ -6,7 +6,6 @@ use crate::storage::files::schemas::{
     ItemBaseRich, Manifest, Mod, RepresentationSource, Stat, StatTranslation,
 };
 use anyhow::{bail, Context, Error, Result};
-use itertools::Itertools;
 use log::{debug, error, info};
 use std::collections::{HashMap, HashSet};
 use std::fs::File;
@@ -85,22 +84,32 @@ fn load_from_json<T>(path: &str) -> Result<Vec<T>, Error>
 where
     T: Default + serde::de::DeserializeOwned,
 {
-    let mut file = File::open(path).map_err(Error::from).with_context(|| format!("Failed to open file {}", path))?;
+    let mut file = File::open(path)
+        .map_err(Error::from)
+        .with_context(|| format!("Failed to open file {}", path))?;
     let mut contents = String::new();
-    file.read_to_string(&mut contents).with_context(|| format!("Failed to read file {}", path))?;
+    file.read_to_string(&mut contents)
+        .with_context(|| format!("Failed to read file {}", path))?;
 
-    serde_json::from_str(&contents).map_err(Error::from).with_context(|| format!("Wrong file's format {}", path))
+    serde_json::from_str(&contents)
+        .map_err(Error::from)
+        .with_context(|| format!("Wrong file's format {}", path))
 }
 
 fn json_to_hashmap<T>(path: &str) -> Result<HashMap<String, T>>
 where
     T: Default + serde::de::DeserializeOwned,
 {
-    let mut file = File::open(path).map_err(Error::from).with_context(|| format!("Failed to open file {}", path))?;
+    let mut file = File::open(path)
+        .map_err(Error::from)
+        .with_context(|| format!("Failed to open file {}", path))?;
     let mut contents = String::new();
-    file.read_to_string(&mut contents).with_context(|| format!("Failed to read file {}", path))?;
+    file.read_to_string(&mut contents)
+        .with_context(|| format!("Failed to read file {}", path))?;
 
-    serde_json::from_str(&contents).map_err(Error::from).with_context(|| format!("Wrong file's format {}", path))
+    serde_json::from_str(&contents)
+        .map_err(Error::from)
+        .with_context(|| format!("Wrong file's format {}", path))
 }
 
 pub struct LocalDB {
@@ -115,6 +124,14 @@ pub struct LocalDB {
 
 pub struct FileRepo {
     db: LocalDB,
+    is_poe2: bool,
+}
+
+fn is_supported_base(base: &ItemBaseRich, is_poe2: bool) -> bool {
+    base.domain == "item"
+        || base.domain == "heist_npc"
+        // RePoE's PoE2 export puts jewels (and unrelated items) in `misc`.
+        || (is_poe2 && base.item_class == "Jewel" && base.release_state == "released")
 }
 
 impl FileRepo {
@@ -128,6 +145,7 @@ impl FileRepo {
 
     fn new_from_dir(dir: &str) -> Result<FileRepo> {
         let manifest = load_manifest(dir);
+        let is_poe2 = manifest.game.as_deref() == Some("poe2");
 
         // stat_translations only ship with the legacy poe1 dump; the poe2
         // dataset resolves representations from each mod's inline `text`, so
@@ -155,16 +173,14 @@ impl FileRepo {
         let item_classes = HashSet::from_iter(
             raw_base_items
                 .iter()
-                .filter(|(_k, v)| v.domain == "item" || v.domain == "heist_npc")
+                .filter(|(_k, v)| is_supported_base(v, is_poe2))
                 .map(|(_k, v)| v.item_class.clone()),
         );
 
         let all_tags: HashSet<String> = HashSet::from_iter(
             raw_base_items
                 .values()
-                .filter(|b| {
-                    (b.domain == "item" || b.domain == "heist_npc") && b.release_state == "released"
-                })
+                .filter(|b| is_supported_base(b, is_poe2) && b.release_state == "released")
                 .flat_map(|b| b.tags.clone()),
         );
         let mut mod_id_by_tags: HashMap<String, Vec<String>> = HashMap::new();
@@ -205,6 +221,7 @@ impl FileRepo {
         };
         debug!(target: LOG_TARGET, "tags: {:?}", mod_id_by_tags.keys());
         Ok(Self {
+            is_poe2,
             db: LocalDB {
                 translations_by_stat_id,
                 mods,
@@ -631,13 +648,13 @@ impl CraftRepo for FileRepo {
             .base_items_by_name
             .iter()
             .filter(|(_, bi)| {
-                (bi.domain == "item" || bi.domain == "heist_npc")
-                    && bi.item_class == item_class.to_string()
+                is_supported_base(bi, self.is_poe2) && bi.item_class == item_class.to_string()
             })
             .map(|(s, bi)| ItemBase {
                 name: s.to_string(),
                 required_level: match bi.requirements {
                     Some(ref r) => r.level,
+                    None if self.is_poe2 && bi.item_class == "Jewel" => bi.drop_level.unwrap_or(1),
                     None => 100,
                 },
             })
@@ -651,7 +668,7 @@ impl CraftRepo for FileRepo {
             self.db
                 .base_items_by_name
                 .iter()
-                .filter(|(_, bi)| (bi.domain == "item" || bi.domain == "heist_npc"))
+                .filter(|(_, bi)| is_supported_base(bi, self.is_poe2))
                 .map(|(s, bi)| (s.clone(), bi.item_class.clone())),
         )
     }
@@ -664,8 +681,9 @@ impl CraftRepo for FileRepo {
         self.get_item_bases(item_class)
             .into_iter()
             .filter(|i| item_name.contains(&i.name))
+            // Prefer Time-Lost Ruby over Ruby, including on magic item names.
+            .max_by_key(|i| i.name.len())
             .map(|i| i.name)
-            .next()
             .ok_or(format!("{} not found in {}", item_name, item_class))
     }
 
@@ -674,7 +692,7 @@ impl CraftRepo for FileRepo {
     // Idea: bring mod_name to mods representation in db and equal it
     fn string_to_mod(
         &self,
-        item_class: &str,
+        _item_class: &str,
         item_name: &str,
         mod_name: &str,
     ) -> Result<String, String> {
@@ -689,12 +707,48 @@ impl CraftRepo for FileRepo {
 
         use regex::Regex;
 
+        // Time-Lost jewels wrap granted stats in the clipboard text, while
+        // RePoE stores only the effect. Keep this normalization base-specific
+        // so regular jewels cannot match effects granted to nearby passives.
+        let is_radius_jewel = self.is_poe2
+            && self
+                .get_item_base_by_item_base(item_name)
+                .map_or(false, |item| {
+                    item.item_class == "Jewel" && item.tags.iter().any(|tag| tag == "radius_jewel")
+                });
+        let effect_text = if self.is_poe2 {
+            mod_name
+                .lines()
+                .map(|line| {
+                    let line = line.trim();
+                    // Advanced descriptions annotate fixed values; this is
+                    // display metadata, not part of RePoE's effect text.
+                    let line = line
+                        .strip_suffix(" — Unscalable Value")
+                        .unwrap_or(line)
+                        .trim_end();
+                    if is_radius_jewel {
+                        line.strip_prefix("Notable Passive Skills in Radius also grant ")
+                            .or_else(|| {
+                                line.strip_prefix("Small Passive Skills in Radius also grant ")
+                            })
+                            .unwrap_or(line)
+                    } else {
+                        line
+                    }
+                })
+                .collect::<Vec<_>>()
+                .join("\n")
+        } else {
+            mod_name.to_string()
+        };
+
         //  bring input mod text in representation form
         //  "blalba +4(2-9) blabla" to "blalba +(2-9) blabla"
 
         let mod_template = Regex::new(r#"([+-])?(\d+(\.\d+)?)(\([aA-zZ]*)"#)
             .unwrap()
-            .replace_all(mod_name.trim(), "$1$4");
+            .replace_all(effect_text.trim(), "$1$4");
 
         let multiline_mod = mod_template.contains("\n");
         let res = mods
@@ -839,19 +893,13 @@ impl CraftRepo for FileRepo {
     }
 
     fn representation_by_mod_id(&self, mod_id: &str) -> String {
-        // poe1: compute from stat_translations (what the autogenerated test
-        // fixtures expect). poe2 has no stat_translations, so that errors and we
-        // fall back to the resolved map (inline text). Neither path panics.
+        // Use the same dataset representation as the modifier browser and
+        // clipboard matcher. Legacy stat translations can belong to a different
+        // game snapshot from the bundled PoB text.
         match self.get_mod_by_id(mod_id) {
-            Some(m) => match self.get_mods_representation(m) {
-                Ok(repr) => repr,
-                Err(_) => self
-                    .db
-                    .representation_by_mod_id
-                    .get(mod_id)
-                    .cloned()
-                    .unwrap_or_else(|| format!("representation_err: {}", mod_id)),
-            },
+            Some(_) => self
+                .get_mods_representation_pob_source(mod_id)
+                .unwrap_or_else(|_| format!("representation_err: {}", mod_id)),
             None => format!("unknown mod: {}", mod_id),
         }
     }
@@ -970,7 +1018,10 @@ mod tests {
         );
         // newlines in multi-stat mods are preserved
         assert_eq!(
-            strip_inline_markup(&re, "+(9-16) to [Armour|Armour]\n+(6-10) to [Evasion] Rating"),
+            strip_inline_markup(
+                &re,
+                "+(9-16) to [Armour|Armour]\n+(6-10) to [Evasion] Rating"
+            ),
             "+(9-16) to Armour\n+(6-10) to Evasion Rating"
         );
     }
@@ -1005,12 +1056,17 @@ mod tests {
         let repr = repo.string_to_mod("asd", "Spine Bow", &mod_name).unwrap();
         assert_eq!(repr, expected);
     }
-    
 
     #[rstest]
     #[case("Adds 17(16-22) to 33(32-38) Fire Damage to Attacks".to_string(), "AddedFireDamage8".to_string())]
-    fn test_string_to_mod_amulet(repo: FileRepo, #[case] mod_name: String, #[case] expected: String) {
-        let repr = repo.string_to_mod("asd", "Seaglass Amulet", &mod_name).unwrap();
+    fn test_string_to_mod_amulet(
+        repo: FileRepo,
+        #[case] mod_name: String,
+        #[case] expected: String,
+    ) {
+        let repr = repo
+            .string_to_mod("asd", "Seaglass Amulet", &mod_name)
+            .unwrap();
         assert_eq!(repr, expected);
     }
 

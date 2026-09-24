@@ -33,7 +33,7 @@ jobs:
             ~/.cargo/registry
             ~/.cargo/git
             target
-          key: cargo-${{ runner.os }}-${{ hashFiles('Cargo.toml') }}
+          key: cargo-${{ runner.os }}-${{ hashFiles('Cargo.lock') }}
           restore-keys: cargo-${{ runner.os }}-
 
       - name: Check the tag matches Cargo.toml
@@ -46,6 +46,15 @@ jobs:
           if ($tag -ne $version) {
               throw "Tag $tag does not match the Cargo.toml version $version"
           }
+
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+
+      - name: Test
+        run: cargo test --locked --all-targets
+
+      - name: Test documentation
+        run: cargo test --locked --doc
 
       - name: Build and package
         run: ./tools/package_release.ps1
@@ -67,4 +76,4 @@ jobs:
           gh release create '${{ github.ref_name }}' $zip `
               --draft `
               --title '${{ github.ref_name }}' `
-              --generate-notes
+              --notes-file CHANGELOG.md
