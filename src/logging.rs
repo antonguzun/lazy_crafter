@@ -100,13 +100,11 @@ pub fn init() {
     let writer = RotatingWriter::new(config.clone());
     let file = writer.path.clone();
 
-    env_logger::Builder::from_env(
-        env_logger::Env::default().default_filter_or(DEFAULT_FILTER),
-    )
-    // the same records go to a file, and ANSI colors in a log file are noise
-    .write_style(env_logger::WriteStyle::Never)
-    .target(env_logger::Target::Pipe(Box::new(writer)))
-    .init();
+    env_logger::Builder::from_env(env_logger::Env::default().default_filter_or(DEFAULT_FILTER))
+        // the same records go to a file, and ANSI colors in a log file are noise
+        .write_style(env_logger::WriteStyle::Never)
+        .target(env_logger::Target::Pipe(Box::new(writer)))
+        .init();
 
     match file {
         Some(path) => info!(
@@ -287,7 +285,11 @@ fn prune(config: &LogConfig, current: Option<&Path>) {
             current_size = size;
             continue;
         }
-        let stamp = match path.file_name().and_then(|n| n.to_str()).and_then(timestamp_of) {
+        let stamp = match path
+            .file_name()
+            .and_then(|n| n.to_str())
+            .and_then(timestamp_of)
+        {
             Some(stamp) => stamp,
             None => continue,
         };

@@ -21,6 +21,7 @@
 [CmdletBinding()]
 param(
     # Defaults to the version in Cargo.toml.
+    [ValidatePattern('^\d+\.\d+\.\d+$')]
     [string]$Version,
     [string]$OutDir = 'dist',
     # Passed to cargo as `+<toolchain>`; empty means the default toolchain.
@@ -34,19 +35,22 @@ $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path -Parent $PSScriptRoot
 Push-Location $repoRoot
 try {
-    if (-not $Version) {
-        $match = Select-String -Path 'Cargo.toml' -Pattern '^version\s*=\s*"([^"]+)"' |
-            Select-Object -First 1
-        if (-not $match) { throw 'Could not read the version from Cargo.toml' }
-        $Version = $match.Matches[0].Groups[1].Value
+    $match = Select-String -Path 'Cargo.toml' -Pattern '^version\s*=\s*"([^"]+)"' |
+        Select-Object -First 1
+    if (-not $match) { throw 'Could not read the version from Cargo.toml' }
+    $packageVersion = $match.Matches[0].Groups[1].Value
+    if ($Version -and $Version -ne $packageVersion) {
+        throw "Version $Version does not match Cargo.toml version $packageVersion"
     }
+    $Version = $packageVersion
+    if ($Version -notmatch '^\d+\.\d+\.\d+$') { throw "Invalid release version: $Version" }
 
     if (-not $SkipBuild) {
         Write-Host "Building lazy_crafter $Version (release)"
         if ($Toolchain) {
-            & cargo "+$Toolchain" build --release --bin lazy_crafter
+            & cargo "+$Toolchain" build --locked --release --bin lazy_crafter
         } else {
-            & cargo build --release --bin lazy_crafter
+            & cargo build --locked --release --bin lazy_crafter
         }
         if ($LASTEXITCODE -ne 0) { throw "cargo build failed with exit code $LASTEXITCODE" }
     }
@@ -68,8 +72,17 @@ try {
     }
 
     $stageName = "lazy_crafter-$Version-windows-x86_64"
-    $stage = Join-Path $OutDir $stageName
-    if (Test-Path $stage) { Remove-Item $stage -Recurse -Force }
+    $outputRoot = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($OutDir)
+    $stage = [IO.Path]::GetFullPath((Join-Path $outputRoot $stageName))
+    if ([IO.Path]::GetDirectoryName($stage) -ne $outputRoot.TrimEnd('\', '/')) {
+        throw "Staging path must be inside the output directory: $stage"
+    }
+    if (Test-Path -LiteralPath $stage) {
+        if ((Get-Item -LiteralPath $stage).Attributes -band [IO.FileAttributes]::ReparsePoint) {
+            throw "Refusing to replace a staging directory that is a link: $stage"
+        }
+        Remove-Item -LiteralPath $stage -Recurse -Force
+    }
     New-Item -ItemType Directory -Path $stage -Force | Out-Null
 
     $exe = 'target/release/lazy_crafter.exe'
@@ -86,7 +99,7 @@ try {
         }
     }
 
-    Copy-Item 'README.md', 'LICENSE' $stage
+    Copy-Item 'README.md', 'CHANGELOG.md', 'LICENSE' $stage
 
     $zip = Join-Path $OutDir "$stageName.zip"
     if (Test-Path $zip) { Remove-Item $zip -Force }

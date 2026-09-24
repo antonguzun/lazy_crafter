@@ -1,4 +1,4 @@
-use log::{debug, warn};
+use log::debug;
 use regex::Regex;
 
 use crate::entities::craft_repo::CraftRepo;
@@ -60,8 +60,8 @@ fn fetch_item_base<'a>(
     // "Fractured Item" / "Corrupted" are appended after it. Prefer the last
     // section that contains explicit mod meta lines; fall back to the legacy
     // behaviour for copies without advanced descriptions.
-    let explicit_meta_re = Regex::new(r"(Prefix|Suffix)\s+Modifier")
-        .expect("regexp error during mods section lookup");
+    let explicit_meta_re =
+        Regex::new(r"(Prefix|Suffix)\s+Modifier").expect("regexp error during mods section lookup");
     let last_part = match raw_item
         .split("--------")
         .filter(|part| explicit_meta_re.is_match(part))
@@ -279,7 +279,9 @@ mod tests {
         let raw = "Item Class: Boots\nRarity: Rare\nBramble Stride\nDaggerfoot Shoes\n--------\nEvasion Rating: 140\nEnergy Shield: 43\n--------\nRequires: Level 80, 59 Dex, 59 Int\n--------\nSockets: S S \n--------\nItem Level: 82\n--------\n{ Fractured Suffix Modifier \"of Flexure\" (Tier: 1) — Evasion }\nGain Deflection Rating equal to 23(21-23)% of Evasion Rating\n{ Suffix Modifier \"of Bameth\" (Tier: 1) — Chaos, Resistance }\n+27(24-27)% to Chaos Resistance\n--------\nFractured Item\n";
         let parsed = parse_raw_item(&repo, raw).unwrap();
         assert_eq!(parsed.mods.len(), 2);
-        assert!(parsed.mods.contains(&"EvasionGrantsDeflection5".to_string()));
+        assert!(parsed
+            .mods
+            .contains(&"EvasionGrantsDeflection5".to_string()));
         assert!(parsed.mods.contains(&"ChaosResist6".to_string()));
     }
 

@@ -7,7 +7,7 @@ use crate::ui::{buttons, comboboxes, errors, inputs, tables};
 // use anyhow::Result;
 use chrono;
 use eframe::egui;
-use egui::{Visuals, Style};
+use egui::{Style, Visuals};
 use std::sync::{mpsc, Arc, Mutex};
 use std::thread;
 
@@ -19,7 +19,9 @@ pub fn run_ui_in_main_thread(
     ui_states: Arc<Mutex<UiStates>>,
     data: Arc<Mutex<Data>>,
 ) {
-    sender.send(UiEvents::Started);
+    if let Err(error) = sender.send(UiEvents::Started) {
+        log::error!("Could not request initial data: {}", error);
+    }
     let mut native_options = eframe::NativeOptions::default();
     native_options.initial_window_size = Some(egui::Vec2 {
         x: 1100.0,
@@ -36,12 +38,11 @@ pub fn run_ui_in_main_thread(
                         created_at: chrono::Local::now().timestamp(),
                     });
                 }
-                _ => (),
             };
         }
     });
 
-    eframe::run_native(
+    if let Err(error) = eframe::run_native(
         APP_NAME,
         native_options,
         Box::new(|cc| {
@@ -50,10 +51,11 @@ pub fn run_ui_in_main_thread(
                 ..Style::default()
             };
             cc.egui_ctx.set_style(style);
-            Box::new(
-            EguiApp::new(cc, ui_states, data, sender))}
-        ),
-    );
+            Box::new(EguiApp::new(cc, ui_states, data, sender))
+        }),
+    ) {
+        log::error!("Could not run the application window: {}", error);
+    }
 }
 
 struct EguiApp {
@@ -211,6 +213,26 @@ impl eframe::App for EguiApp {
                     self.event_tx.send(UiEvents::ChangeModFilter).unwrap();
                 }
             });
+            {
+                let state = &mut self.ui_states.lock().unwrap();
+                ui.label("Minimum roll within tier:");
+                ui.add(
+                    egui::Slider::new(&mut state.roll_requirements.min_percent, 0..=100)
+                        .suffix("%"),
+                )
+                    .on_hover_text("0% accepts any roll; 100% requires the maximum. Every value of a hybrid mod must meet the threshold, including in better tiers.");
+                ui.add_enabled_ui(state.selected_mods_match_mode == ModsMatchMode::Any, |ui| {
+                    ui.horizontal(|ui| {
+                        ui.label("Ignore roll at N OR mods:");
+                        ui.add(
+                            egui::DragValue::new(&mut state.roll_requirements.ignore_roll_at_or_count)
+                                .clamp_range(0..=usize::MAX)
+                                .speed(0.1),
+                        );
+                    }).response.on_hover_text("0 disables the exception. At least N distinct matching mods accept any roll; selected tier requirements still apply.");
+                    ui.small("N = 0: disabled");
+                });
+            }
             let selected_mods = self.ui_states.lock().unwrap().selected.clone();
 
             // estimations removed from ui while it not ready

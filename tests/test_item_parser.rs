@@ -163,7 +163,7 @@
 // --------
 // +25% to Global Critical Strike Multiplier (implicit)
 // --------
-// +18% to Cold Resistance", ParsedItem { 
+// +18% to Cold Resistance", ParsedItem {
 //     item_class: "Thrusting One Hand Sword".to_string(),
 //     item_base_name: "Antique Rapier".to_string(),
 //     item_name: "Antique Rapier of the Penguin".to_string(),
@@ -218,7 +218,7 @@
 // --------
 // 45% increased Physical Damage
 // 14% increased Global Accuracy Rating
-// 10% increased Light Radius", ParsedItem { 
+// 10% increased Light Radius", ParsedItem {
 //     item_class: "Thrusting One Hand Sword".to_string(),
 //     item_base_name: "Antique Rapier".to_string(),
 //     item_name: "Heavy Antique Rapier of Light".to_string(),
@@ -368,7 +368,7 @@
 // Level: 70
 // Dex: 95
 // --------
-// Sockets: G-G 
+// Sockets: G-G
 // --------
 // Item Level: 87
 // --------
@@ -393,7 +393,7 @@
 // Level: 70
 // Dex: 95
 // --------
-// Sockets: G-G 
+// Sockets: G-G
 // --------
 // Item Level: 87
 // --------
@@ -421,7 +421,7 @@
 // Dex: 34
 // Int: 34
 // --------
-// Sockets: B B 
+// Sockets: B B
 // --------
 // Item Level: 35
 // --------
